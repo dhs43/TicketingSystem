@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 
-class Login extends Component{
+class Home extends Component{
+    
     constructor(props){
         super(props);
     }
 
     render(){
         return(
-        <div>
-            Hello there! This is our Login Page!
-        </div>
+            <div>
+                Hello there! This is our Home Page!
+            </div>
         );
     }
 }
 
-export default Login;
+export default Home;

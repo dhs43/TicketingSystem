@@ -1,11 +1,27 @@
 const express = require('express');
+const path = require('path');
 const app = express();
-const port = 8000;
+const PORT = process.env.PORT || 8000;
 
-app.get('/', (req, res) => {
-        res.send('Ticketing System - Software Engineering')
-})
+const userRoutes = require('./Routes/users');
 
-app.listen(port);
-console.log('Server running on port ' + port);
+app.use('/users', userRoutes);
 
+
+if (process.env.NODE_ENV === 'production') {
+	console.log("In build mode");
+
+	// Express first tries to serve production assets
+	app.use(express.static(path.resolve('server/client/build/')));
+
+	// Express will serve index.html if it doesn't recognize route
+	app.get('*', (req, res) => {
+		console.log("Got here");
+		console.log(req.protocol + "://" + req.get('host') + req.originalUrl);
+		res.sendFile(path.resolve("server/client", "build", "index.html"));
+	});
+}
+
+
+app.listen(PORT);
+console.log("Server running on port " + PORT);
