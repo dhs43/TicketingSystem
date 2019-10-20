@@ -1,4 +1,5 @@
 use ticket_system;
+SET FOREIGN_KEY_CHECKS = 0;
 /*
 SET SQL_SAFE_UPDATES = 0;
 */
@@ -134,4 +135,5 @@ CREATE TABLE linked_devices
   PRIMARY KEY(linked_device_ID)
 );
 
+SET FOREIGN_KEY_CHECKS = 1;
 
