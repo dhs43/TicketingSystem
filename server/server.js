@@ -3,9 +3,10 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.get('/api/test', function (req, res) {
-	return res.send('Software Engineering - HSU Helpdesk');
-});
+const userRoutes = require('./Routes/users');
+
+app.use('/users', userRoutes);
+
 
 if (process.env.NODE_ENV === 'production') {
 	console.log("In build mode");
@@ -22,5 +23,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-app.listen(process.env.PORT || 8000);
+app.listen(PORT);
 console.log("Server running on port " + PORT);

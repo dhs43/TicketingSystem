@@ -4,7 +4,7 @@ class Login extends Component{
     state = {test: "ok"};
 
     componentDidMount() {
-        fetch('/api/test')
+        fetch('/users/test')
             .then(res => res.text())
             .then(test => this.setState({ test }));
     }
