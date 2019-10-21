@@ -32,6 +32,7 @@ CREATE TABLE technicians
  technician_ID int,
  first_name varchar(15),
  last_name varchar(15),
+ is_admin boolean,
  PRIMARY KEY (technician_ID)
 );
 
