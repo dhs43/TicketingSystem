@@ -128,10 +128,10 @@ DROP TABLE linked_devices;
 CREATE TABLE linked_devices
 ( 
   linked_device_ID int,
-  device_a_ID int,
-  device_b_ID int,
-  FOREIGN KEY(device_a_ID) REFERENCES devices(device_ID),
-  FOREIGN KEY(device_b_ID) REFERENCES devices(device_ID),
+  ticket_ID int,
+  device_ID int,
+  FOREIGN KEY(ticket_ID) REFERENCES ticket(ticket_ID),
+  FOREIGN KEY(device_ID) REFERENCES devices(device_ID),
   PRIMARY KEY(linked_device_ID)
 );
 
