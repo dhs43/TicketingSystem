@@ -33,6 +33,7 @@ CREATE TABLE technicians
  first_name varchar(15),
  last_name varchar(15),
  is_admin boolean,
+ password varchar(20),
  PRIMARY KEY (technician_ID)
 );
 
@@ -170,13 +171,13 @@ VALUES (6, 'Matt', 'Mathews', '707-123-4567', 'Cypress');
 */
 
 INSERT INTO technicians
-VALUES (0, 'Erik', 'Andre', true);
+VALUES (0, 'Erik', 'Andre', true, 'IeatBabies22');
 
 INSERT INTO technicians
-VALUES (1, 'Mike', 'Roch', false);
+VALUES (1, 'Mike', 'Roch', false, 'IalsoEatBabies33');
 
 INSERT INTO technicians
-VALUES (2, 'Steve', 'Buschemi', false);
+VALUES (2, 'Steve', 'Buschemi', false, 'IamBabies69');
 
 /*
 -------------------- CREATING FAKE TICKETS --------------------
@@ -246,4 +247,10 @@ VALUES (1, 112, 113);
 
 /*
 How/why above linked? bcuz both retardo...
+*/
+
+/*
+========================================================================================================================
+========================================== Done with dummy data stuff :) ===========================================
+========================================================================================================================
 */
