@@ -29,11 +29,11 @@ DROP TABLE technicians;
 
 CREATE TABLE technicians
 (
- technician_ID int,
- first_name varchar(15),
- last_name varchar(15),
+ technician_ID varchar(55),
+ first_name varchar(25),
+ last_name varchar(25),
  is_admin boolean,
- password varchar(20),
+ password varchar(95),
  PRIMARY KEY (technician_ID)
 );
 
@@ -63,7 +63,7 @@ CREATE TABLE ticket
   ticket_ID int,
   subject varchar(20),
   customer_ID int,
-  assigned_technician_ID int,
+  assigned_technician_ID varchar(55),
   description varchar(55),
   status char(1),
   time_spent int,
@@ -90,7 +90,7 @@ CREATE TABLE comments
 (
  comment_ID int,
  ticket_ID int,
- technician_ID int,
+ technician_ID varchar(55),
  creation_date timestamp,
  last_edited timestamp,
  text varchar(55),
@@ -171,13 +171,13 @@ VALUES (6, 'Matt', 'Mathews', '707-123-4567', 'Cypress');
 */
 
 INSERT INTO technicians
-VALUES (0, 'Erik', 'Andre', true, 'IeatBabies22');
+VALUES ('eandre@humboldt.edu', 'Erik', 'Andre', true, 'IeatBabies22');
 
 INSERT INTO technicians
-VALUES (1, 'Mike', 'Roch', false, 'IalsoEatBabies33');
+VALUES ('mroch@humboldt.edu', 'Mike', 'Roch', false, 'IalsoEatBabies33');
 
 INSERT INTO technicians
-VALUES (2, 'Steve', 'Buschemi', false, 'IamBabies69');
+VALUES ('sbuschemi@humboldt.edu', 'Steve', 'Buschemi', false, 'IamBabies69');
 
 /*
 -------------------- CREATING FAKE TICKETS --------------------
@@ -186,14 +186,14 @@ VALUES (2, 'Steve', 'Buschemi', false, 'IamBabies69');
 set @stamp := TIMESTAMP("2019-10-20", "05:09:32");
 set @stamp2 := TIMESTAMP("2019-10-22", "02:11:02");
 INSERT INTO ticket
-VALUES (112, 'Pener broke', 4, 1, 'Humped a rock now pee pee broke', 'o', 69, @stamp, @stamp2);
+VALUES (112, 'Pener broke', 4, 'mroch@humboldt.edu', 'Humped a rock now pee pee broke', 'o', 69, @stamp, @stamp2);
 
 set @stamp := TIMESTAMP("2017-05-10", " 00:00:6");
 INSERT INTO ticket
-VALUES (113, 'Ho w t2o wifi???', 5, 2, 'WIFI????????? HOW?????????????', 'o', 1051200, @stamp, NULL);
+VALUES (113, 'Ho w t2o wifi???', 5, 'sbuschemi@humboldt.edu', 'WIFI????????? HOW?????????????', 'o', 1051200, @stamp, NULL);
 
 INSERT INTO ticket
-VALUES (111, 'PS4 needs Spaghetti', 6, 0, 'I need to feed my baby spaghet, but I cannot. HALP', 'w', 20, current_timestamp(), NULL);
+VALUES (111, 'PS4 needs Spaghetti', 6, 'eandre@humboldt.edu', 'I need to feed my baby spaghet, but I cannot. HALP', 'w', 20, current_timestamp(), NULL);
 
 
 /*
@@ -215,15 +215,14 @@ VALUES (3, 00000000000000000003, 'MacBook Pro', '1400-09-30');
 
 set @stamp := TIMESTAMP("2019-10-21", "07:11:15");
 INSERT INTO comments
-VALUES (0, 112, 1, @stamp, NULL, 'wtf bro go to a hospital');
+VALUES (0, 112, 'sbuschemi@humboldt.edu', @stamp, NULL, 'wtf bro go to a hospital');
 
 set @stamp := TIMESTAMP("2019-05-10", " 00:00:7");
 INSERT INTO comments
-VALUES (1, 113, 2, @stamp, NULL, 'Working on this dude\'\s wifi for about 2 years fml');
+VALUES (1, 113, 'mroch@humboldt.edu', @stamp, NULL, 'Working on this dude\'\s wifi for about 2 years fml');
 
-set @stamp := TIMESTAMP("2019-05-10", " 00:00:7");
 INSERT INTO comments
-VALUES (2, 111, 0, CURRENT_TIMESTAMP()+5, NULL, 'fucked his mom and now we good');
+VALUES (2, 111, 'eandre@humboldt.edu', CURRENT_TIMESTAMP()+5, NULL, 'fucked his mom and now we good');
 
 /*
 -------------------- CREATING FAKE LINKED-DEVICES --------------------
