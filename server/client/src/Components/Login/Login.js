@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-class Login extends Component{
-    state = {test: "ok"};
+class Login extends Component {
+    state = { test: "ok" };
 
     componentDidMount() {
         fetch('/users/test')
@@ -10,16 +10,16 @@ class Login extends Component{
     }
 
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
-    render(){
-        return(
-        <div>
-            Hello there! This is our Login Page!
+    render() {
+        return (
+            <div>
+                Hello there! This is our Login Page!
             <div>{this.state.test}</div>
-        </div>
+            </div>
         );
     }
 }
