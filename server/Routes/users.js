@@ -4,24 +4,9 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
-
-const passport = require('passport');
-const passportJWT = require('passport-jwt');
-const JwtStrategy = passportJWT.Strategy;
-const ExtractJwt = passportJWT.ExtractJwt;
-
-const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.SECRET_OR_KEY
-};
-
-const strategy = new JwtStrategy(opts, (payload, next) => {
-    //TODO: GET USER FROM DB
-    const user = null;
-    next(null, user);
-});
 
 generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(saltRounds));
@@ -31,10 +16,30 @@ validatePassword = function (password) {
     return bcrypt.compareSync(password, this.local.password);
 }
 
-const User = {
-    email: '',
-    password: ''
-};
+function verifyToken(req, res, next) {
+    // Get auth header value
+    const bearerHeader = req.headers['authorization'];
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(' ');
+        // Get token from split array
+        // FORMAT OF TOKEN: "Authorization: Bearer <access_token>""
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+
+        jwt.verify(req.token, process.env.SECRET, (err, authData) => {
+            if (err) {
+                res.sendStatus(403);
+            } else {
+                console.log(authData);
+                next();
+            }
+        });
+
+    } else {
+        // Forbidden
+        res.sendStatus(403);
+    }
+}
 
 // SQL Database
 var connection = mysql.createConnection({
@@ -47,7 +52,8 @@ var connection = mysql.createConnection({
 
 router.use(bodyParser.json());
 
-router.get('/test', (req, res, next) => {
+router.get('/test', verifyToken, (req, res, next) => {
+
     res.send("This is a test from the server.");
 });
 
@@ -72,8 +78,14 @@ router.post('/loginUser', (req, res, next) => {
                 if (err) console.log(err);
                 if (res) {
                     console.log("Password match");
+                    jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
+                        if (err) { console.log(err); }
+                        console.log(token);
+                        res.json({ token });
+                    });
                 } else {
                     console.log("Incorrect password");
+                    res.sendStatus(403);
                 }
             })
         });
