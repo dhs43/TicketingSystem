@@ -3,8 +3,9 @@ import './App.css';
 
 import { Link, Route, HashRouter } from "react-router-dom";
 
-import Login from "./Components/Login/Login.js";
 import Home from "./Components/Home/Home.js";
+import Login from "./Components/Login/Login.js";
+import Authenticate from "./Components/Authenticate/Authenticate.js";
 
 function App() {
   return (
