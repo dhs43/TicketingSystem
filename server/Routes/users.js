@@ -9,38 +9,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const AUTH_FAILURE = "auth failure";
 
-generateHash = function (password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(saltRounds));
-}
-
-validatePassword = function (password) {
-    return bcrypt.compareSync(password, this.local.password);
-}
-
-function verifyToken(req, res, next) {
-    // Get auth header value
-    const bearerHeader = req.headers['authorization'];
-    if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(' ');
-        // Get token from split array
-        // FORMAT OF TOKEN: "Authorization: Bearer <access_token>""
-        const bearerToken = bearer[1];
-        req.token = bearerToken;
-
-        jwt.verify(req.token, process.env.SECRET, (err, authData) => {
-            if (err) {
-                res.sendStatus(403);
-            } else {
-                console.log(authData);
-                next();
-            }
-        });
-
-    } else {
-        // Forbidden
-        res.sendStatus(403);
-    }
-}
+router.use(bodyParser.json());
 
 // SQL DATABASE CONNECTION
 var connection = mysql.createConnection({
@@ -70,15 +39,43 @@ function handleDisconnect(connection) {
 
 handleDisconnect(connection); // Also initiates connection
 
-router.use(bodyParser.json());
 
-router.get('/test', verifyToken, (req, res, next) => {
+// AUTHENTICATION FUNCTIONS
+generateHash = function (password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(saltRounds));
+}
 
-    res.send("This is a test from the server.");
-});
+validatePassword = function (password) {
+    return bcrypt.compareSync(password, this.local.password);
+}
 
+function verifyToken(req, res, next) {
+    // Get auth header value
+    const bearerHeader = req.headers['authorization'];
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(' ');
+        // Get token from split array
+        // FORMAT OF HEADER: "Authorization: Bearer <access_token>"
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+
+        jwt.verify(req.token, process.env.SECRET, (err, authData) => {
+            if (err) {
+                res.sendStatus(403);
+            } else {
+                console.log(authData); // user email in authData
+                next();
+            }
+        });
+
+    } else {
+        res.sendStatus(403); // Forbidden
+    }
+}
+
+
+// ROUTES
 router.post('/loginUser', (req, res, next) => {
-    console.log(req.body);
     if (req.body === undefined
         || !req.body.email.trim()
         || !req.body.password.trim()) {
@@ -113,8 +110,10 @@ router.post('/loginUser', (req, res, next) => {
             if (bcryptResponse) {
                 console.log("Password match");
                 jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
-                    if (err) { console.log(err); }
-                    console.log("Token: " + token);
+                    if (err) {
+                        console.log(err);
+                        return null;
+                    }
                     res.send(token);
                 });
             } else {
@@ -125,25 +124,33 @@ router.post('/loginUser', (req, res, next) => {
     });
 });
 
+
 router.post('/newUser', (req, res, next) => {
-    console.log(req.body);
     var email = req.body.email;
     var password = generateHash(req.body.password);
-
-    console.log(password);
 
     var statement = "INSERT INTO technicians (technician_ID, first_name, last_name, is_admin, password) VALUES ('" + email + "', 'Bob', 'Smith', false, '" + password + "');";
 
     connection.connect(function (err) {
-        if (err) console.log(err);
-        console.log("Connected to database");
+        if (err) {
+            console.log(err);
+            return null;
+        }
         connection.query(statement, function (err, result, fields) {
-            if (err) console.log(err);
-            console.log("result: " + result[0].password);
+            if (err) {
+                console.log(err);
+                return null;
+            }
         });
     });
 
     res.send("New user created");
+});
+
+
+router.get('/test', verifyToken, (req, res, next) => {
+
+    res.send("This is a test from the server.");
 });
 
 module.exports = router;

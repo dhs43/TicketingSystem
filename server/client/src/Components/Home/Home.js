@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import "./Home.css";
 
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -24,7 +25,6 @@ class Home extends Component {
 
     submitHandler(e) {
         e.preventDefault();
-        console.log(this.state);
 
         fetch('/users/loginUser', {
             method: 'post',
@@ -36,13 +36,20 @@ class Home extends Component {
         })
             .then(response => response.text())
             .then(response => {
-                console.log(response);
-            });
+                if (response === 'auth failure') {
+                    alert("Error logging in");
+                } else {
+                    localStorage.setItem("token", response);
 
-        // fetch('getToken', {
-        //     email: this.state.email,
-        //     password: this.state.password
-        // }).then(res => localStorage.setItem('jwt-auth', res.data));
+                    //TEST IF USER CAN ACCESS PRIVATE ROUTE
+                    console.log(localStorage.token);
+                    fetch('/users/test', { headers: { "Authorization": "Bearer " + localStorage.token } })
+                        .then(response => response.text())
+                        .then(response => {
+                            alert("You have logged in sucessfully.")
+                        });
+                }
+            });
     }
 
     render() {
