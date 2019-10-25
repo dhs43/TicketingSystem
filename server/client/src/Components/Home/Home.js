@@ -68,7 +68,8 @@ class Home extends Component {
                                 name="email"
                                 variant="filled"
                                 value={this.state.email}
-                                onChange={e => this.changeHandler(e)} />
+                                onChange={e => this.changeHandler(e)}
+                            />
                             <TextField
                                 label="Password"
                                 name="password"
@@ -76,7 +77,8 @@ class Home extends Component {
                                 variant="filled"
                                 type="password"
                                 value={this.state.password}
-                                onChange={e => this.changeHandler(e)} />
+                                onChange={e => this.changeHandler(e)}
+                            />
                             <Button
                                 className="button"
                                 color="primary"

@@ -17,11 +17,11 @@ const opts = {
     secretOrKey: process.env.SECRET_OR_KEY
 };
 
-const strategy = new JwtStrategy(opts, (payload, next) => {
-    //TODO: GET USER FROM DB
-    const user = null;
-    next(null, user);
-});
+// const strategy = new JwtStrategy(opts, (payload, next) => {
+//     //TODO: GET USER FROM DB
+//     const user = null;
+//     next(null, user);
+// });
 
 generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(saltRounds));

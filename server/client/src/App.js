@@ -3,9 +3,9 @@ import './App.css';
 
 import { Link, Route, HashRouter } from "react-router-dom";
 
-import Home from "./Components/Home/Home.js";
 import Login from "./Components/Login/Login.js";
-import Authenticate from "./Components/Authenticate/Authenticate.js";
+import Home from "./Components/Home/Home.js";
+import SubmitTicket from "./Components/SubmitTicket/SubmitTicket";
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
         <div>
           <Route exact path={"/"} component={Home}></Route>
           <Route exact path={"/Login"} component={Login}></Route>
+          <Route exact path={"/SubmitTicket"} component={SubmitTicket}></Route>
         </div>
       </HashRouter>
     </div>
