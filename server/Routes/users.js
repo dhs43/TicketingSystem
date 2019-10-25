@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
+const AUTH_FAILURE = "auth failure";
 
 generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(saltRounds));
@@ -41,7 +42,7 @@ function verifyToken(req, res, next) {
     }
 }
 
-// SQL Database
+// SQL DATABASE CONNECTION
 var connection = mysql.createConnection({
     host: 'database-1.cs4vedk6qhqf.us-west-1.rds.amazonaws.com',
     user: 'admin',
@@ -49,6 +50,25 @@ var connection = mysql.createConnection({
     database: 'ticket_system',
     ssl: 'Amazon RDS'
 });
+
+function handleDisconnect(connection) {
+    connection.on('error', function (err) {
+        if (!err.fatal) {
+            return;
+        }
+        if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
+            throw err;
+        }
+
+        console.log('Re-connecting lost connection: ' + err.stack);
+
+        connection = mysql.createConnection(connection.config);
+        handleDisconnect(connection);
+        connection.connect();
+    });
+}
+
+handleDisconnect(connection); // Also initiates connection
 
 router.use(bodyParser.json());
 
@@ -59,40 +79,50 @@ router.get('/test', verifyToken, (req, res, next) => {
 
 router.post('/loginUser', (req, res, next) => {
     console.log(req.body);
+    if (req.body === undefined
+        || !req.body.email.trim()
+        || !req.body.password.trim()) {
+        res.send(AUTH_FAILURE);
+        return null;
+    }
+
     var email = req.body.email;
     var password = req.body.password;
     var encrypted = '';
 
     var statement = "SELECT password FROM technicians where technician_ID = '" + email + "';";
 
-    connection.connect(function (err) {
-        if (err) console.log(err);
-        console.log("Connected to database");
-        connection.query(statement, function (err, result, fields) {
-            if (err) console.log(err);
-            encrypted = result[0].password;
+    connection.query(statement, function (err, result, fields) {
+        if (err) {
+            console.log(err);
+            res.send(AUTH_FAILURE);
+            return null;
+        }
+        if (result[0] === undefined) {
+            console.log("Email not found in DB");
+            res.send(AUTH_FAILURE);
+            return null;
+        }
+        encrypted = result[0].password;
 
-            console.log("Data " + password + " Hash: " + encrypted);
-
-            bcrypt.compare(password, encrypted, function (err, res) {
-                if (err) console.log(err);
-                if (res) {
-                    console.log("Password match");
-                    jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
-                        if (err) { console.log(err); }
-                        console.log(token);
-                        res.json({ token });
-                    });
-                } else {
-                    console.log("Incorrect password");
-                    res.sendStatus(403);
-                }
-            })
-        });
+        bcrypt.compare(password, encrypted, function (err, bcryptResponse) {
+            if (err) {
+                console.log(err);
+                return null;
+            }
+            if (bcryptResponse) {
+                console.log("Password match");
+                jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
+                    if (err) { console.log(err); }
+                    console.log("Token: " + token);
+                    res.send(token);
+                });
+            } else {
+                console.log("Incorrect password");
+                res.send(AUTH_FAILURE);
+            }
+        })
     });
-
-
-
 });
 
 router.post('/newUser', (req, res, next) => {

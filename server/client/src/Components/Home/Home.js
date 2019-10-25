@@ -33,7 +33,11 @@ class Home extends Component {
                 email: this.state.email,
                 password: this.state.password
             })
-        });
+        })
+            .then(response => response.text())
+            .then(response => {
+                console.log(response);
+            });
 
         // fetch('getToken', {
         //     email: this.state.email,

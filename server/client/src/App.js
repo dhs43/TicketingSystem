@@ -12,7 +12,7 @@ function App() {
       <HashRouter>
         <div>
           <Route exact path={"/"} component={Main}></Route>
-          <Route exact path={"/Main"} component={Home}></Route>
+          <Route exact path={"/Home"} component={Home}></Route>
         </div>
       </HashRouter>
     </div>
