@@ -2,12 +2,6 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import "./Main.css";
 
-// function TicketPage {
-//     this.setState(state => ({
-//         screen: "Tickets"
-//     }));
-// }
-
 class Main extends Component {
     constructor(props) {
         super(props);
@@ -22,21 +16,18 @@ class Main extends Component {
         this.setState(state => ({
             screen: "Tickets"
         }));
-        console.log("TICKETS");
     }
 
     handleInventoryClick() {
         this.setState(state => ({
             screen: "Inventory"
         }));
-        console.log("inventory");
     }
 
     handleDataVClick() {
         this.setState(state => ({
             screen: "DataV"
         }));
-        console.log("datav");
     }
 
 
