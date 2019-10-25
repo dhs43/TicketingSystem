@@ -3,18 +3,16 @@ import './App.css';
 
 import { Link, Route, HashRouter } from "react-router-dom";
 
-import Login from "./Components/Login/Login.js";
 import Home from "./Components/Home/Home.js";
-import SubmitTicket from "./Components/SubmitTicket/SubmitTicket";
+import Main from "./Components/Main/Main.js";
 
 function App() {
   return (
     <div className="App">
       <HashRouter>
         <div>
-          <Route exact path={"/"} component={Home}></Route>
-          <Route exact path={"/Login"} component={Login}></Route>
-          <Route exact path={"/SubmitTicket"} component={SubmitTicket}></Route>
+          <Route exact path={"/"} component={Main}></Route>
+          <Route exact path={"/Main"} component={Home}></Route>
         </div>
       </HashRouter>
     </div>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import "./Home.css";
-import blue from "../../res/colors.js"
 
 class Home extends Component {
     constructor(props) {
@@ -48,7 +47,7 @@ class Home extends Component {
             <div className="backdrop">
                 <div className="appbar">
                     <h1 className="title">
-                        ResNet Helpdesk
+                        Resnet Helpdesk
                 </h1>
                 </div>
                 <div className="outline">
@@ -86,7 +85,7 @@ class Home extends Component {
                                 type="submit">
                                 Login
                             </Button>
-                            <p>Don't have an account?</p>
+                            <p>Don't have an account? Too bad!</p>
                         </form>
                     </div>
                 </div>

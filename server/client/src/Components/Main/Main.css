@@ -1,0 +1,152 @@
+.backdrop
+{
+    background-color: #F2F2F2;
+    height: 100%;
+    width: 100%;
+    min-height:600px;
+    min-width: 500px;
+}
+
+
+.appbar
+{
+    width: 100%;
+    height: 50px;
+    padding: auto 0 auto 0;
+    background-color: #3f51b5;
+    text-align: left;
+}
+
+.title
+{
+    color: #FFFFFF;
+    margin: 0;
+    padding-left: 100px;
+}
+.outline2
+{
+    background-color: #FFFFFF;
+    margin: 0 100px 0 100px;
+    height: 100%;
+    min-width: 350px;
+    min-height: 400px;
+    padding-top: 5px;
+    padding-bottom: 100px;
+    padding-left: 5px;
+    padding-right: 5px;
+    
+}
+
+.screen
+{
+    display: flex;
+    width: 100%;
+    background-color: #88D0FF;
+    border-color:#88D0FF;
+    border-width: 1px;
+    border-radius: 20px / 20px;
+}
+
+.selectionTicket
+{
+    width: 33.33%;
+    height: 25px;
+    text-align: center;
+    cursor: pointer;
+    border-width: 0px 1px 0px 0px;
+    border-style: solid;
+    border-color: black;
+}
+
+.selectionInventory
+{
+    width: 33.33%;
+    height: 25px;
+    text-align: center;
+    cursor: pointer;
+    border-width: 0px 0px 0px 0px;
+    border-style: solid;
+    border-color: black;
+}
+
+.selectionDataV
+{
+    width: 33.33%;
+    height: 25px;
+    text-align: center;
+    cursor: pointer;
+    border-width: 0px 0px 0px 1px;
+    border-style: solid;
+    border-color: black;
+}
+
+.selectionTicket:hover {
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 20px 0px 0px 20px;
+    border-width: 0px 1px 0px 0px;
+    border-style: solid;
+    border-color: black;
+  }
+
+  .selectionInventory:hover {
+    background-color: #3f51b5;
+    color: white;
+    border-width: 0px 0px 0px 0px;
+    border-style: solid;
+    border-color: black;
+  }
+
+  .selectionDataV:hover {
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 0px 20px 20px 0px;
+    border-width: 0px 0px 0px 1px;
+    border-style: solid;
+    border-color: black;
+
+  }
+
+  .selectedTicket
+  {
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 20px 0px 0px 20px;
+    width: 33.33%;
+    height: 25px;
+    text-align: center;
+    border-width: 0px 1px 0px 0px;
+    border-style: solid;
+    border-color: black;
+  }
+
+  .selectedInventory
+  {
+    background-color: #3f51b5;
+    color: white;
+    width: 33.33%;
+    height: 25px;
+    text-align: center;
+    border-width: 0px 0px 0px 0px;
+    border-style: solid;
+    border-color: black;
+  }
+
+  .selectedDataV
+  {
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 0px 20px 20px 0px;
+    width: 33.33%;
+    height: 25px;
+    text-align: center;
+    border-width: 0px 0px 0px 1px;
+    border-style: solid;
+    border-color: black;
+  }
+
+.outline
+{
+    background-color: #F2F2F2;
+}
+
