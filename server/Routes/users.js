@@ -6,10 +6,18 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const saltRounds = 16;
+const saltRounds = 15;
 const AUTH_FAILURE = "auth failure";
 
 router.use(bodyParser.json());
+
+// ENV VARIABLES
+if (process.env.NODE_ENV === 'production') {
+    dotenv.config({
+        path: `${__dirname}/../.env`
+    });
+    router.use(bodyParser.json());
+}
 
 // SQL DATABASE CONNECTION
 var connection = mysql.createConnection({
@@ -17,6 +25,7 @@ var connection = mysql.createConnection({
     user: 'admin',
     password: process.env.SQL_PASSWORD,
     database: 'ticket_system',
+    port: 3306,
     ssl: 'Amazon RDS'
 });
 
@@ -126,6 +135,7 @@ router.post('/loginUser', (req, res, next) => {
 
 
 router.post('/newUser', (req, res, next) => {
+    console.log("testing it out");
     var email = req.body.email;
     var password = generateHash(req.body.password);
 

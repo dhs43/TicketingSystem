@@ -46,6 +46,7 @@ class Home extends Component {
                     fetch('/users/test', { headers: { "Authorization": "Bearer " + localStorage.token } })
                         .then(response => response.text())
                         .then(response => {
+                            console.log(response);
                             alert("You have logged in sucessfully.")
                         });
                 }
