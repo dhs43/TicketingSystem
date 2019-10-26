@@ -64,7 +64,7 @@ class Home extends Component {
                 </div>
                 <div className="outline">
                     <div className="outline2">
-                        <form className="paper" onSubmit={e => this.submitHandler(e)}>
+                        <form className="" onSubmit={e => this.submitHandler(e)}>
                             <h5>
                                 Have an Issue?
                             </h5>

@@ -5,6 +5,7 @@ import { Route, HashRouter } from "react-router-dom";
 
 import Home from "./Components/Home/Home.js";
 import Main from "./Components/Main/Main.js";
+import SubmitTicket from "./Components/SubmitTicket/SubmitTicket";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <div>
           <Route exact path={"/"} component={Main}></Route>
           <Route exact path={"/Home"} component={Home}></Route>
+          <Route exact path={"/SubmitTicket"} component={SubmitTicket}></Route>
         </div>
       </HashRouter>
     </div>

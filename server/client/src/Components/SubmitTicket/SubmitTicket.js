@@ -8,6 +8,9 @@ import Button from "@material-ui/core/Button";
 import FormLabel from "@material-ui/core/FormLabel";
 import {FormControlLabel} from "@material-ui/core";
 
+//import CSS
+import "./SubmitTicket.css";
+
 // class of Ticket Form and Submission
 class SubmitTicket extends Component{
     constructor(props) {
@@ -67,7 +70,9 @@ class SubmitTicket extends Component{
         return(
             <div>
                 <form className="submitTicket" onSubmit={e => this.submitHandler(e)}>
+                    <h1> Submit Ticket </h1>
                     <TextField
+                        className="medium"
                         label="First Name"
                         name="firstname"
                         margin="normal"
@@ -76,6 +81,7 @@ class SubmitTicket extends Component{
                         onChange={e => this.changeHandler(e)}
                     />
                     <TextField
+                        className="medium"
                         label="Last Name"
                         name="lastname"
                         margin="normal"
@@ -84,6 +90,7 @@ class SubmitTicket extends Component{
                         onChange={e => this.changeHandler(e)}
                     />
                     <TextField
+                        className="medium"
                         label="Student ID"
                         name="id"
                         margin="normal"
@@ -92,6 +99,7 @@ class SubmitTicket extends Component{
                         onChange={e => this.changeHandler(e)}
                     />
                     <TextField
+                        className="medium"
                         label="Email Address"
                         name="email"
                         margin="normal"
@@ -99,7 +107,7 @@ class SubmitTicket extends Component{
                         value={this.state.email}
                         onChange={e => this.changeHandler(e)}
                     />
-                    <FormLabel componet="legend" > Location </FormLabel>
+                    <FormLabel componet="legend"> Location </FormLabel>
                     <RadioGroup
                         aria-label="location"
                         name="location"
@@ -163,15 +171,16 @@ class SubmitTicket extends Component{
                         label="Ticket Subject"
                         name="subject"
                         margin="normal"
-                        variant="filled"
+                        variant="outlined"
                         value={this.state.subject}
                         onChange={e => this.changeHandler(e)}
                     />
                     <TextField
                         label="Description of Issue"
                         name="description"
+                        multiline
                         margin="normal"
-                        variant="filled"
+                        variant="outlined"
                         value={this.state.description}
                         onChange={e => this.changeHandler(e)}
                     />
