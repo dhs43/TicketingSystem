@@ -20,7 +20,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // SQL DATABASE CONNECTION
-var connection = mysql.createConnection({
+var mysql_pool = mysql.createPool({
+    connectionLimit: 100,
     host: 'database-1.cs4vedk6qhqf.us-west-1.rds.amazonaws.com',
     user: 'admin',
     password: process.env.SQL_PASSWORD,
@@ -28,25 +29,6 @@ var connection = mysql.createConnection({
     port: 3306,
     ssl: 'Amazon RDS'
 });
-
-function handleDisconnect(connection) {
-    connection.on('error', function (err) {
-        if (!err.fatal) {
-            return;
-        }
-        if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
-            throw err;
-        }
-
-        console.log('Re-connecting lost connection: ' + err.stack);
-
-        connection = mysql.createConnection(connection.config);
-        handleDisconnect(connection);
-        connection.connect();
-    });
-}
-
-handleDisconnect(connection); // Also initiates connection
 
 
 // AUTHENTICATION FUNCTIONS
@@ -98,38 +80,45 @@ router.post('/loginUser', (req, res, next) => {
 
     var statement = "SELECT password FROM technicians where technician_ID = '" + email + "';";
 
-    connection.query(statement, function (err, result, fields) {
+    mysql_pool.getConnection(function (err, connection) {
         if (err) {
-            console.log(err);
-            res.send(AUTH_FAILURE);
-            return null;
-        }
-        if (result[0] === undefined) {
-            console.log("Email not found in DB");
-            res.send(AUTH_FAILURE);
-            return null;
-        }
-        encrypted = result[0].password;
+            console.log('Could not connect to DB: ' + err);
+        } else {
+            connection.query(statement, function (err, result, fields) {
+                if (err) {
+                    console.log(err);
+                    res.send(AUTH_FAILURE);
+                    return null;
+                }
+                if (result[0] === undefined) {
+                    console.log("Email not found in DB");
+                    res.send(AUTH_FAILURE);
+                    return null;
+                }
+                encrypted = result[0].password;
 
-        bcrypt.compare(password, encrypted, function (err, bcryptResponse) {
-            if (err) {
-                console.log(err);
-                return null;
-            }
-            if (bcryptResponse) {
-                console.log("Password match");
-                jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
+                bcrypt.compare(password, encrypted, function (err, bcryptResponse) {
                     if (err) {
                         console.log(err);
                         return null;
                     }
-                    res.send(token);
-                });
-            } else {
-                console.log("Incorrect password");
-                res.send(AUTH_FAILURE);
-            }
-        })
+                    if (bcryptResponse) {
+                        console.log("Password match");
+                        jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
+                            if (err) {
+                                console.log(err);
+                                return null;
+                            }
+                            res.send(token);
+                        });
+                    } else {
+                        console.log("Incorrect password");
+                        res.send(AUTH_FAILURE);
+                    }
+                })
+            });
+            connection.release();
+        }
     });
 });
 
@@ -141,17 +130,18 @@ router.post('/newUser', (req, res, next) => {
 
     var statement = "INSERT INTO technicians (technician_ID, first_name, last_name, is_admin, password) VALUES ('" + email + "', 'Bob', 'Smith', false, '" + password + "');";
 
-    connection.connect(function (err) {
+    mysql_pool.getConnection(function (err, connection) {
         if (err) {
-            console.log(err);
-            return null;
+            console.log('Could not connect to DB: ' + err);
+        } else {
+            connection.query(statement, function (err, result, fields) {
+                if (err) {
+                    console.log(err);
+                    return null;
+                }
+            });
         }
-        connection.query(statement, function (err, result, fields) {
-            if (err) {
-                console.log(err);
-                return null;
-            }
-        });
+        connection.release();
     });
 
     res.send("New user created");
@@ -159,7 +149,6 @@ router.post('/newUser', (req, res, next) => {
 
 
 router.get('/test', verifyToken, (req, res, next) => {
-
     res.send("This is a test from the server.");
 });
 
