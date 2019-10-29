@@ -1,16 +1,13 @@
+const dotenv = require('dotenv').config();
 const mysql = require('mysql');
-const dotenv = require('dotenv');
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 router.use(bodyParser.json());
 
-// ENV VARIABLES
-if (process.env.NODE_ENV === 'production') {
-    dotenv.config({
-        path: __dirname + '/.env'
-    });
-    router.use(bodyParser.json());
+if (dotenv.error) {
+    console.log("Error loading .env: " + dotenv.error);
+    throw dotenv.error;
 }
 
 // SQL DATABASE CONNECTION
