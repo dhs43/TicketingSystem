@@ -6,6 +6,12 @@ class Main extends Component {
         super(props);
         this.state = { screen: "Tickets" };
 
+        // Redirect if not logged in
+        console.log(localStorage.token);
+        if (localStorage.token === undefined) {
+            this.props.history.push('/');
+        }
+
         this.handleTicketClick = this.handleTicketClick.bind(this);
         this.handleInventoryClick = this.handleInventoryClick.bind(this);
         this.handleDataVClick = this.handleDataVClick.bind(this);
@@ -28,7 +34,6 @@ class Main extends Component {
             screen: "DataV"
         }));
     }
-
 
     render() {
         return (
