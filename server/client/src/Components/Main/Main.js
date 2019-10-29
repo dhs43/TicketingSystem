@@ -7,7 +7,6 @@ class Main extends Component {
         this.state = { screen: "Tickets" };
 
         // Redirect if not logged in
-        console.log(localStorage.token);
         if (localStorage.token === undefined) {
             this.props.history.push('/');
         }
