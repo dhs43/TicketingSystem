@@ -15,7 +15,6 @@ class Main extends Component {
         this.handleTicketClick = this.handleTicketClick.bind(this);
         this.handleInventoryClick = this.handleInventoryClick.bind(this);
         this.handleDataVClick = this.handleDataVClick.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
     }
 
     handleTicketClick() {
@@ -36,11 +35,6 @@ class Main extends Component {
         }));
     }
 
-    handleLogout() {
-        localStorage.removeItem('token');
-        this.props.history.push('/');
-    }
-
     render() {
         return (
             <div className="backdrop">
@@ -48,7 +42,7 @@ class Main extends Component {
                     <h1 className="title">
                         Resnet Helpdesk
                     </h1>
-                    <Button onClick={this.handleLogout}>LOGOUT</Button>
+                    <Button>LOGOUT</Button>
                 </div>
                 <div className="outline">
                     <div className="outline2">
