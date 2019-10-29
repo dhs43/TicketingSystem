@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 import "./Main.css";
 
 class Main extends Component {
@@ -40,7 +41,8 @@ class Main extends Component {
                 <div className="appbar">
                     <h1 className="title">
                         Resnet Helpdesk
-            </h1>
+                    </h1>
+                    <Button>LOGOUT</Button>
                 </div>
                 <div className="outline">
                     <div className="outline2">
