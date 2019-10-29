@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Modal from '@material-ui/core/Modal';
-
-
-import SubmitTicket from "../SubmitTicket/SubmitTicket";
 import "./Home.css";
+
 
 class Home extends Component {
     constructor(props) {
@@ -13,18 +10,12 @@ class Home extends Component {
 
         this.state = {
             email: '',
-            password: '',
-            isOpen:false
+            password: ''
         };
 
         this.changeHandler = this.changeHandler.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
-        this.handleClick = this.handleClick.bind(this);
     }
-
-    handleClick() {
-        this.setState({isOpen: !this.state.isOpen})
-    };
 
     changeHandler(e) {
         this.setState({
@@ -49,7 +40,6 @@ class Home extends Component {
                     alert("Error logging in");
                 } else {
                     localStorage.setItem("token", response);
-<<<<<<< Updated upstream:client/src/Components/Home/Home.js
                     this.setState({ loggedin: true });
                     this.props.history.push('/Main');
                     // //TEST IF USER CAN ACCESS PRIVATE ROUTE
@@ -60,16 +50,6 @@ class Home extends Component {
                     //         console.log(response);
                     //         alert("You have logged in sucessfully.")
                     //     });
-=======
-
-                    //TEST IF USER CAN ACCESS PRIVATE ROUTE
-                    console.log(localStorage.token);
-                    fetch('/users/test', { headers: { "Authorization": "Bearer " + localStorage.token } })
-                        .then(response => response.text())
-                        .then(response => {
-                            alert("You have logged in successfully.")
-                        });
->>>>>>> Stashed changes:server/client/src/Components/Home/Home.js
                 }
             });
     }
@@ -80,7 +60,7 @@ class Home extends Component {
             <div className="backdrop">
                 <div className="appbar">
                     <h1 className="title">
-                        ResNet Help desk
+                        Resnet Helpdesk
                 </h1>
                 </div>
                 <div className="outline">
@@ -89,22 +69,9 @@ class Home extends Component {
                             <h5>
                                 Have an Issue?
                             </h5>
-                            <Button
-                                className="button"
-                                color="primary"
-                                variant="contained"
-                                onClick={this.handleClick}>
+                            <Button className="button" color="primary" variant="contained">
                                 SUBMIT TICKET
                             </Button>
-                            <Modal
-                                aria-labelledby="submit-ticket"
-                                aria-describedby="form-to-submit-ticket"
-                                open={this.state.isOpen}
-                                onClose={this.handleClick}
-                                scroll="body"
-                            >
-                                <SubmitTicket />
-                            </Modal>
                             <h5>
                                 Technician Sign In
                             </h5>

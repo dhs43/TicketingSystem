@@ -137,10 +137,6 @@ class SubmitTicket extends Component{
                             control={<Radio />}
                             label="College Creek"
                             value="college_creek" />
-                        <FormControlLabel
-                            control={<Radio />}
-                            label="Other"
-                            value="other" />
                     </RadioGroup>
                     {/* Maybe change to checkboxes? */}
                     <FormLabel componet="legend" > Main Topic </FormLabel>
