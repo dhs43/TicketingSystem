@@ -63,7 +63,7 @@ if (process.env.NODE_ENV === 'production') {
 	console.log("In build mode");
 
 	// Express first tries to serve production assets
-	app.use(express.static(path.resolve('server/client/build/')));
+	app.use(express.static(path.resolve(__dirname + '/../client/build/')));
 
 	// Express will serve index.html if it doesn't recognize route
 	app.get('*', (req, res) => {
