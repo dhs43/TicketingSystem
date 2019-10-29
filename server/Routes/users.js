@@ -1,5 +1,3 @@
-const dotenv = require('dotenv');
-dotenv.config();
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
@@ -7,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 15;
 const AUTH_FAILURE = "auth failure";
-const getConnection = require('../db');
+const getConnection = require('../db.js');
 
 router.use(bodyParser.json());
 
