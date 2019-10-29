@@ -1,4 +1,6 @@
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config({
+    path: __dirname + '/.env'
+});
 const mysql = require('mysql');
 const express = require('express');
 const router = express.Router();
