@@ -141,8 +141,8 @@ class SubmitTicket extends Component{
                     {/* Maybe change to checkboxes? */}
                     <FormLabel componet="legend" > Main Topic </FormLabel>
                     <RadioGroup
-                        aria-label="location"
-                        name="location"
+                        aria-label="topic"
+                        name="topic"
                         value={this.state.topic}
                         onChange={e => this.changeHandler(e)}>
                         <FormControlLabel
@@ -186,8 +186,8 @@ class SubmitTicket extends Component{
                     />
                     <FormLabel componet="legend" > Severity </FormLabel>
                     <RadioGroup
-                        aria-label="location"
-                        name="location"
+                        aria-label="severity"
+                        name="severity"
                         value={this.state.severity}
                         onChange={e => this.changeHandler(e)}>
                         <FormControlLabel

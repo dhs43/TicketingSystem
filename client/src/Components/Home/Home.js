@@ -13,8 +13,13 @@ class Home extends Component {
             password: ''
         };
 
+        this.submitTicketHandler = this.submitTicketHandler.bind(this);
         this.changeHandler = this.changeHandler.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
+    }
+
+    submitTicketHandler() {
+        this.props.history.push('/SubmitTicket');
     }
 
     changeHandler(e) {
@@ -69,7 +74,7 @@ class Home extends Component {
                             <h5>
                                 Have an Issue?
                             </h5>
-                            <Button className="button" color="primary" variant="contained">
+                            <Button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
                                 SUBMIT TICKET
                             </Button>
                             <h5>
