@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const getConnection = require('../db.js');
+const bodyParser = require('body-parser');
 
 // This route is separate from other ticket-related routes
 // because users can access it without authentication.
 
-router.post('/submitTicket', (req, res, next) => {
+router.use(bodyParser.json());
+
+router.post('/', (req, res, next) => {
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
     var email = req.body.email;
@@ -14,6 +17,8 @@ router.post('/submitTicket', (req, res, next) => {
     var subject = req.body.subject;
     var description = req.body.description;
     var severity = req.body.severity;
+
+    date = new Date();
 
     var ticketStatement = "INSERT INTO ticket \
                     (subject, customer_ID, description, status, time_spent, time_submitted, location, severity) \

@@ -65,7 +65,7 @@ class SubmitTicket extends Component {
 
         console.log(this.state);
 
-        fetch('tickets/submitTicket', {
+        fetch('/submitTicket/', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
