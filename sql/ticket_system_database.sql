@@ -13,7 +13,7 @@ DROP TABLE customer;
 
 CREATE TABLE customer
 (
- customer_ID int,
+ customer_ID varchar(55),
  first_name varchar(15),
  last_name varchar(15),
  phone_number char(12),
@@ -62,23 +62,18 @@ CREATE TABLE ticket
 ( 
   ticket_ID int,
   subject varchar(20),
-  customer_ID int,
+  customer_ID varchar(55),
   assigned_technician_ID varchar(55),
-  description varchar(55),
-  status char(1),
-  time_spent int,
-  time_submitted timestamp,
-  time_closed timestamp,
+  description text,
+  status varchar(7), --open, closed, waiting
+  time_spent int, --time in seconds
+  time_submitted int, --time in seconds 
+  time_closed int, --time in seconds
+  location varchar(55),
+  severity varchar(6), --low, medium, high
   FOREIGN KEY (customer_ID) REFERENCES customer(customer_ID),
   PRIMARY KEY (ticket_ID)
 );
-
-/*
-
--status can be of 3 values: o(open), c(closed), or w(waiting)
--time_spent is the time in minutes spent
-
-*/
 
 /*
 -------------------- CREATING THE COMMENTS TABLE --------------------
@@ -138,118 +133,3 @@ CREATE TABLE linked_devices
 );
 
 SET FOREIGN_KEY_CHECKS = 1;
-
-
-/*
-========================================================================================================================
-========================================== Done with table creation stuff :) ===========================================
-========================================================================================================================
-*/
-
-/*
-----------------------------------------------------------------
--------------------- ADDING SOME DUMMY DATA --------------------
-----------------------------------------------------------------
-*/
-
-
-/*
--------------------- CREATING FAKE CUSTOMERS --------------------
-*/
-
-INSERT INTO customer
-VALUES (4, 'Ben', 'Jahova', '998-124-6745', 'Outside bro lol');
-
-INSERT INTO customer
-VALUES (5, 'Gert', 'Fert', '707-455-1111', 'The bathroom');
-
-INSERT INTO customer
-VALUES (6, 'Matt', 'Mathews', '707-123-4567', 'Cypress');
-
-/*
--------------------- CREATING FAKE TECHNICIANS --------------------
-*/
-
-INSERT INTO technicians
-VALUES ('eandre@humboldt.edu', 'Erik', 'Andre', true, 'IeatBabies22');
-
-INSERT INTO technicians
-VALUES ('mroch@humboldt.edu', 'Mike', 'Roch', false, 'IalsoEatBabies33');
-
-INSERT INTO technicians
-VALUES ('sbuschemi@humboldt.edu', 'Steve', 'Buschemi', false, 'IamBabies69');
-
-/*
--------------------- CREATING FAKE TICKETS --------------------
-*/
-
-set @stamp := TIMESTAMP("2019-10-20", "05:09:32");
-set @stamp2 := TIMESTAMP("2019-10-22", "02:11:02");
-INSERT INTO ticket
-VALUES (112, 'Pener broke', 4, 'mroch@humboldt.edu', 'Humped a rock now pee pee broke', 'o', 69, @stamp, @stamp2);
-
-set @stamp := TIMESTAMP("2017-05-10", " 00:00:6");
-INSERT INTO ticket
-VALUES (113, 'Ho w t2o wifi???', 5, 'sbuschemi@humboldt.edu', 'WIFI????????? HOW?????????????', 'o', 1051200, @stamp, NULL);
-
-INSERT INTO ticket
-VALUES (111, 'PS4 needs Spaghetti', 6, 'eandre@humboldt.edu', 'I need to feed my baby spaghet, but I cannot. HALP', 'w', 20, current_timestamp(), NULL);
-
-
-/*
--------------------- CREATING FAKE DEVICES --------------------
-*/
-
-INSERT INTO devices
-VALUES (1, 00000000000000000001, 'Playstation 4', '2014-05-12');
-
-INSERT INTO devices
-VALUES (2, 00000000000000000002, 'Pener', '1980-11-20');
-
-INSERT INTO devices
-VALUES (3, 00000000000000000003, 'MacBook Pro', '1400-09-30');
-
-/*
--------------------- CREATING FAKE COMMENTS --------------------
-*/
-
-set @stamp := TIMESTAMP("2019-10-21", "07:11:15");
-INSERT INTO comments
-VALUES (0, 112, 'sbuschemi@humboldt.edu', @stamp, NULL, 'wtf bro go to a hospital');
-
-set @stamp := TIMESTAMP("2019-05-10", " 00:00:7");
-INSERT INTO comments
-VALUES (1, 113, 'mroch@humboldt.edu', @stamp, NULL, 'Working on this dude\'\s wifi for about 2 years fml');
-
-INSERT INTO comments
-VALUES (2, 111, 'eandre@humboldt.edu', CURRENT_TIMESTAMP()+5, NULL, 'fucked his mom and now we good');
-
-/*
--------------------- CREATING FAKE LINKED-DEVICES --------------------
-*/
-
-INSERT INTO linked_devices
-VALUES (11, 112, 2);
-
-INSERT INTO linked_devices
-VALUES (12, 113, 3);
-
-INSERT INTO linked_devices
-VALUES (13, 111, 1);
-
-/*
--------------------- CREATING FAKE LINKED-TICKETS --------------------
-*/
-
-INSERT INTO linked_ticket
-VALUES (1, 112, 113);
-
-/*
-How/why above linked? bcuz both retardo...
-*/
-
-/*
-========================================================================================================================
-========================================== Done with dummy data stuff :) ===========================================
-========================================================================================================================
-*/

@@ -18,32 +18,6 @@ validatePassword = function (password) {
     return bcrypt.compareSync(password, this.local.password);
 }
 
-var verifyToken = function (req, res, next) {
-    // Get auth header value
-    const bearerHeader = req.headers['authorization'];
-    if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(' ');
-        // Get token from split array
-        // FORMAT OF HEADER: "Authorization: Bearer <access_token>"
-        const bearerToken = bearer[1];
-        req.token = bearerToken;
-
-        jwt.verify(req.token, process.env.SECRET, (err, authData) => {
-            if (err) {
-                res.sendStatus(403);
-            } else {
-                console.log(authData); // user email in authData
-                next();
-            }
-        });
-
-    } else {
-        res.sendStatus(403); // Forbidden
-    }
-}
-
-module.exports = verifyToken;
-
 
 // ROUTES
 router.post('/loginUser', (req, res, next) => {
@@ -120,9 +94,5 @@ router.post('/newUser', (req, res, next) => {
     console.log("New user created");
     res.send("New user created");
 });
-
-// router.get('/test', verifyToken, (req, res, next) => {
-//     res.send("This is a test from the server.");
-// });
 
 module.exports = router;
