@@ -47,14 +47,6 @@ class Home extends Component {
                     localStorage.setItem("token", response);
                     this.setState({ loggedin: true });
                     this.props.history.push('/Main');
-                    // //TEST IF USER CAN ACCESS PRIVATE ROUTE
-                    // console.log(localStorage.token);
-                    // fetch('/users/test', { headers: { "Authorization": "Bearer " + localStorage.token } })
-                    //     .then(response => response.text())
-                    //     .then(response => {
-                    //         console.log(response);
-                    //         alert("You have logged in sucessfully.")
-                    //     });
                 }
             });
     }

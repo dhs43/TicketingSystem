@@ -6,39 +6,14 @@ const app = express();
 const jwt = require('jsonwebtoken');
 const PORT = process.env.PORT || 8000;
 
-const userRoutes = require('./Routes/users');
-
-app.use('/users', userRoutes);
-
-app.post('/api/posts', verifyToken, (req, res) => {
-
-	res.json({
-		message: 'Post created'
-	});
-});
-
-app.post('/api/login', (req, res) => {
-	// Go through authentication
-
-	const user = {
-		id: 1,
-		username: 'brad',
-		email: 'brad@gmail.com'
-	}
-
-	jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
-		if (err) { console.log(err); }
-		res.json({ token });
-	});
-});
-
-function verifyToken(req, res, next) {
+// VERIFY LOGIN
+var verifyToken = function (req, res, next) {
 	// Get auth header value
 	const bearerHeader = req.headers['authorization'];
 	if (typeof bearerHeader !== 'undefined') {
 		const bearer = bearerHeader.split(' ');
 		// Get token from split array
-		// FORMAT OF TOKEN: "Authorization: Bearer <access_token>""
+		// FORMAT OF HEADER: "Authorization: Bearer <access_token>"
 		const bearerToken = bearer[1];
 		req.token = bearerToken;
 
@@ -46,19 +21,27 @@ function verifyToken(req, res, next) {
 			if (err) {
 				res.sendStatus(403);
 			} else {
-				console.log(authData);
+				console.log(authData); // user email in authData
 				next();
 			}
 		});
 
 	} else {
-		// Forbidden
-		res.sendStatus(403);
+		res.sendStatus(403); // Forbidden
 	}
 }
 
+const userRoutes = require('./Routes/users');
+const submitTicketRoute = require('./Routes/submitTicket');
+const ticketRoutes = require('./Routes/tickets');
+
+// ROUTES
+app.use('/users', userRoutes);
+app.use('/submitTicket', submitTicketRoute);
+app.use('/tickets', verifyToken, ticketRoutes);
 
 
+// ROUTE TO REACT CLIENT FILES
 if (process.env.NODE_ENV === 'production') {
 	console.log("In build mode");
 
@@ -72,6 +55,7 @@ if (process.env.NODE_ENV === 'production') {
 		res.sendFile(path.resolve("server/client", "build", "index.html"));
 	});
 }
+
 
 app.listen(PORT);
 console.log("Server running on port " + PORT);
