@@ -48,10 +48,11 @@ class Main extends Component {
                     <h1 className="title">
                         Resnet Helpdesk
                     </h1>
-                    <Button onClick={this.handleLogout}>LOGOUT</Button>
+                <div className="logout">
+                    <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
+                </div>
                 </div>
                 <div className="outline">
-                    <div className="outline2">
                         <div className="screen">
                             <div className={this.state.screen === "Tickets" ? "selectedTicket" : "selectionTicket"} onClick={this.handleTicketClick}>
                                 Tickets
@@ -63,6 +64,7 @@ class Main extends Component {
                                 Data Visualizer
                             </div>
                         </div>
+                    <div className="outline2">
                         <div>
                             {(this.state.screen === "Tickets") ? <p>Tickets</p> : null}
                             {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
