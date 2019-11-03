@@ -48,22 +48,22 @@ class Main extends Component {
                     <h1 className="title">
                         Resnet Helpdesk
                     </h1>
-                <div className="logout">
-                    <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
-                </div>
+                    <div className="logout">
+                        <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
+                    </div>
                 </div>
                 <div className="outline">
-                        <div className="screen">
-                            <div className={this.state.screen === "Tickets" ? "selectedTicket" : "selectionTicket"} onClick={this.handleTicketClick}>
-                                Tickets
+                    <div className="screen">
+                        <div className={this.state.screen === "Tickets" ? "selectedTicket" : "selectionTicket"} onClick={this.handleTicketClick}>
+                            Tickets
                             </div>
-                            <div className={this.state.screen === "Inventory" ? "selectedInventory" : "selectionInventory"} onClick={this.handleInventoryClick}>
-                                Inventory
+                        <div className={this.state.screen === "Inventory" ? "selectedInventory" : "selectionInventory"} onClick={this.handleInventoryClick}>
+                            Inventory
                             </div>
-                            <div className={this.state.screen === "DataV" ? "selectedDataV" : "selectionDataV"} onClick={this.handleDataVClick}>
-                                Data Visualizer
+                        <div className={this.state.screen === "DataV" ? "selectedDataV" : "selectionDataV"} onClick={this.handleDataVClick}>
+                            Data Visualizer
                             </div>
-                        </div>
+                    </div>
                     <div className="outline2">
                         <div>
                             {(this.state.screen === "Tickets") ? <p>Tickets</p> : null}
