@@ -45,7 +45,7 @@ DROP TABLE devices;
 
 CREATE TABLE devices
 (
- device_ID int,
+ device_ID int auto_increment NOT NULL,
  serial_number varchar(20),
  model varchar(15),
  date_purchased date,
@@ -60,7 +60,7 @@ DROP TABLE ticket;
 
 CREATE TABLE ticket
 ( 
-  ticket_ID int,
+  ticket_ID int auto_increment NOT NULL,
   subject varchar(20),
   customer_ID varchar(55),
   assigned_technician_ID varchar(55),
@@ -83,7 +83,7 @@ DROP TABLE comments;
 
 CREATE TABLE comments
 (
- comment_ID int,
+ comment_ID int auto_increment NOT NULL,
  ticket_ID int,
  technician_ID varchar(55),
  creation_date timestamp,
@@ -108,7 +108,7 @@ DROP TABLE linked_ticket;
 
 CREATE TABLE linked_ticket
 ( 
-  linked_ticket_ID int,
+  linked_ticket_ID int auto_increment NOT NULL,
   ticket_a_ID int,
   ticket_b_ID int,
   FOREIGN KEY(ticket_a_ID) REFERENCES ticket(ticket_ID),
@@ -124,7 +124,7 @@ DROP TABLE linked_devices;
 
 CREATE TABLE linked_devices
 ( 
-  linked_device_ID int,
+  linked_device_ID int auto_increment NOT NULL,
   ticket_ID int,
   device_ID int,
   FOREIGN KEY(ticket_ID) REFERENCES ticket(ticket_ID),
