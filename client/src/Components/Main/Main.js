@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import "./Main.css";
+import TicketPage from "../TicketPage/TicketPage";
 
 class Main extends Component {
     constructor(props) {
@@ -90,7 +91,7 @@ class Main extends Component {
                         </div>
                         <div className="outline2">
                             <div>
-                                {(this.state.screen === "Tickets") ? <p>Tickets | {this.state.subject}</p> : null}
+                                {(this.state.screen === "Tickets") ? <TicketPage /> : null}
                                 {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
                                 {(this.state.screen === "DataV") ? <p>Data Visualization</p> : null}
                             </div>
