@@ -19,12 +19,12 @@ class TicketPage extends Component {
 
         this.rows = this.state.allOfTheTickets;
         this.headCells = [
-            { id: 'ticket_ID', numeric: false, disablePadding: true, label: 'ticket_ID' },
-            { id: 'subject', numeric: true, disablePadding: false, label: 'subject' },
-            { id: 'customer_ID', numeric: true, disablePadding: false, label: 'customer_ID' },
-            { id: 'severity', numeric: true, disablePadding: false, label: 'severity' },
-            { id: 'time_submitted', numeric: true, disablePadding: false, label: 'time_submitted' },
-            { id: 'assigned_technician_ID', numeric: true, disablePadding: false, label: 'assigned_technician_ID' },
+            { id: 'ticket_ID', numeric: false, disablePadding: true, label: 'ID' },
+            { id: 'subject', numeric: true, disablePadding: false, label: 'Subject' },
+            { id: 'customer_ID', numeric: true, disablePadding: false, label: 'Customer ID' },
+            { id: 'severity', numeric: true, disablePadding: false, label: 'Severity' },
+            { id: 'time_submitted', numeric: true, disablePadding: false, label: 'Time Submitted' },
+            { id: 'assigned_technician_ID', numeric: true, disablePadding: false, label: 'Assigned Technician ID' },
         ];
 
         this.desc = this.desc.bind(this);
@@ -84,7 +84,7 @@ class TicketPage extends Component {
 
     render() {
 
-        const rowsPerPage = 10;
+        const rowsPerPage = 4;
         const page = 0;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.rows.length - page * rowsPerPage);
 
