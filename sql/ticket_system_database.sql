@@ -86,9 +86,9 @@ CREATE TABLE comments
  comment_ID int auto_increment NOT NULL,
  ticket_ID int,
  technician_ID varchar(55),
- creation_date timestamp,
- last_edited timestamp,
- text varchar(55),
+ creation_date int,
+ last_edited int,
+ text text,
  FOREIGN KEY (ticket_ID) REFERENCES ticket(ticket_ID),
  FOREIGN KEY (technician_ID) REFERENCES technicians(technician_ID),
  PRIMARY KEY (comment_ID)

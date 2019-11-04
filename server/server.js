@@ -34,11 +34,13 @@ var verifyToken = function (req, res, next) {
 const userRoutes = require('./Routes/users');
 const submitTicketRoute = require('./Routes/submitTicket');
 const ticketRoutes = require('./Routes/tickets');
+const commentRoutes = require('./Routes/comments');
 
 // ROUTES
 app.use('/users', userRoutes);
 app.use('/submitTicket', submitTicketRoute);
 app.use('/tickets', verifyToken, ticketRoutes);
+app.use('/comments', verifyToken, commentRoutes);
 
 
 // ROUTE TO REACT CLIENT FILES
