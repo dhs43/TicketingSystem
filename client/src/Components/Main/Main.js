@@ -5,7 +5,7 @@ import "./Main.css";
 class Main extends Component {
     constructor(props) {
         super(props);
-        this.state = { screen: "Tickets" };
+        this.state = { screen: "Tickets", subject: 'Loading...' };
 
         // Redirect if not logged in
         if (localStorage.token === undefined) {
@@ -16,6 +16,24 @@ class Main extends Component {
         this.handleInventoryClick = this.handleInventoryClick.bind(this);
         this.handleDataVClick = this.handleDataVClick.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+    }
+
+    componentDidMount() {
+        this.loadTicket();
+    }
+
+    loadTicket() {
+        fetch('/tickets/6', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token
+            }
+        }) 
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.subject);
+                this.setState({subject: data.subject });
+            })
+            .catch(err => console.log(err))
     }
 
     handleTicketClick() {
@@ -56,6 +74,7 @@ class Main extends Component {
                     <div className="screen">
                         <div className={this.state.screen === "Tickets" ? "selectedTicket" : "selectionTicket"} onClick={this.handleTicketClick}>
                             Tickets
+                            <p>{this.state.subject}</p>
                             </div>
                         <div className={this.state.screen === "Inventory" ? "selectedInventory" : "selectionInventory"} onClick={this.handleInventoryClick}>
                             Inventory
