@@ -11,13 +11,6 @@ import { FormControlLabel } from "@material-ui/core";
 //import CSS
 import "./SubmitTicket.css";
 
-const mystyle = {
-    color: "primary"
-    //backgroundColor: "DodgerBlue",
-    //padding: "10px",
-    //fontFamily: "Arial"
-}; 
-
 
 // class of Ticket Form and Submission
 class SubmitTicket extends Component {
@@ -105,7 +98,7 @@ class SubmitTicket extends Component {
             });
     }
 
-        
+
 
     render() {
         return (
@@ -157,27 +150,27 @@ class SubmitTicket extends Component {
                         value={this.state.location}
                         onChange={e => this.changeHandler(e)}>
                         <FormControlLabel
-                            control={<Radio color="primary"/>}
+                            control={<Radio color="primary" />}
                             label="Canyon"
                             value="canyon" />
                         <FormControlLabel
-                            control={<Radio color="primary"/>}
+                            control={<Radio color="primary" />}
                             label="The Hill"
                             value="hill" />
                         <FormControlLabel
-                            control={<Radio color="primary"/>}
+                            control={<Radio color="primary" />}
                             label="Cypress"
                             value="cypress" />
                         <FormControlLabel
-                            control={<Radio color="primary"/>}
+                            control={<Radio color="primary" />}
                             label="Creekview"
                             value="creekview" />
                         <FormControlLabel
-                            control={<Radio color="primary"/>}
+                            control={<Radio color="primary" />}
                             label="Campus Apartments"
                             value="campus_apartments" />
-                        <FormControlLabel 
-                            control={<Radio color="primary"/>}
+                        <FormControlLabel
+                            control={<Radio color="primary" />}
                             label="College Creek"
                             value="college_creek" />
                     </RadioGroup>
@@ -209,15 +202,15 @@ class SubmitTicket extends Component {
                         value={this.state.severity}
                         onChange={e => this.changeHandler(e)}>
                         <FormControlLabel
-                            control={<Radio color="primary"/>}
+                            control={<Radio color="primary" />}
                             label="High"
                             value="high" />
                         <FormControlLabel
-                            control={<Radio color="primary"/>}
+                            control={<Radio color="primary" />}
                             label="Medium"
                             value="medium" />
                         <FormControlLabel
-                            control={<Radio color="primary"/>}
+                            control={<Radio color="primary" />}
                             label="Low"
                             value="low" />
                     </RadioGroup>
