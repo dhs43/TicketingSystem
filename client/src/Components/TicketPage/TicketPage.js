@@ -5,44 +5,51 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { Redirect } from 'react-router';
 
 class TicketPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            allOfTheTickets: [{
-                ticket_ID: 112,
-                subject: "Help, I've fallen and can't get up",
-                customer_ID: 50,
-                assigned_technician_ID: 0,
-                description: "Every Senior Citizen Needs Life Alert",
-                status: "o",
-                time_spent: 300,
-                time_submitted: 1200,
-                time_closed: 1500,
-                location: "canyon",
-                severity: 3,
-            }],
-
+            allOfTheTickets: [],
+            loggedin: true
         }
+
+        this.loadAllTickets();
 
         this.rows = this.state.allOfTheTickets;
         this.headCells = [
-            {id: 'ticket_ID', numeric: false, disablePadding: true, label: 'ticket_ID'},
-            {id: 'subject', numeric: true, disablePadding: false, label: 'subject'},
-            {id: 'customer_ID', numeric: true, disablePadding: false, label: 'customer_ID'},
-            {id: 'severity', numeric: true, disablePadding: false, label: 'severity'},
-            {id: 'time_submitted', numeric: true, disablePadding: false, label: 'time_submitted'},
-            {id: 'assigned_technician_ID', numeric: true, disablePadding: false, label: 'assigned_technician_ID'},
+            { id: 'ticket_ID', numeric: false, disablePadding: true, label: 'ticket_ID' },
+            { id: 'subject', numeric: true, disablePadding: false, label: 'subject' },
+            { id: 'customer_ID', numeric: true, disablePadding: false, label: 'customer_ID' },
+            { id: 'severity', numeric: true, disablePadding: false, label: 'severity' },
+            { id: 'time_submitted', numeric: true, disablePadding: false, label: 'time_submitted' },
+            { id: 'assigned_technician_ID', numeric: true, disablePadding: false, label: 'assigned_technician_ID' },
         ];
 
         this.desc = this.desc.bind(this);
         this.stableSort = this.stableSort.bind(this);
         this.getSorting = this.getSorting.bind(this);
         this.EnhancedTableHead = this.EnhancedTableHead.bind(this);
-
+        this.loadAllTickets = this.loadAllTickets.bind(this);
     }
 
+    loadAllTickets() {
+        fetch('/tickets/all', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token
+            }
+        })
+            .then(function (response) {
+                if (response.status === 403) {
+                    this.logout();
+                } else {
+                    return response.json();
+                }
+            }.bind(this))
+            .then(data => this.setState({ allOfTheTickets: data }))
+            .catch(err => console.log(err))
+    }
 
     desc(a, b, orderBy) {
         if (b[orderBy] < a[orderBy]) {
@@ -69,7 +76,7 @@ class TicketPage extends Component {
     }
 
     EnhancedTableHead(props) {
-        const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} = props;
+        const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
         const createSortHandler = property => event => {
             onRequestSort(event, property);
         };
@@ -81,38 +88,41 @@ class TicketPage extends Component {
         const page = 0;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.rows.length - page * rowsPerPage);
 
-        return (
-            <div>
-                <Paper>
-                    <Table
-                        className={"table"}
-                        aria-labelledby="tableTitle"
-                        size="small"
-                        aria-label="enhanced table"
-                    >
-                        <TableHead>
-                            <TableRow>
-                                {this.headCells.map(headCell => (
-                                    <TableCell
-                                        key={headCell.id}
-                                        align={headCell.numeric ? 'right' : 'left'}
-                                        padding={headCell.disablePadding ? 'none' : 'default'}
+        if (this.state.loggedin === false) {
+            return <Redirect to='/' />
+        } else {
+
+            return (
+                <div>
+                    <Paper>
+                        <Table
+                            className={"table"}
+                            aria-labelledby="tableTitle"
+                            size="small"
+                            aria-label="enhanced table"
+                        >
+                            <TableHead>
+                                <TableRow>
+                                    {this.headCells.map(headCell => (
+                                        <TableCell
+                                            key={headCell.id}
+                                            align={headCell.numeric ? 'right' : 'left'}
+                                            padding={headCell.disablePadding ? 'none' : 'default'}
                                         // sortDirection={orderBy === headCell.id ? order : false}
-                                    >
-                                        {headCell.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {this.rows.map((row) => {
+                                        >
+                                            {headCell.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {this.state.allOfTheTickets.map((row) => {
                                     return (
                                         <TableRow
+                                            key={row.ticket_ID}
                                             hover
                                         >
-                                            <TableCell component="th" scope="row" padding="none">
-                                                {row.ticket_ID}
-                                            </TableCell>
+                                            <TableCell component="th" scope="row" padding="none">{row.ticket_ID}</TableCell>
                                             <TableCell align="right">{row.subject}</TableCell>
                                             <TableCell align="right">{row.customer_ID}</TableCell>
                                             <TableCell align="right">{row.severity}</TableCell>
@@ -121,16 +131,17 @@ class TicketPage extends Component {
                                         </TableRow>
                                     );
                                 })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{ height: (33) * emptyRows }}>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </Paper>
-            </div>
-        );
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: (33) * emptyRows }}>
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </Paper>
+                </div>
+            );
+        }
     }
 
 }

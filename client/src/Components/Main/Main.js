@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router';
 import "./Main.css";
 
 class Main extends Component {
     constructor(props) {
         super(props);
-        this.state = { screen: "Tickets", subject: 'Loading...' };
+        this.state = { screen: "Tickets", loggedin: true, subject: 'Loading...' };
 
         // Redirect if not logged in
         if (localStorage.token === undefined) {
@@ -23,16 +23,19 @@ class Main extends Component {
     }
 
     loadTicket() {
-        fetch('/tickets/6', {
+        fetch('/tickets/all', {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.token
             }
-        }) 
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.subject);
-                this.setState({subject: data.subject });
-            })
+        })
+            .then(function (response) {
+                if (response.status === 403) {
+                    this.setState({ loggedin: false });
+                } else {
+                    return response.json();
+                }
+            }.bind(this))
+            .then(data => this.setState({ subject: data[0].subject }))
             .catch(err => console.log(err))
     }
 
@@ -60,39 +63,42 @@ class Main extends Component {
     }
 
     render() {
-        return (
-            <div className="backdrop">
-                <div className="appbar">
-                    <h1 className="title">
-                        Resnet Helpdesk
+        if (this.state.loggedin === false) {
+            return <Redirect to='/' />
+        } else {
+            return (
+                <div className="backdrop">
+                    <div className="appbar">
+                        <h1 className="title">
+                            Resnet Helpdesk
                     </h1>
-                    <div className="logout">
-                        <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
+                        <div className="logout">
+                            <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
+                        </div>
                     </div>
-                </div>
-                <div className="outline">
-                    <div className="screen">
-                        <div className={this.state.screen === "Tickets" ? "selectedTicket" : "selectionTicket"} onClick={this.handleTicketClick}>
-                            Tickets
-                            <p>{this.state.subject}</p>
+                    <div className="outline">
+                        <div className="screen">
+                            <div className={this.state.screen === "Tickets" ? "selectedTicket" : "selectionTicket"} onClick={this.handleTicketClick}>
+                                Tickets
+                        </div>
+                            <div className={this.state.screen === "Inventory" ? "selectedInventory" : "selectionInventory"} onClick={this.handleInventoryClick}>
+                                Inventory
                             </div>
-                        <div className={this.state.screen === "Inventory" ? "selectedInventory" : "selectionInventory"} onClick={this.handleInventoryClick}>
-                            Inventory
+                            <div className={this.state.screen === "DataV" ? "selectedDataV" : "selectionDataV"} onClick={this.handleDataVClick}>
+                                Data Visualizer
                             </div>
-                        <div className={this.state.screen === "DataV" ? "selectedDataV" : "selectionDataV"} onClick={this.handleDataVClick}>
-                            Data Visualizer
+                        </div>
+                        <div className="outline2">
+                            <div>
+                                {(this.state.screen === "Tickets") ? <p>Tickets | {this.state.subject}</p> : null}
+                                {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
+                                {(this.state.screen === "DataV") ? <p>Data Visualization</p> : null}
                             </div>
-                    </div>
-                    <div className="outline2">
-                        <div>
-                            {(this.state.screen === "Tickets") ? <p>Tickets</p> : null}
-                            {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
-                            {(this.state.screen === "DataV") ? <p>Data Visualization</p> : null}
                         </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
