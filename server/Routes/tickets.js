@@ -5,8 +5,6 @@ const getConnection = require('../db.js');
 
 router.use(bodyParser.json());
 
-date = new Date();
-
 // ROUTES
 
 router.get('/all', (req, res, next) => {
