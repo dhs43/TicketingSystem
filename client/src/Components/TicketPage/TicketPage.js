@@ -53,12 +53,6 @@ class TicketPage extends Component {
             .catch(err => console.log(err))
     }
 
-
-
-
-
-
-
     desc(a, b, orderBy) {
         if (b[orderBy] < a[orderBy]) {
             return -1;
@@ -91,7 +85,7 @@ class TicketPage extends Component {
         const isSelected = name => this.state.selected.indexOf(name) !== -1;
 
         let onRequestSort = (event,property) => {
-            const isDesc = this.state.orderBy === property && this.state.order === 'desc';
+            const isDesc = this.state.orderBy === property && this.state.order === 'asc';
             if (isDesc){
                 this.setState({order:'desc' })
             } else {
@@ -124,7 +118,7 @@ class TicketPage extends Component {
                                             key={headCell.id}
                                             align={headCell.numeric ? 'right' : 'left'}
                                             padding={headCell.disablePadding ? 'none' : 'default'}
-                                            sortDirection={this.state.orderBy === headCell.id ? this.state.order : false}
+                                            sortDirection={this.state.orderBy === headCell.time_submitted ? this.state.order : false}
                                         >
                                             <TableSortLabel
                                                 active={this.state.orderBy === headCell.time_submitted}
@@ -169,7 +163,5 @@ class TicketPage extends Component {
             );
         }
     }
-
 }
-
 export default TicketPage;
