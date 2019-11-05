@@ -5,8 +5,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Redirect } from 'react-router';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import TablePagination from "@material-ui/core/TablePagination";
+
+import { Redirect } from 'react-router';
+
 
 class TicketPage extends Component {
     constructor(props) {
@@ -82,7 +87,6 @@ class TicketPage extends Component {
         const rowsPerPage = 5;
         const page = 0;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.allOfTheTickets.length - page * rowsPerPage);
-        const isSelected = name => this.state.selected.indexOf(name) !== -1;
 
         let onRequestSort = (event,property) => {
             const isDesc = this.state.orderBy === property && this.state.order === 'asc';
@@ -105,6 +109,12 @@ class TicketPage extends Component {
             return (
                 <div>
                     <Paper>
+                        <Toolbar>
+                            <Typography  variant="h6" id="tableTitle">
+                                All Tickets
+                            </Typography>
+
+                        </Toolbar>
                         <Table
                             className={"table"}
                             aria-labelledby="tableTitle"
@@ -135,8 +145,6 @@ class TicketPage extends Component {
                                  {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
-                                      const isItemSelected = this.state.selected;
-                                      const labelId = `enhanced-table-checkbox-${index}`;
                                     return (
                                         <TableRow
                                             key={row.ticket_ID}
@@ -158,7 +166,24 @@ class TicketPage extends Component {
                                 )}
                             </TableBody>
                         </Table>
+                        {/*TODO: Make Rows per Page selection functoinal as well as next and pervious page*/}
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={this.state.allOfTheTickets.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            backIconButtonProps={{
+                                'aria-label': 'previous page',
+                            }}
+                            nextIconButtonProps={{
+                                'aria-label': 'next page',
+                            }}
+                            // onChangePage={handleChangePage}
+                            // onChangeRowsPerPage={handleChangeRowsPerPage}
+                        />
                     </Paper>
+                    <p> Hey I want comments / ticket info loaded here</p>
                 </div>
             );
         }
