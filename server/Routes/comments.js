@@ -37,7 +37,7 @@ router.get('/:ticket_id', (req, res, next) => {
 });
 
 // Create a new comment on a ticket
-router.post('/:ticket_id', (req, res, next) => {
+router.post('/new/:ticket_id', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;
     var author_ID = req.body.author_id;
     var text = req.body.text;
