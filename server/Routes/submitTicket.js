@@ -2,12 +2,25 @@ const express = require('express');
 const router = express.Router();
 const getConnection = require('../db.js');
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 
 // This route is separate from other ticket-related routes
 // because users can access it without authentication.
 
 router.use(bodyParser.json());
 
+// Confirmation email configuration
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'hsuhelpdeskproject@gmail.com',
+        pass: process.env.EMAIL_PASSWORD
+    }
+});
+
+
+
+// Submit ticket route
 router.post('/', (req, res, next) => {
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
@@ -46,6 +59,31 @@ router.post('/', (req, res, next) => {
                 res.send("Ticket creation failed");
                 return null;
             } else {
+                // Email user confirmation
+                var emailStatement = "SELECT ticket_ID FROM ticket WHERE customer_ID = \"" + email + "\" ORDER BY time_submitted DESC;";
+                getConnection(function (err, emailConnection) {
+                    connection.query(emailStatement, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            var mailOptions = {
+                                from: 'hsuhelpdeskproject@gmail.com',
+                                to: email,
+                                subject: 'ResNet - Ticket #' + result[0].ticket_ID,
+                                text: 'We have received your ticket and will respond ASAP! \n\nYour problem description:\n' + description + '\n\nReply to this email if you need to update your ticket.'
+                            };
+
+                            transporter.sendMail(mailOptions, function (err, info) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log("Confirmation email sent");
+                                }
+                            });
+                        }
+                    });
+                    emailConnection.release();
+                });
                 res.send("Ticket created successfully");
             }
         });
