@@ -61,7 +61,7 @@ DROP TABLE ticket;
 CREATE TABLE ticket
 ( 
   ticket_ID int auto_increment NOT NULL,
-  subject varchar(20),
+  subject varchar(100),
   customer_ID varchar(55),
   assigned_technician_ID varchar(55),
   description text,
