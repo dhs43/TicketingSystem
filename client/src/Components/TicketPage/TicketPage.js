@@ -13,7 +13,10 @@ class TicketPage extends Component {
         super(props);
         this.state = {
             allOfTheTickets: [],
-            loggedin: true
+            loggedin: true,
+            order:'desc',
+            orderBy: 'time_submitted',
+            selected: [],
         }
 
         this.loadAllTickets();
@@ -80,20 +83,27 @@ class TicketPage extends Component {
         return order === 'desc' ? (a, b) => this.desc(a, b, orderBy) : (a, b) => -this.desc(a, b, orderBy);
     }
     render() {
-        const orderBy = "id";
-        const order = "asc";
-
-     handleRequestSort = (event, property) => {
-         const isDesc = orderBy === property && order === 'desc';
-         setOrder(isDesc ? 'asc' : 'desc');
-         setOrderBy(property);
-       };
-                                                                                     
-
-        // TODO: Eventually enable user to change rowsPerPage. Also understand rowsPerPage. 
-        const rowsPerPage = 1;
+        // TODO: Eventually enable user to change rowsPerPage. Also enable user to navigate pages. As it stands
+        //  user looses info after page cut off.
+        const rowsPerPage = 5;
         const page = 0;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.allOfTheTickets.length - page * rowsPerPage);
+        const isSelected = name => this.state.selected.indexOf(name) !== -1;
+
+        let onRequestSort = (event,property) => {
+            const isDesc = this.state.orderBy === property && this.state.order === 'desc';
+            if (isDesc){
+                this.setState({order:'desc' })
+            } else {
+                this.setState({order: 'asc'})
+            }
+            this.setState({orderBy: property});
+        }
+
+        const createSortHandler = property => event => {
+            onRequestSort(event, property);
+        };
+
 
         if (this.state.loggedin === false) {
             return <Redirect to='/' />
@@ -114,30 +124,25 @@ class TicketPage extends Component {
                                             key={headCell.id}
                                             align={headCell.numeric ? 'right' : 'left'}
                                             padding={headCell.disablePadding ? 'none' : 'default'}
-                                            sortDirection={orderBy === headCell.id ? order : false}
+                                            sortDirection={this.state.orderBy === headCell.id ? this.state.order : false}
                                         >
                                             <TableSortLabel
-                                                active={orderBy === headCell.id}
-                                                direction={order}
-                                                onClick={this.getSorting(order, headCell.id)}
+                                                active={this.state.orderBy === headCell.time_submitted}
+                                                direction={this.state.order}
+                                                onClick={createSortHandler(headCell.id)}
                                             >
                                             {headCell.label}
-                                             {orderBy === headCell.id ? (
-                                                <span>
-                                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                                </span>
-                                                ) : null}
                                             </TableSortLabel>
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                 {this.stableSort(this.state.allOfTheTickets, this.getSorting(order, orderBy))
-                                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                 {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
-                                      // const isItemSelected = isSelected(row.name);
-                                      // const labelId = `enhanced-table-checkbox-${index}`;
+                                      const isItemSelected = this.state.selected;
+                                      const labelId = `enhanced-table-checkbox-${index}`;
                                     return (
                                         <TableRow
                                             key={row.ticket_ID}
