@@ -88,6 +88,7 @@ CREATE TABLE comments
  author_ID varchar(55),
  creation_date int,
  last_edited int,
+ internal boolean,
  text text,
  FOREIGN KEY (ticket_ID) REFERENCES ticket(ticket_ID),
  PRIMARY KEY (comment_ID)

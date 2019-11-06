@@ -9,9 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TablePagination from "@material-ui/core/TablePagination";
-
 import { Redirect } from 'react-router';
-
 
 class TicketPage extends Component {
     constructor(props) {
@@ -23,6 +21,9 @@ class TicketPage extends Component {
             orderBy: 'time_submitted',
             selected: [],
             theTicket: null,
+            page:0,
+            rowsPerPage:5,
+
         }
 
         this.loadAllTickets();
@@ -109,12 +110,9 @@ class TicketPage extends Component {
     getSorting(order, orderBy) {
         return order === 'desc' ? (a, b) => this.desc(a, b, orderBy) : (a, b) => -this.desc(a, b, orderBy);
     }
+
     render() {
-        // TODO: Eventually enable user to change rowsPerPage. Also enable user to navigate pages. As it stands
-        //  user looses info after page cut off.
-        const rowsPerPage = 5;
-        const page = 0;
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.allOfTheTickets.length - page * rowsPerPage);
+        const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.allOfTheTickets.length - this.state.page * this.state.rowsPerPage);
 
         let onRequestSort = (event,property) => {
             const isDesc = this.state.orderBy === property && this.state.order === 'asc';
@@ -130,6 +128,14 @@ class TicketPage extends Component {
             onRequestSort(event, property);
         };
 
+        const handleChangePage = (event, newPage) => {
+            this.setState({page:newPage});
+        };
+
+        const handleChangeRowsPerPage = event => {
+            this.setState({rowsPerPage:parseInt(event.target.value, 10)});
+            this.setState({page:0});
+        };
 
         if (this.state.loggedin === false) {
             return <Redirect to='/' />
@@ -141,7 +147,6 @@ class TicketPage extends Component {
                             <Typography  variant="h6" id="tableTitle">
                                 All Tickets
                             </Typography>
-
                         </Toolbar>
                         <Table
                             className={"table"}
@@ -171,7 +176,7 @@ class TicketPage extends Component {
                             </TableHead>
                             <TableBody>
                                  {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                     .map((row, index) => {
                                     return (
                                         <TableRow 
@@ -196,21 +201,20 @@ class TicketPage extends Component {
                                 )}
                             </TableBody>
                         </Table>
-                        {/*TODO: Make Rows per Page selection functoinal as well as next and pervious page*/}
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
                             count={this.state.allOfTheTickets.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
+                            rowsPerPage={this.state.rowsPerPage}
+                            page={this.state.page}
                             backIconButtonProps={{
                                 'aria-label': 'previous page',
                             }}
                             nextIconButtonProps={{
                                 'aria-label': 'next page',
                             }}
-                            // onChangePage={handleChangePage}
-                            // onChangeRowsPerPage={handleChangeRowsPerPage}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
                         />
                     </Paper>
                     <Paper>
