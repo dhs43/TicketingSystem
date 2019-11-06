@@ -10,7 +10,7 @@ var mailListener = new MailListener({
     connTimeout: 10000,
     authTimeout: 5000,
     // debug: console.log,
-    tlsOptions: { rejectUnauthorized: true },
+    tlsOptions: { rejectUnauthorized: false },
     mailbox: "INBOX",
     searchFilter: ["UNSEEN"], // the search filter being used after an IDLE notification has been retrieved
     markSeen: true, // all fetched email willbe marked as seen and not fetched next time
@@ -66,9 +66,9 @@ mailListener.on("mail", function (mail, seqno, attributes) {
 
                     date = new Date();
                     var commentStatement = "INSERT INTO comments \
-                                     (ticket_ID, author_ID, creation_date, text) \
+                                     (ticket_ID, author_ID, creation_date, text, internal) \
                                      VALUES \
-                                     (\"" + ticket_ID + "\", \"" + author_ID + "\", \"" + date.getTime() / 1000 + "\", \"" + clean_text + "\");"
+                                     (\"" + ticket_ID + "\", \"" + author_ID + "\", \"" + date.getTime() / 1000 + "\", \"" + clean_text + "\", false);"
 
                     getConnection(function (err, insertConnection) {
                         insertConnection.query(commentStatement, function (err, result) {
