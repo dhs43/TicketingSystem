@@ -74,7 +74,7 @@ router.post('/new/:ticket_id', (req, res, next) => {
                                     from: 'hsuhelpdeskproject@gmail.com',
                                     to: email,
                                     subject: 'Re: ResNet - Ticket #' + ticket_ID,
-                                    text: text
+                                    text: text + "\n\nResNet Helpdesk - Ticket #" + ticket_ID
                                 };
 
                                 transporter.sendMail(mailOptions, function (err, info) {
