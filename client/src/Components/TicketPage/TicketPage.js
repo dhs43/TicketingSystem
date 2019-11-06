@@ -22,6 +22,7 @@ class TicketPage extends Component {
             order:'desc',
             orderBy: 'time_submitted',
             selected: [],
+            theTicket: null,
         }
 
         this.loadAllTickets();
@@ -32,13 +33,15 @@ class TicketPage extends Component {
             { id: 'customer_ID', numeric: true, disablePadding: false, label: 'Customer ID' },
             { id: 'severity', numeric: true, disablePadding: false, label: 'Severity' },
             { id: 'time_submitted', numeric: true, disablePadding: false, label: 'Time Submitted' },
-            { id: 'assigned_technician_ID', numeric: true, disablePadding: false, label: 'Assigned Technician ID' },
+            { id: 'assigned_technician_ID', numeric: true, disablePadding: false, label: 'Technician ID' },
         ];
 
         this.desc = this.desc.bind(this);
         this.stableSort = this.stableSort.bind(this);
         this.getSorting = this.getSorting.bind(this);
         this.loadAllTickets = this.loadAllTickets.bind(this);
+        this.loadTicket = this.loadTicket.bind(this);
+        this.handleSelectTicket = this.handleSelectTicket.bind(this);
     }
 
     loadAllTickets() {
@@ -56,6 +59,31 @@ class TicketPage extends Component {
             }.bind(this))
             .then(data => this.setState({ allOfTheTickets: data }))
             .catch(err => console.log(err))
+    }
+
+    loadTicket(num) {
+        console.log(num);
+        fetch('/tickets/' + num, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token
+            }
+        })
+            .then(function (response) {
+                if (response.status === 403) {
+                    this.logout();
+                } else {
+                    return response.json();
+                }
+            }.bind(this))
+            .then(data => this.setState({ theTicket: data }))
+            .catch(err => console.log(err))
+    }
+
+    handleSelectTicket(num) {
+        //loadTicket(num);
+        // this.setState(state => ({
+        //     open_ticket_id: num
+        // }));
     }
 
     desc(a, b, orderBy) {
@@ -146,7 +174,9 @@ class TicketPage extends Component {
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
                                     return (
-                                        <TableRow
+                                        <TableRow 
+                                            //onClick={event => this.handleSelectTicket(row.ticket_ID)} 
+                                            onClick={event => this.loadTicket(row.ticket_ID)}
                                             key={row.ticket_ID}
                                             hover
                                         >
@@ -183,7 +213,12 @@ class TicketPage extends Component {
                             // onChangeRowsPerPage={handleChangeRowsPerPage}
                         />
                     </Paper>
-                    <p> Hey I want comments / ticket info loaded here</p>
+                    <Paper>
+                        {this.state.theTicket === null ? <h1>Select Ticket Information</h1> : <h1>{this.state.theTicket.subject}</h1> }
+                        {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p> }
+                        <textarea>hiegh</textarea>
+                        <button>Add Comment</button>
+                    </Paper>
                 </div>
             );
         }
