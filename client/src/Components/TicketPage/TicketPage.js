@@ -21,6 +21,8 @@ class TicketPage extends Component {
             orderBy: 'time_submitted',
             selected: [],
             page:0,
+            rowsPerPage:5,
+
         }
 
         this.loadAllTickets();
@@ -82,10 +84,7 @@ class TicketPage extends Component {
     }
 
     render() {
-        // TODO: Eventually enable user to change rowsPerPage. Also enable user to navigate pages. As it stands
-        //  user looses info after page cut off.
-        const rowsPerPage = 5;
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.allOfTheTickets.length - this.state.page * rowsPerPage);
+        const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.allOfTheTickets.length - this.state.page * this.state.rowsPerPage);
 
         let onRequestSort = (event,property) => {
             const isDesc = this.state.orderBy === property && this.state.order === 'asc';
@@ -105,6 +104,10 @@ class TicketPage extends Component {
             this.setState({page:newPage});
         };
 
+        const handleChangeRowsPerPage = event => {
+            this.setState({rowsPerPage:parseInt(event.target.value, 10)});
+            this.setState({page:0});
+        };
 
         if (this.state.loggedin === false) {
             return <Redirect to='/' />
@@ -145,7 +148,7 @@ class TicketPage extends Component {
                             </TableHead>
                             <TableBody>
                                  {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
-                                    .slice(this.state.page * rowsPerPage, this.state.page * rowsPerPage + rowsPerPage)
+                                    .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                     .map((row, index) => {
                                     return (
                                         <TableRow
@@ -168,12 +171,11 @@ class TicketPage extends Component {
                                 )}
                             </TableBody>
                         </Table>
-                        {/*TODO: Make Rows per Page selection functional as well as next and pevious page*/}
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
                             count={this.state.allOfTheTickets.length}
-                            rowsPerPage={rowsPerPage}
+                            rowsPerPage={this.state.rowsPerPage}
                             page={this.state.page}
                             backIconButtonProps={{
                                 'aria-label': 'previous page',
@@ -182,7 +184,7 @@ class TicketPage extends Component {
                                 'aria-label': 'next page',
                             }}
                             onChangePage={handleChangePage}
-                            // onChangeRowsPerPage={handleChangeRowsPerPage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
                         />
                     </Paper>
                     <p> Hey I want comments / ticket info loaded here</p>
