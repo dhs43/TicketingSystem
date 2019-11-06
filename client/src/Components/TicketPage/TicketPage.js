@@ -9,6 +9,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TablePagination from "@material-ui/core/TablePagination";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 import { Redirect } from 'react-router';
 
 class TicketPage extends Component {
@@ -23,7 +25,8 @@ class TicketPage extends Component {
             theTicket: null,
             page:0,
             rowsPerPage:5,
-
+            newComment: '',
+            internal: 'false'
         }
 
         this.loadAllTickets();
@@ -42,7 +45,9 @@ class TicketPage extends Component {
         this.getSorting = this.getSorting.bind(this);
         this.loadAllTickets = this.loadAllTickets.bind(this);
         this.loadTicket = this.loadTicket.bind(this);
-        this.handleSelectTicket = this.handleSelectTicket.bind(this);
+        this.handleSaveComment = this.handleSaveComment.bind(this);
+        this.changeHandler = this.changeHandler.bind(this);
+        this.CreateCommentUI = this.CreateCommentUI.bind(this);
     }
 
     loadAllTickets() {
@@ -63,7 +68,6 @@ class TicketPage extends Component {
     }
 
     loadTicket(num) {
-        console.log(num);
         fetch('/tickets/' + num, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.token
@@ -80,11 +84,62 @@ class TicketPage extends Component {
             .catch(err => console.log(err))
     }
 
-    handleSelectTicket(num) {
-        //loadTicket(num);
-        // this.setState(state => ({
-        //     open_ticket_id: num
-        // }));
+    handleSaveComment() {
+        fetch('/comments/new/' + this.state.theTicket.ticket_ID, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + localStorage.token},
+            body: JSON.stringify({
+                firstname: this.state.firstname,
+                author_id: this.state.theTicket.customer_ID,
+                text: this.state.newComment,
+                internal: this.state.internal
+            })
+        })
+            .then(response => response.text())
+            .then(response => {
+                if (response === "Comment created successfully") {
+                    alert("Comment saved!");
+                } else {
+                    alert("Error submitting ticket");
+                }
+            });
+        
+        this.setState({newComment: '', internal: 'false'});
+    }
+
+    changeHandler(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    CreateCommentUI() {
+        if (this.state.theTicket !== null) {
+            return (
+                <div>
+                <TextField
+                            label="Write a comment..."
+                            name="newComment"
+                            multiline
+                            margin="normal"
+                            variant="outlined"
+                            rows="3"
+                            value={this.state.newComment}
+                            onChange={e => this.changeHandler(e)}
+                        />
+                        <Button
+                            className="button"
+                            color="primary"
+                            variant="outlined"
+                            type="submit"
+                            onClick={this.handleSaveComment}>
+                            Comment
+                        </Button>
+                </div>
+            )
+        }else{
+            return <div></div>
+        }
     }
 
     desc(a, b, orderBy) {
@@ -220,8 +275,7 @@ class TicketPage extends Component {
                     <Paper>
                         {this.state.theTicket === null ? <h1>Select Ticket Information</h1> : <h1>{this.state.theTicket.subject}</h1> }
                         {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p> }
-                        <textarea>hiegh</textarea>
-                        <button>Add Comment</button>
+                        <this.CreateCommentUI />
                     </Paper>
                 </div>
             );
