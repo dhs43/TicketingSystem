@@ -81,7 +81,7 @@ class Main extends Component {
                         <div className="screen">
                             <div className={this.state.screen === "Tickets" ? "selectedTicket" : "selectionTicket"} onClick={this.handleTicketClick}>
                                 Tickets
-                        </div>
+                            </div>
                             <div className={this.state.screen === "Inventory" ? "selectedInventory" : "selectionInventory"} onClick={this.handleInventoryClick}>
                                 Inventory
                             </div>
