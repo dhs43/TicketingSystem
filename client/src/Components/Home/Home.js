@@ -46,6 +46,7 @@ class Home extends Component {
                     alert("Error logging in");
                 } else {
                     localStorage.setItem("token", response);
+                    localStorage.setItem("user", this.state.email);
                     this.setState({ loggedin: true });
                     this.props.history.push('/Main');
                 }

@@ -29,9 +29,16 @@ class TicketPage extends Component {
             page: 0,
             rowsPerPage: 5,
             newComment: '',
-            internal: 'false'
+            internal: 'false',
+            loggedinTech: {
+                technician_ID: '',
+                firstname: '',
+                lastname: '',
+                is_admin: false
+            }
         }
 
+        this.loadTechnician();
         this.loadAllTickets();
 
         this.headCells = [
@@ -52,6 +59,35 @@ class TicketPage extends Component {
         this.handleSaveComment = this.handleSaveComment.bind(this);
         this.changeHandler = this.changeHandler.bind(this);
         this.CreateCommentUI = this.CreateCommentUI.bind(this);
+        this.loadTechnician = this.loadTechnician.bind(this);
+    }
+
+    loadTechnician() {
+        console.log("Getting tech");
+        if (localStorage.user !== undefined) {
+            fetch('/users/getUser/' + localStorage.user, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.token
+                }
+            })
+                .then(function (response) {
+                    if (response.status === 403) {
+                        localStorage.removeItem('token');
+                        this.setState({ loggedin: false });
+                    } else {
+                        return response.json();
+                    }
+                }.bind(this))
+                .then(data => this.setState({
+                    loggedinTech: {
+                        technician_ID: data.technician_ID,
+                        firstname: data.first_name,
+                        lastname: data.last_name,
+                        is_admin: data.active_user
+                    }
+                }))
+                .catch(err => console.log(err))
+        }
     }
 
     loadAllTickets() {
@@ -88,7 +124,7 @@ class TicketPage extends Component {
             }.bind(this))
             .then(data => this.setState({ theTicket: data }))
             .catch(err => console.log(err));
-        
+
         this.loadAllComments(num);
     }
 
@@ -110,12 +146,13 @@ class TicketPage extends Component {
     }
 
     handleSaveComment() {
+        console.log(this.state.loggedinTech);
         fetch('/comments/new/' + this.state.theTicket.ticket_ID, {
             method: 'post',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token },
             body: JSON.stringify({
                 firstname: this.state.firstname,
-                author_id: this.state.theTicket.customer_ID,
+                author_id: this.state.loggedinTech.technician_ID,
                 text: this.state.newComment,
                 internal: this.state.internal
             })
@@ -139,7 +176,7 @@ class TicketPage extends Component {
     }
 
     CreateCommentUI() {
-        if (this.state.theTicket !== null) {
+        if (this.state.theTicket !== null && this.state.loggedinTech.technician_ID !== null) {
             return (
                 <div>
                     <TextField
@@ -260,22 +297,22 @@ class TicketPage extends Component {
                                 {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
                                     .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                     .map((row, index) => {
-                                    return (
-                                        <TableRow 
-                                            //onClick={event => this.handleSelectTicket(row.ticket_ID)} 
-                                            onClick={event => (this.loadTicket(row.ticket_ID))}
-                                            key={row.ticket_ID}
-                                            hover
-                                        >
-                                            <TableCell component="th" scope="row" padding="none">{row.ticket_ID}</TableCell>
-                                            <TableCell align="right">{row.subject}</TableCell>
-                                            <TableCell align="right">{row.customer_ID}</TableCell>
-                                            <TableCell align="right">{row.severity}</TableCell>
-                                            <TableCell align="right">{row.time_submitted}</TableCell>
-                                            <TableCell align="right">{row.assigned_technician_ID}</TableCell>
-                                        </TableRow>
-                                    );
-                                })}
+                                        return (
+                                            <TableRow
+                                                //onClick={event => this.handleSelectTicket(row.ticket_ID)} 
+                                                onClick={event => (this.loadTicket(row.ticket_ID))}
+                                                key={row.ticket_ID}
+                                                hover
+                                            >
+                                                <TableCell component="th" scope="row" padding="none">{row.ticket_ID}</TableCell>
+                                                <TableCell align="right">{row.subject}</TableCell>
+                                                <TableCell align="right">{row.customer_ID}</TableCell>
+                                                <TableCell align="right">{row.severity}</TableCell>
+                                                <TableCell align="right">{row.time_submitted}</TableCell>
+                                                <TableCell align="right">{row.assigned_technician_ID}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 {emptyRows > 0 && (
                                     <TableRow style={{ height: (33) * emptyRows }}>
                                         <TableCell colSpan={6} />
@@ -305,7 +342,7 @@ class TicketPage extends Component {
                         <this.CreateCommentUI />
                         {/* {this.state.allOfTheComments[0] === undefined ? <h1>Select Ticket Information</h1> : <h1>{this.state.allOfTheComments[0].ticket_ID}</h1>} */}
                         {this.state.allOfTheComments.map((value, index) => {
-                            return <Comment author_ID={value.author_ID} text={value.text}/>
+                            return <Comment key={value.comment_ID} author_ID={value.author_ID} text={value.text} />
                         })
                         }
                     </Paper>
