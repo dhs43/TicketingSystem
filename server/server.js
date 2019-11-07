@@ -4,7 +4,6 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const jwt = require('jsonwebtoken');
-const imapStuff = require('./email');
 const PORT = process.env.PORT || 8000;
 
 // VERIFY LOGIN
@@ -53,7 +52,6 @@ if (process.env.NODE_ENV === 'production') {
 
 	// Express will serve index.html if it doesn't recognize route
 	app.get('*', (req, res) => {
-		console.log("Got here");
 		console.log(req.protocol + "://" + req.get('host') + req.originalUrl);
 		res.sendFile(path.resolve("server/client", "build", "index.html"));
 	});
