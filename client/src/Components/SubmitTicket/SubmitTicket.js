@@ -35,13 +35,6 @@ class SubmitTicket extends Component {
         this.submitHandler = this.submitHandler.bind(this);
     }
 
-    //Making function to create the Radio buttons or something
-    // makeRadio= ()=>{
-    //     return <Radio
-    //         color="primary"
-    //     />
-    // }
-
     // handles user input
     changeHandler(e) {
         this.setState({

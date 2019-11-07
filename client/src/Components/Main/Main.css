@@ -1,6 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic');
+
+
+.hsuheader
+{
+  max-width: 1230px;
+  height: 40px;
+  display: flex;
+  margin-left: 18px;
+  align-items: center;
+  color: #FFFFFF;
+}
+
 .backdrop
 {
-    background-color: #F2F2F2;
+    background-color: #FFFFFF;
     height: 100%;
     width: 100%;
     min-height: 1000px;
@@ -22,7 +35,7 @@
 {
     height: 41px;
     width: 790px;
-    font-family:  sans-serif;
+    font-family:  Lato;
     font-size: 50px;
     font-weight: 300;  
     display: block;
