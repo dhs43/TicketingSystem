@@ -26,8 +26,7 @@ class TicketPage extends Component {
             page: 0,
             rowsPerPage: 5,
             newComment: '',
-            internal: 'false',
-            loggedin: true
+            internal: 'false'
         }
 
         this.loadAllTickets();
