@@ -95,4 +95,45 @@ router.post('/newUser', (req, res, next) => {
     res.send("New user created");
 });
 
+
+// Get technician details
+router.get('/technician/:technician_id', (req, res, next) => {
+    var technician_ID = req.params.technician_id;
+
+    var statement = "SELECT * FROM technicians WHERE technician_ID = \"" + technician_ID + "\";";
+
+    getConnection(function (err, connection) {
+        connection.query(statement, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+                return null;
+            }else{
+                res.send(result[0]);
+            }
+        });
+    });
+});
+
+
+// Get customer details
+router.get('/customer/:customer_id', (req, res, next) => {
+    var customer_ID = req.params.customer_id;
+
+    var statement = "SELECT * FROM customer WHERE customer_ID = \"" + customer_ID + "\";";
+
+    getConnection(function (err, connection) {
+        connection.query(statement, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+                return null;
+            }else{
+                res.send(result[0]);
+            }
+        });
+    });
+});
+
+
 module.exports = router;
