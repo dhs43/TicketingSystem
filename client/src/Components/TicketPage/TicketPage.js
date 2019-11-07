@@ -12,12 +12,15 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Redirect } from 'react-router';
+import Comment from "../Comment/Comment.js";
+
 
 class TicketPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             allOfTheTickets: [],
+            allOfTheComments: [],
             loggedin: true,
             order: 'desc',
             orderBy: 'time_submitted',
@@ -44,6 +47,7 @@ class TicketPage extends Component {
         this.stableSort = this.stableSort.bind(this);
         this.getSorting = this.getSorting.bind(this);
         this.loadAllTickets = this.loadAllTickets.bind(this);
+        this.loadAllComments = this.loadAllComments.bind(this);
         this.loadTicket = this.loadTicket.bind(this);
         this.handleSaveComment = this.handleSaveComment.bind(this);
         this.changeHandler = this.changeHandler.bind(this);
@@ -84,6 +88,25 @@ class TicketPage extends Component {
             }.bind(this))
             .then(data => this.setState({ theTicket: data }))
             .catch(err => console.log(err));
+        
+        this.loadAllComments(num);
+    }
+
+    loadAllComments(num) {
+        fetch('/comments/' + num, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token
+            }
+        })
+            .then(function (response) {
+                if (response.status === 403) {
+                    this.logout();
+                } else {
+                    return response.json();
+                }
+            }.bind(this))
+            .then(data => this.setState({ allOfTheComments: data }))
+            .catch(err => console.log(err))
     }
 
     handleSaveComment() {
@@ -237,22 +260,22 @@ class TicketPage extends Component {
                                 {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
                                     .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                     .map((row, index) => {
-                                        return (
-                                            <TableRow
-                                                //onClick={event => this.handleSelectTicket(row.ticket_ID)} 
-                                                onClick={event => this.loadTicket(row.ticket_ID)}
-                                                key={row.ticket_ID}
-                                                hover
-                                            >
-                                                <TableCell component="th" scope="row" padding="none">{row.ticket_ID}</TableCell>
-                                                <TableCell align="right">{row.subject}</TableCell>
-                                                <TableCell align="right">{row.customer_ID}</TableCell>
-                                                <TableCell align="right">{row.severity}</TableCell>
-                                                <TableCell align="right">{row.time_submitted}</TableCell>
-                                                <TableCell align="right">{row.assigned_technician_ID}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
+                                    return (
+                                        <TableRow 
+                                            //onClick={event => this.handleSelectTicket(row.ticket_ID)} 
+                                            onClick={event => (this.loadTicket(row.ticket_ID))}
+                                            key={row.ticket_ID}
+                                            hover
+                                        >
+                                            <TableCell component="th" scope="row" padding="none">{row.ticket_ID}</TableCell>
+                                            <TableCell align="right">{row.subject}</TableCell>
+                                            <TableCell align="right">{row.customer_ID}</TableCell>
+                                            <TableCell align="right">{row.severity}</TableCell>
+                                            <TableCell align="right">{row.time_submitted}</TableCell>
+                                            <TableCell align="right">{row.assigned_technician_ID}</TableCell>
+                                        </TableRow>
+                                    );
+                                })}
                                 {emptyRows > 0 && (
                                     <TableRow style={{ height: (33) * emptyRows }}>
                                         <TableCell colSpan={6} />
@@ -280,6 +303,11 @@ class TicketPage extends Component {
                         {this.state.theTicket === null ? <h1>Select Ticket Information</h1> : <h1>{this.state.theTicket.subject}</h1>}
                         {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
                         <this.CreateCommentUI />
+                        {/* {this.state.allOfTheComments[0] === undefined ? <h1>Select Ticket Information</h1> : <h1>{this.state.allOfTheComments[0].ticket_ID}</h1>} */}
+                        {this.state.allOfTheComments.map((value, index) => {
+                            return <Comment author_ID={value.author_ID} text={value.text}/>
+                        })
+                        }
                     </Paper>
                 </div>
             );
