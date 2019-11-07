@@ -22,14 +22,15 @@ class TicketPage extends Component {
             allOfTheTickets: [],
             allOfTheComments: [],
             loggedin: true,
-            order:'desc',
+            order: 'desc',
             orderBy: 'time_submitted',
             selected: [],
             theTicket: null,
-            page:0,
-            rowsPerPage:5,
+            page: 0,
+            rowsPerPage: 5,
             newComment: '',
-            internal: 'false'
+            internal: 'false',
+            loggedin: true
         }
 
         this.loadAllTickets();
@@ -62,7 +63,8 @@ class TicketPage extends Component {
         })
             .then(function (response) {
                 if (response.status === 403) {
-                    this.logout();
+                    localStorage.removeItem('token');
+                    this.setState({ loggedin: false });
                 } else {
                     return response.json();
                 }
@@ -79,7 +81,8 @@ class TicketPage extends Component {
         })
             .then(function (response) {
                 if (response.status === 403) {
-                    this.logout();
+                    localStorage.removeItem('token');
+                    this.setState({ loggedin: false });
                 } else {
                     return response.json();
                 }
@@ -110,7 +113,7 @@ class TicketPage extends Component {
     handleSaveComment() {
         fetch('/comments/new/' + this.state.theTicket.ticket_ID, {
             method: 'post',
-            headers: { 'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + localStorage.token},
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token },
             body: JSON.stringify({
                 firstname: this.state.firstname,
                 author_id: this.state.theTicket.customer_ID,
@@ -126,8 +129,8 @@ class TicketPage extends Component {
                     alert("Error submitting ticket");
                 }
             });
-        
-        this.setState({newComment: '', internal: 'false'});
+
+        this.setState({ newComment: '', internal: 'false' });
     }
 
     changeHandler(e) {
@@ -140,27 +143,27 @@ class TicketPage extends Component {
         if (this.state.theTicket !== null) {
             return (
                 <div>
-                <TextField
-                            label="Write a comment..."
-                            name="newComment"
-                            multiline
-                            margin="normal"
-                            variant="outlined"
-                            rows="3"
-                            value={this.state.newComment}
-                            onChange={e => this.changeHandler(e)}
-                        />
-                        <Button
-                            className="button"
-                            color="primary"
-                            variant="outlined"
-                            type="submit"
-                            onClick={this.handleSaveComment}>
-                            Comment
+                    <TextField
+                        label="Write a comment..."
+                        name="newComment"
+                        multiline
+                        margin="normal"
+                        variant="outlined"
+                        rows="3"
+                        value={this.state.newComment}
+                        onChange={e => this.changeHandler(e)}
+                    />
+                    <Button
+                        className="button"
+                        color="primary"
+                        variant="outlined"
+                        type="submit"
+                        onClick={this.handleSaveComment}>
+                        Comment
                         </Button>
                 </div>
             )
-        }else{
+        } else {
             return <div></div>
         }
     }
@@ -192,14 +195,14 @@ class TicketPage extends Component {
     render() {
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.allOfTheTickets.length - this.state.page * this.state.rowsPerPage);
 
-        let onRequestSort = (event,property) => {
+        let onRequestSort = (event, property) => {
             const isDesc = this.state.orderBy === property && this.state.order === 'asc';
-            if (isDesc){
-                this.setState({order:'desc' })
+            if (isDesc) {
+                this.setState({ order: 'desc' })
             } else {
-                this.setState({order: 'asc'})
+                this.setState({ order: 'asc' })
             }
-            this.setState({orderBy: property});
+            this.setState({ orderBy: property });
         }
 
         const createSortHandler = property => event => {
@@ -207,13 +210,15 @@ class TicketPage extends Component {
         };
 
         const handleChangePage = (event, newPage) => {
-            this.setState({page:newPage});
+            this.setState({ page: newPage });
         };
 
         const handleChangeRowsPerPage = event => {
-            this.setState({rowsPerPage:parseInt(event.target.value, 10)});
-            this.setState({page:0});
+            this.setState({ rowsPerPage: parseInt(event.target.value, 10) });
+            this.setState({ page: 0 });
         };
+
+
 
         if (this.state.loggedin === false) {
             return <Redirect to='/' />
@@ -222,7 +227,7 @@ class TicketPage extends Component {
                 <div>
                     <Paper>
                         <Toolbar>
-                            <Typography  variant="h6" id="tableTitle">
+                            <Typography variant="h6" id="tableTitle">
                                 All Tickets
                             </Typography>
                         </Toolbar>
@@ -246,14 +251,14 @@ class TicketPage extends Component {
                                                 direction={this.state.order}
                                                 onClick={createSortHandler(headCell.id)}
                                             >
-                                            {headCell.label}
+                                                {headCell.label}
                                             </TableSortLabel>
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                 {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
+                                {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
                                     .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                                     .map((row, index) => {
                                     return (
@@ -272,6 +277,22 @@ class TicketPage extends Component {
                                         </TableRow>
                                     );
                                 })}
+                                        return (
+                                            <TableRow
+                                                //onClick={event => this.handleSelectTicket(row.ticket_ID)} 
+                                                onClick={event => this.loadTicket(row.ticket_ID)}
+                                                key={row.ticket_ID}
+                                                hover
+                                            >
+                                                <TableCell component="th" scope="row" padding="none">{row.ticket_ID}</TableCell>
+                                                <TableCell align="right">{row.subject}</TableCell>
+                                                <TableCell align="right">{row.customer_ID}</TableCell>
+                                                <TableCell align="right">{row.severity}</TableCell>
+                                                <TableCell align="right">{row.time_submitted}</TableCell>
+                                                <TableCell align="right">{row.assigned_technician_ID}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 {emptyRows > 0 && (
                                     <TableRow style={{ height: (33) * emptyRows }}>
                                         <TableCell colSpan={6} />
@@ -296,8 +317,8 @@ class TicketPage extends Component {
                         />
                     </Paper>
                     <Paper>
-                        {this.state.theTicket === null ? <h1>Select Ticket Information</h1> : <h1>{this.state.theTicket.subject}</h1> }
-                        {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p> }
+                        {this.state.theTicket === null ? <h1>Select Ticket Information</h1> : <h1>{this.state.theTicket.subject}</h1>}
+                        {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
                         <this.CreateCommentUI />
                         {/* {this.state.allOfTheComments[0] === undefined ? <h1>Select Ticket Information</h1> : <h1>{this.state.allOfTheComments[0].ticket_ID}</h1>} */}
                         {this.state.allOfTheComments.map((value, index) => {
