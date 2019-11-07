@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import "./Home.css";
@@ -52,55 +53,58 @@ class Home extends Component {
     }
 
     render() {
-        return (
-
-            <div className="backdrop">
-                <div className="appbar">
-                    <h1 className="title">
-                        Resnet Helpdesk
+        if (localStorage.token !== undefined) {
+            return <Redirect to='/Main' />
+        } else {
+            return (
+                <div className="backdrop">
+                    <div className="appbar">
+                        <h1 className="title">
+                            Resnet Helpdesk
                 </h1>
-                </div>
-                <div className="outline">
-                    <div className="outline2">
-                        <form className="paper" onSubmit={e => this.submitHandler(e)}>
-                            <h5>
-                                Have an Issue?
+                    </div>
+                    <div className="outline">
+                        <div className="outline2">
+                            <form className="paper" onSubmit={e => this.submitHandler(e)}>
+                                <h5>
+                                    Have an Issue?
                             </h5>
-                            <Button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
-                                SUBMIT TICKET
+                                <Button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
+                                    SUBMIT TICKET
                             </Button>
-                            <h5>
-                                Technician Sign In
+                                <h5>
+                                    Technician Sign In
                             </h5>
-                            <TextField
-                                label="Email"
-                                name="email"
-                                variant="filled"
-                                value={this.state.email}
-                                onChange={e => this.changeHandler(e)}
-                            />
-                            <TextField
-                                label="Password"
-                                name="password"
-                                margin="normal"
-                                variant="filled"
-                                type="password"
-                                value={this.state.password}
-                                onChange={e => this.changeHandler(e)}
-                            />
-                            <Button
-                                className="button"
-                                color="primary"
-                                variant="contained"
-                                type="submit">
-                                Login
+                                <TextField
+                                    label="Email"
+                                    name="email"
+                                    variant="filled"
+                                    value={this.state.email}
+                                    onChange={e => this.changeHandler(e)}
+                                />
+                                <TextField
+                                    label="Password"
+                                    name="password"
+                                    margin="normal"
+                                    variant="filled"
+                                    type="password"
+                                    value={this.state.password}
+                                    onChange={e => this.changeHandler(e)}
+                                />
+                                <Button
+                                    className="button"
+                                    color="primary"
+                                    variant="contained"
+                                    type="submit">
+                                    Login
                             </Button>
-                            <p>Don't have an account? Too bad!</p>
-                        </form>
+                                <p>Don't have an account? Too bad!</p>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
