@@ -277,22 +277,6 @@ class TicketPage extends Component {
                                         </TableRow>
                                     );
                                 })}
-                                        return (
-                                            <TableRow
-                                                //onClick={event => this.handleSelectTicket(row.ticket_ID)} 
-                                                onClick={event => this.loadTicket(row.ticket_ID)}
-                                                key={row.ticket_ID}
-                                                hover
-                                            >
-                                                <TableCell component="th" scope="row" padding="none">{row.ticket_ID}</TableCell>
-                                                <TableCell align="right">{row.subject}</TableCell>
-                                                <TableCell align="right">{row.customer_ID}</TableCell>
-                                                <TableCell align="right">{row.severity}</TableCell>
-                                                <TableCell align="right">{row.time_submitted}</TableCell>
-                                                <TableCell align="right">{row.assigned_technician_ID}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
                                 {emptyRows > 0 && (
                                     <TableRow style={{ height: (33) * emptyRows }}>
                                         <TableCell colSpan={6} />
