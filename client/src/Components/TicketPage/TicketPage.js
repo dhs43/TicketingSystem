@@ -81,7 +81,7 @@ class TicketPage extends Component {
                 }
             }.bind(this))
             .then(data => this.setState({ theTicket: data }))
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     }
 
     handleSaveComment() {
