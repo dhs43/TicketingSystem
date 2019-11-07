@@ -32,43 +32,64 @@ router.post('/loginUser', (req, res, next) => {
     var password = req.body.password;
     var encrypted = '';
 
-    var statement = "SELECT password FROM technicians where technician_ID = '" + email + "';";
+    // Check if user an ACTIVE technician account exists
+    var activeUserStatement = "SELECT active_user FROM technicians where technician_ID = '" + email + "';";
 
-    getConnection(function (err, connection) {
-        connection.query(statement, function (err, result, fields) {
-            if (err) {
-                console.log(err);
-                res.send(AUTH_FAILURE);
-                return null;
-            }
+    getConnection(function (err, activeUserConnection) {
+        activeUserConnection.query(activeUserStatement, function (err, result, fields) {
             if (result[0] === undefined) {
+                // Check if account exists
                 console.log("Email not found in DB");
                 res.send(AUTH_FAILURE);
                 return null;
-            }
-            encrypted = result[0].password;
+            } else if (result[0].active_user === 0) {
+                // Check if account is active
+                console.log("Technician account was deactivated");
+                res.send(AUTH_FAILURE);
+                return null;
+            } else {
+                // Check password
+                var statement = "SELECT password FROM technicians where technician_ID = '" + email + "';";
 
-            bcrypt.compare(password, encrypted, function (err, bcryptResponse) {
-                if (err) {
-                    console.log(err);
-                    return null;
-                }
-                if (bcryptResponse) {
-                    console.log("Password match");
-                    jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
+                getConnection(function (err, connection) {
+                    connection.query(statement, function (err, result, fields) {
                         if (err) {
                             console.log(err);
+                            res.send(AUTH_FAILURE);
                             return null;
                         }
-                        res.send(token);
+                        if (result[0] === undefined) {
+                            console.log("Email not found in DB");
+                            res.send(AUTH_FAILURE);
+                            return null;
+                        }
+                        encrypted = result[0].password;
+
+                        bcrypt.compare(password, encrypted, function (err, bcryptResponse) {
+                            if (err) {
+                                console.log(err);
+                                return null;
+                            }
+                            if (bcryptResponse) {
+                                console.log("Password match");
+                                jwt.sign({ email }, process.env.SECRET, { expiresIn: '1 days' }, (err, token) => {
+                                    if (err) {
+                                        console.log(err);
+                                        return null;
+                                    }
+                                    res.send(token);
+                                });
+                            } else {
+                                console.log("Incorrect password");
+                                res.send(AUTH_FAILURE);
+                            }
+                        })
                     });
-                } else {
-                    console.log("Incorrect password");
-                    res.send(AUTH_FAILURE);
-                }
-            })
+                    connection.release();
+                });
+            }
         });
-        connection.release();
+        activeUserConnection.release();
     });
 });
 
@@ -97,41 +118,47 @@ router.post('/newUser', (req, res, next) => {
 
 
 // Get technician details
-router.get('/technician/:technician_id', (req, res, next) => {
-    var technician_ID = req.params.technician_id;
+router.get('/getUser/:user_id', (req, res, next) => {
+    var user_ID = req.params.user_id;
 
-    var statement = "SELECT * FROM technicians WHERE technician_ID = \"" + technician_ID + "\";";
+    // First look for matching technician
+    var technicianStatement = "SELECT * FROM technicians WHERE technician_ID = \"" + user_ID + "\";";
 
-    getConnection(function (err, connection) {
-        connection.query(statement, function (err, result) {
+    getConnection(function (err, technicianConnection) {
+        technicianConnection.query(technicianStatement, function (err, result) {
             if (err) {
                 console.log(err);
                 res.send(err);
                 return null;
-            }else{
-                res.send(result[0]);
+            } else {
+                if (result[0] !== undefined) {
+                    // Found a technician matching given ID
+                    res.send(result[0]);
+                } else {
+
+                    // Look for matching customer
+                    var customerStatement = "SELECT * FROM customer WHERE customer_ID = \"" + user_ID + "\";";
+
+                    getConnection(function (err, customerConnection) {
+                        customerConnection.query(customerStatement, function (err, result) {
+                            if (err) {
+                                console.log(err);
+                                res.send(err);
+                                return null;
+                            } else {
+                                if (result[0] !== undefined) {
+                                    res.send(result[0]);
+                                } else {
+                                    res.send("No matching user found");
+                                }
+                            }
+                        });
+                        customerConnection.release();
+                    });
+                }
             }
         });
-    });
-});
-
-
-// Get customer details
-router.get('/customer/:customer_id', (req, res, next) => {
-    var customer_ID = req.params.customer_id;
-
-    var statement = "SELECT * FROM customer WHERE customer_ID = \"" + customer_ID + "\";";
-
-    getConnection(function (err, connection) {
-        connection.query(statement, function (err, result) {
-            if (err) {
-                console.log(err);
-                res.send(err);
-                return null;
-            }else{
-                res.send(result[0]);
-            }
-        });
+        technicianConnection.release();
     });
 });
 
