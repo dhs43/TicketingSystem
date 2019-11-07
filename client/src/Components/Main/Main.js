@@ -71,7 +71,7 @@ class Main extends Component {
                 <div className="backdrop">
                     <div className="appbar">
                         <h1 className="title">
-                            Resnet Helpdesk
+                            ResNet
                     </h1>
                         <div className="logout">
                             <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
