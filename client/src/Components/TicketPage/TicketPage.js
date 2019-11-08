@@ -16,6 +16,23 @@ import MaterialTable from 'material-table';
 import { Redirect } from 'react-router';
 import Comment from "../Comment/Comment.js";
 
+import { forwardRef } from 'react';
+
+import AddBox from '@material-ui/icons/AddBox';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import Check from '@material-ui/icons/Check';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Clear from '@material-ui/icons/Clear';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import Edit from '@material-ui/icons/Edit';
+import FilterList from '@material-ui/icons/FilterList';
+import FirstPage from '@material-ui/icons/FirstPage';
+import LastPage from '@material-ui/icons/LastPage';
+import Remove from '@material-ui/icons/Remove';
+import SaveAlt from '@material-ui/icons/SaveAlt';
+import Search from '@material-ui/icons/Search';
+import ViewColumn from '@material-ui/icons/ViewColumn';
 
 class TicketPage extends Component {
     constructor(props) {
@@ -44,12 +61,12 @@ class TicketPage extends Component {
         this.loadAllTickets();
 
         this.headCells = [
-            { id: 'ticket_ID', numeric: false, disablePadding: true, label: 'Ticket ID' },
-            { id: 'subject', numeric: true, disablePadding: false, label: 'Subject' },
-            { id: 'customer_ID', numeric: true, disablePadding: false, label: 'Customer ID' },
-            { id: 'severity', numeric: true, disablePadding: false, label: 'Severity' },
-            { id: 'time_submitted', numeric: true, disablePadding: false, label: 'Time Submitted' },
-            { id: 'assigned_technician_ID', numeric: true, disablePadding: false, label: 'Technician ID' },
+            { id: 'ticket_ID', field:'ticket_ID', numeric: false, disablePadding: true, title: 'Ticket ID' },
+            { id: 'subject', field:'subject', numeric: false, disablePadding: false, title: 'Subject' },
+            { id: 'customer_ID', field:'customer_ID', numeric: false, disablePadding: false, title: 'Customer ID' },
+            { id: 'severity', field:'severity', numeric: true, disablePadding: false, title: 'Severity' },
+            { id: 'time_submitted', field:'time_submitted', numeric: true, disablePadding: false, title: 'Time Submitted' },
+            { id: 'assigned_technician_ID',field:'assigned_technician_ID', numeric: false, disablePadding: false, title: 'Technician ID' },
         ];
 
         this.desc = this.desc.bind(this);
@@ -231,6 +248,26 @@ class TicketPage extends Component {
     }
 
     render() {
+        const tableIcons = {
+            Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+            Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+            Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+            Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+            DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+            Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+            Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+            Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+            FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+            LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+            NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+            PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+            ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+            Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+            SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
+            ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+            ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+        };
+
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.allOfTheTickets.length - this.state.page * this.state.rowsPerPage);
 
         let onRequestSort = (event, property) => {
@@ -269,73 +306,12 @@ class TicketPage extends Component {
                                 All Tickets
                             </Typography>
                         </Toolbar>
-                        <Table
+                        <MaterialTable
+                            title={"Ticket Table"}
                             className={"table"}
-                            aria-labelledby="tableTitle"
-                            size="small"
-                            aria-label="enhanced table"
-                        >
-                            <TableHead>
-                                <TableRow>
-                                    {this.headCells.map(headCell => (
-                                        <TableCell
-                                            key={headCell.id}
-                                            align={headCell.numeric ? 'right' : 'left'}
-                                            padding={headCell.disablePadding ? 'none' : 'default'}
-                                            sortDirection={this.state.orderBy === headCell.time_submitted ? this.state.order : false}
-                                        >
-                                            <TableSortLabel
-                                                active={this.state.orderBy === headCell.time_submitted}
-                                                direction={this.state.order}
-                                                onClick={createSortHandler(headCell.id)}
-                                            >
-                                                {headCell.label}
-                                            </TableSortLabel>
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {this.stableSort(this.state.allOfTheTickets, this.getSorting(this.state.order, this.state.orderBy))
-                                    .slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-                                    .map((row, index) => {
-                                        return (
-                                            <TableRow
-                                                //onClick={event => this.handleSelectTicket(row.ticket_ID)} 
-                                                onClick={event => (this.loadTicket(row.ticket_ID))}
-                                                key={row.ticket_ID}
-                                                hover
-                                            >
-                                                <TableCell component="th" scope="row" padding="none">{row.ticket_ID}</TableCell>
-                                                <TableCell align="right">{row.subject}</TableCell>
-                                                <TableCell align="right">{row.customer_ID}</TableCell>
-                                                <TableCell align="right">{row.severity}</TableCell>
-                                                <TableCell align="right">{row.time_submitted}</TableCell>
-                                                <TableCell align="right">{row.assigned_technician_ID}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: (33) * emptyRows }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25]}
-                            component="div"
-                            count={this.state.allOfTheTickets.length}
-                            rowsPerPage={this.state.rowsPerPage}
-                            page={this.state.page}
-                            backIconButtonProps={{
-                                'aria-label': 'previous page',
-                            }}
-                            nextIconButtonProps={{
-                                'aria-label': 'next page',
-                            }}
-                            onChangePage={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                            icons={tableIcons}
+                            columns={this.headCells}
+                            data={this.state.allOfTheTickets}
                         />
                     </Paper>
                     <Paper>
