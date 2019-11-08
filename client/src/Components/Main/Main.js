@@ -98,7 +98,9 @@ class Main extends Component {
                         <div>
                             {(this.state.screen === "Tickets") ?
                                 <TicketPage
-                                    history={this.props.history}/> : null}
+                                    history={this.props.history}
+                                /> : null}
+
                             {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
                             {(this.state.screen === "DataV") ? <p>Data Visualization</p> : null}
                         </div>
