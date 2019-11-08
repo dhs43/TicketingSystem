@@ -1,23 +1,12 @@
 import React, { Component } from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { forwardRef } from 'react';
+import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import TablePagination from "@material-ui/core/TablePagination";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import MaterialTable from 'material-table';
-
-import { Redirect } from 'react-router';
-import Comment from "../Comment/Comment.js";
-
-import { forwardRef } from 'react';
-
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -33,6 +22,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import Comment from "../Comment/Comment.js";
 
 class TicketPage extends Component {
     constructor(props) {
@@ -41,12 +31,9 @@ class TicketPage extends Component {
             allOfTheTickets: [],
             allOfTheComments: [],
             loggedin: true,
-            order: 'desc',
             orderBy: 'time_submitted',
             selected: [],
             theTicket: null,
-            page: 0,
-            rowsPerPage: 5,
             newComment: '',
             internal: 'false',
             loggedinTech: {
@@ -61,17 +48,34 @@ class TicketPage extends Component {
         this.loadAllTickets();
 
         this.headCells = [
-            { id: 'ticket_ID', field:'ticket_ID', numeric: false, disablePadding: true, title: 'Ticket ID' },
-            { id: 'subject', field:'subject', numeric: false, disablePadding: false, title: 'Subject' },
-            { id: 'customer_ID', field:'customer_ID', numeric: false, disablePadding: false, title: 'Customer ID' },
-            { id: 'severity', field:'severity', numeric: true, disablePadding: false, title: 'Severity' },
-            { id: 'time_submitted', field:'time_submitted', numeric: true, disablePadding: false, title: 'Time Submitted' },
-            { id: 'assigned_technician_ID',field:'assigned_technician_ID', numeric: false, disablePadding: false, title: 'Technician ID' },
+            { id: 'ticket_ID', field:'ticket_ID', title: 'Ticket ID' },
+            { id: 'subject', field:'subject', title: 'Subject' },
+            { id: 'customer_ID', field:'customer_ID', title: 'Customer ID' },
+            { id: 'severity', field:'severity',title: 'Severity' },
+            { id: 'time_submitted', field:'time_submitted', title: 'Time Submitted' },
+            { id: 'assigned_technician_ID',field:'assigned_technician_ID', title: 'Technician ID' },
         ];
 
-        this.desc = this.desc.bind(this);
-        this.stableSort = this.stableSort.bind(this);
-        this.getSorting = this.getSorting.bind(this);
+        this.tableIcons = {
+            Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+            Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+            Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+            Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+            DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+            Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+            Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+            Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+            FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+            LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+            NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+            PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+            ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+            Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+            SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
+            ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+            ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+        };
+
         this.loadAllTickets = this.loadAllTickets.bind(this);
         this.loadAllComments = this.loadAllComments.bind(this);
         this.loadTicket = this.loadTicket.bind(this);
@@ -223,78 +227,7 @@ class TicketPage extends Component {
         }
     }
 
-    desc(a, b, orderBy) {
-        if (b[orderBy] < a[orderBy]) {
-            return -1;
-        }
-        if (b[orderBy] > a[orderBy]) {
-            return 1;
-        }
-        return 0;
-    }
-
-    stableSort(array, cmp) {
-        const stabilizedThis = array.map((el, index) => [el, index]);
-        stabilizedThis.sort((a, b) => {
-            const order = cmp(a[0], b[0]);
-            if (order !== 0) return order;
-            return a[1] - b[1];
-        });
-        return stabilizedThis.map(el => el[0]);
-    }
-
-    getSorting(order, orderBy) {
-        return order === 'desc' ? (a, b) => this.desc(a, b, orderBy) : (a, b) => -this.desc(a, b, orderBy);
-    }
-
     render() {
-        const tableIcons = {
-            Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-            Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-            Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-            Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-            DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-            Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-            Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-            Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-            FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-            LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-            NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-            PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-            ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-            Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-            SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
-            ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-            ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-        };
-
-        const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.allOfTheTickets.length - this.state.page * this.state.rowsPerPage);
-
-        let onRequestSort = (event, property) => {
-            const isDesc = this.state.orderBy === property && this.state.order === 'asc';
-            if (isDesc) {
-                this.setState({ order: 'desc' })
-            } else {
-                this.setState({ order: 'asc' })
-            }
-            this.setState({ orderBy: property });
-        }
-
-        const createSortHandler = property => event => {
-            onRequestSort(event, property);
-        };
-
-        const handleChangePage = (event, newPage) => {
-            this.setState({ page: newPage });
-        };
-
-        const handleChangeRowsPerPage = event => {
-            this.setState({ rowsPerPage: parseInt(event.target.value, 10) });
-            this.setState({ page: 0 });
-        };
-
-
-
         if (this.state.loggedin === false) {
             return <Redirect to='/' />
         } else {
@@ -309,7 +242,7 @@ class TicketPage extends Component {
                         <MaterialTable
                             title={"Ticket Table"}
                             className={"table"}
-                            icons={tableIcons}
+                            icons={this.tableIcons}
                             columns={this.headCells}
                             data={this.state.allOfTheTickets}
                         />
