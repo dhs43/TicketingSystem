@@ -1,4 +1,4 @@
-import React, { Component  } from 'react';
+import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -125,13 +125,13 @@ class TicketPage extends Component {
     }
 
     handleSaveComment() {
-        console.log(this.state.loggedinTech);
         fetch('/comments/new/' + this.state.theTicket.ticket_ID, {
             method: 'post',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token },
             body: JSON.stringify({
                 firstname: this.state.firstname,
                 author_id: this.state.loggedinTech.technician_ID,
+                author_name: this.state.loggedinTech.firstname + ' ' + this.state.loggedinTech.lastname,
                 text: this.state.newComment,
                 internal: this.state.internal
             })
@@ -179,7 +179,7 @@ class TicketPage extends Component {
                 </div>
             )
         } else {
-            return (<div/>);
+            return (<div />);
         }
     }
 
@@ -206,7 +206,7 @@ class TicketPage extends Component {
                         <this.CreateCommentUI />
                         {/* {this.state.allOfTheComments[0] === undefined ? <h1>Select Ticket Information</h1> : <h1>{this.state.allOfTheComments[0].ticket_ID}</h1>} */}
                         {this.state.allOfTheComments.map((value, index) => {
-                            return <Comment key={value.comment_ID} author_ID={value.author_ID} text={value.text} />
+                            return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} />
                         })
                         }
                     </Paper>

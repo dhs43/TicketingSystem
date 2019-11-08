@@ -64,22 +64,35 @@ mailListener.on("mail", function (mail, seqno, attributes) {
             } else {
                 if (result[0].customer_ID === author_ID) {
 
-                    date = new Date();
-                    var commentStatement = "INSERT INTO comments \
-                                     (ticket_ID, author_ID, creation_date, text, internal) \
-                                     VALUES \
-                                     (\"" + ticket_ID + "\", \"" + author_ID + "\", \"" + date.getTime() / 1000 + "\", \"" + clean_text + "\", false);"
-
-                    getConnection(function (err, insertConnection) {
-                        insertConnection.query(commentStatement, function (err, result) {
+                    // Get name from customer_ID
+                    var nameStatement = "SELECT * FROM customer WHERE customer_ID = \"" + author_ID + "\";";
+                    getConnection(function (err, authorConnection) {
+                        authorConnection.query(nameStatement, function (err, authorResult) {
                             if (err) {
                                 console.log(err);
-                                console.log("Comment creation failed from email " + author_ID);
                             } else {
-                                console.log("Comment created from email " + author_ID);
+                                var author_name = authorResult[0].first_name + ' ' + authorResult[0].last_name;
+
+                                date = new Date();
+                                var commentStatement = "INSERT INTO comments \
+                                                 (ticket_ID, author_ID, creation_date, text, internal, author_name) \
+                                                 VALUES \
+                                                 (\"" + ticket_ID + "\", \"" + author_ID + "\", \"" + date.getTime() / 1000 + "\", \"" + clean_text + "\", false, \"" + author_name + "\");"
+
+                                getConnection(function (err, insertConnection) {
+                                    insertConnection.query(commentStatement, function (err, result) {
+                                        if (err) {
+                                            console.log(err);
+                                            console.log("Comment creation failed from email " + author_ID);
+                                        } else {
+                                            console.log("Comment created from email " + author_ID);
+                                        }
+                                    });
+                                    insertConnection.release();
+                                });
                             }
                         });
-                        insertConnection.release();
+                        authorConnection.release();
                     });
                 } else {
                     console.log("Email sender does not match ticket author.");
