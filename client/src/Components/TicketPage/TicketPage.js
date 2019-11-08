@@ -7,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
+import SubmitTicket from "../SubmitTicket/SubmitTicket";
 
 class TicketPage extends Component {
     constructor(props) {
@@ -39,6 +40,8 @@ class TicketPage extends Component {
         this.changeHandler = this.changeHandler.bind(this);
         this.CreateCommentUI = this.CreateCommentUI.bind(this);
         this.loadTechnician = this.loadTechnician.bind(this);
+        this.submitTicketHandler = this.submitTicketHandler.bind(this);
+
     }
 
     loadTechnician() {
@@ -183,6 +186,10 @@ class TicketPage extends Component {
         }
     }
 
+    submitTicketHandler() {
+        this.props.history.push('/SubmitTicket');
+    }
+
     render() {
         if (this.state.loggedin === false) {
             return <Redirect to='/' />
@@ -194,6 +201,9 @@ class TicketPage extends Component {
                             <Typography variant="h6" id="tableTitle">
                                 All Tickets
                             </Typography>
+                            <Button className="button"  variant="contained" onClick={this.submitTicketHandler}>
+                                Create Ticket
+                            </Button>
                         </Toolbar>
                         <TicketTable
                             allOfTheTickets={this.state.allOfTheTickets}
