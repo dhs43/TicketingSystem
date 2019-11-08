@@ -40,15 +40,16 @@ router.get('/:ticket_id', (req, res, next) => {
 router.post('/new/:ticket_id', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;
     var author_ID = req.body.author_id;
+    var author_name = req.body.author_name;
     var text = req.body.text;
     var internal = req.body.internal;
 
-    
+
     date = new Date();
     var commentStatement = "INSERT INTO comments \
-                     (ticket_ID, author_ID, creation_date, text, internal) \
+                     (ticket_ID, author_ID, creation_date, text, internal, author_name) \
                      VALUES \
-                     (\"" + ticket_ID + "\", \"" + author_ID + "\", \"" + date.getTime() / 1000 + "\", \"" + text + "\", " + internal + ");";
+                     (\"" + ticket_ID + "\", \"" + author_ID + "\", \"" + date.getTime() / 1000 + "\", \"" + text + "\", " + internal + ", \"" + author_name + "\");";
 
     var customerStatement = "SELECT customer_ID FROM ticket WHERE ticket_ID = " + ticket_ID + ";";
 
