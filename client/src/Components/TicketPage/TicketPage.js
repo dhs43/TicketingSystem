@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { forwardRef } from 'react';
+import React, { Component, forwardRef  } from 'react';
 import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -245,6 +244,8 @@ class TicketPage extends Component {
                             icons={this.tableIcons}
                             columns={this.headCells}
                             data={this.state.allOfTheTickets}
+                            onRowClick={(event,rowData) => (this.loadTicket(rowData.ticket_ID))}
+                            hover
                         />
                     </Paper>
                     <Paper>
