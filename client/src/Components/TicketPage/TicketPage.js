@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import NativeSelect from '@material-ui/core/NativeSelect';
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
-import SubmitTicket from "../SubmitTicket/SubmitTicket";
 
 class TicketPage extends Component {
     constructor(props) {
@@ -22,17 +21,15 @@ class TicketPage extends Component {
             newComment: '',
             internal: 'false',
             loggedinTech: {
-                technician_ID: '',
-                firstname: '',
-                lastname: '',
-                is_admin: false
+                "technician_ID": '',
+                "firstname": '',
+                "lastname": '',
+                "is_admin": false
             }
-        }
+        };
 
         this.loadTechnician();
         this.loadAllTickets();
-
-
         this.loadAllTickets = this.loadAllTickets.bind(this);
         this.loadAllComments = this.loadAllComments.bind(this);
         this.loadTicket = this.loadTicket.bind(this);
@@ -41,6 +38,7 @@ class TicketPage extends Component {
         this.CreateCommentUI = this.CreateCommentUI.bind(this);
         this.loadTechnician = this.loadTechnician.bind(this);
         this.submitTicketHandler = this.submitTicketHandler.bind(this);
+        this.handleTicketChange = this.handleTicketChange.bind(this);
 
     }
 
@@ -190,6 +188,14 @@ class TicketPage extends Component {
         this.props.history.push('/SubmitTicket');
     }
 
+
+    handleTicketChange = assigned_technician_ID => event => {
+        // this.setState({
+        //     ...state,
+        //     [name]: event.target.value,
+        // });
+    };
+
     render() {
         if (this.state.loggedin === false) {
             return <Redirect to='/' />
@@ -198,9 +204,12 @@ class TicketPage extends Component {
                 <div>
                     <Paper>
                         <Toolbar>
-                            <Typography variant="h6" id="tableTitle">
-                                All Tickets
-                            </Typography>
+                            <NativeSelect
+                                onChange={this.handleTicketChange('assigned_technician_ID')}
+                            >
+                                <option> All Tickets </option>
+                                <option> My Tickets </option>
+                            </NativeSelect>
                             <Button className="button"  variant="contained" onClick={this.submitTicketHandler}>
                                 Create Ticket
                             </Button>
