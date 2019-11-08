@@ -222,7 +222,7 @@ class TicketPage extends Component {
                 </div>
             )
         } else {
-            return <div></div>
+            return (<div/>);
         }
     }
 
@@ -239,13 +239,21 @@ class TicketPage extends Component {
                             </Typography>
                         </Toolbar>
                         <MaterialTable
+                            hover
                             title={"Ticket Table"}
                             className={"table"}
                             icons={this.tableIcons}
                             columns={this.headCells}
                             data={this.state.allOfTheTickets}
                             onRowClick={(event,rowData) => (this.loadTicket(rowData.ticket_ID))}
-                            hover
+                            options={{selection:true}}
+                            actions={[
+                                {
+                                    tooltip:'Delete Tickets',
+                                    icon:this.tableIcons.Delete,
+                                    onClick:(event, data) => alert("You want to delete" + data.length + "rows")
+                                }
+                            ]}
                         />
                     </Paper>
                     <Paper>
