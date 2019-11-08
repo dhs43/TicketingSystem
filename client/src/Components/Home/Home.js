@@ -70,7 +70,7 @@ class Home extends Component {
                                 <h5>
                                     Have an Issue?
                             </h5>
-                                <Button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
+                            <Button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
                                     SUBMIT TICKET
                             </Button>
                                 <h5>
