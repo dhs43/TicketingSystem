@@ -1,27 +1,12 @@
-import React, { Component, forwardRef  } from 'react';
+import React, { Component  } from 'react';
 import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import MaterialTable from 'material-table';
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
 import Comment from "../Comment/Comment.js";
+import TicketTable from "./TicketTable";
 
 class TicketPage extends Component {
     constructor(props) {
@@ -46,34 +31,6 @@ class TicketPage extends Component {
         this.loadTechnician();
         this.loadAllTickets();
 
-        this.headCells = [
-            { id: 'ticket_ID', field:'ticket_ID', title: 'Ticket ID' },
-            { id: 'subject', field:'subject', title: 'Subject' },
-            { id: 'customer_ID', field:'customer_ID', title: 'Customer ID' },
-            { id: 'severity', field:'severity',title: 'Severity' },
-            { id: 'time_submitted', field:'time_submitted', title: 'Time Submitted' },
-            { id: 'assigned_technician_ID',field:'assigned_technician_ID', title: 'Technician ID' },
-        ];
-
-        this.tableIcons = {
-            Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-            Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-            Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-            Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-            DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-            Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-            Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-            Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-            FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-            LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-            NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-            PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-            ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-            Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-            SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
-            ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-            ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-        };
 
         this.loadAllTickets = this.loadAllTickets.bind(this);
         this.loadAllComments = this.loadAllComments.bind(this);
@@ -238,22 +195,9 @@ class TicketPage extends Component {
                                 All Tickets
                             </Typography>
                         </Toolbar>
-                        <MaterialTable
-                            hover
-                            title={"Ticket Table"}
-                            className={"table"}
-                            icons={this.tableIcons}
-                            columns={this.headCells}
-                            data={this.state.allOfTheTickets}
-                            onRowClick={(event,rowData) => (this.loadTicket(rowData.ticket_ID))}
-                            options={{selection:true}}
-                            actions={[
-                                {
-                                    tooltip:'Delete Tickets',
-                                    icon:this.tableIcons.Delete,
-                                    onClick:(event, data) => alert("You want to delete" + data.length + "rows")
-                                }
-                            ]}
+                        <TicketTable
+                            allOfTheTickets={this.state.allOfTheTickets}
+                            loadTicket={this.loadTicket}
                         />
                     </Paper>
                     <Paper>
