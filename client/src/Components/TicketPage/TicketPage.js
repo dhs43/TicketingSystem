@@ -239,7 +239,7 @@ class TicketPage extends Component {
                         </div>
                     <div className="papel2">
                         {/* {this.state.allOfTheComments[0] === undefined ? <h1>Select Ticket Information</h1> : <h1>{this.state.allOfTheComments[0].ticket_ID}</h1>} */}
-                        {this.state.allOfTheComments.reverse().map((value, index) => {
+                        {this.state.theTicket === null ? null : this.state.allOfTheComments.slice().reverse().map((value, index) => {
                             return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} />
                         })
                         }
