@@ -1,0 +1,89 @@
+.theBox
+{
+    height: 110px;
+    width: 100%;
+    padding: 0 auto 0 auto;
+}
+
+.marginTop
+{
+    margin-top: 15px;
+}
+
+.toolbar
+{
+    display: flex;
+    width: 100%;
+}
+
+.button2
+{
+    margin-left: auto;
+    margin-right: 0px;
+    color: white;
+    width: 100px;
+    height: 30px;
+    background-color: #5C8021;
+}
+
+.button2:hover
+{
+    margin-left: auto;
+    margin-right: 0px;
+    color: white;
+    width: 100px;
+    height: 30px;
+    background-color: rgb(117, 164, 42);
+}
+
+.papel
+{
+    padding: 10px;
+}
+
+.papel2
+{
+    padding: 20px;
+}
+
+.textarea
+{
+    height: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    outline: #000000;
+    resize: none;
+    overflow: auto;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.button
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    background-color: #5C8021;
+}
+
+.button:hover
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    background-color: rgb(117, 164, 42);
+}

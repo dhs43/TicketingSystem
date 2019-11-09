@@ -3,7 +3,6 @@
 
 .hsuheader
 {
-  max-width: 1230px;
   height: 40px;
   display: flex;
   margin-left: 18px;
@@ -197,5 +196,6 @@
 .outline
 {
     background-color: #F2F2F2;
+    height: 100%;
 }
 
