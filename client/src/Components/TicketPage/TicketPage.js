@@ -7,6 +7,8 @@ import Button from "@material-ui/core/Button";
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
+import "./TicketPage.css";
+import { green } from '@material-ui/core/colors';
 
 class TicketPage extends Component {
     constructor(props) {
@@ -152,30 +154,35 @@ class TicketPage extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
-    }
+    } 
 
     CreateCommentUI() {
         if (this.state.theTicket !== null && this.state.loggedinTech.technician_ID !== null) {
             return (
-                <div>
-                    <TextField
-                        label="Write a comment..."
-                        name="newComment"
-                        multiline
-                        margin="normal"
-                        variant="outlined"
-                        rows="3"
+                <div className="theBox">
+                    {/* <textarea       
+                        name="newComment"                 
+                        className="textarea"
                         value={this.state.newComment}
                         onChange={e => this.changeHandler(e)}
+                    /> */}
+                    <TextField
+                    name = "newComment"
+                    value={this.state.newComment}
+                    onChange={e => this.changeHandler(e)}
+                    label="Add a comment..."
+                    fullWidth
+                    multiline
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
                     />
-                    <Button
-                        className="button"
-                        color="primary"
-                        variant="outlined"
-                        type="submit"
+                    <button
+                        class="button"
                         onClick={this.handleSaveComment}>
-                        Comment
-                        </Button>
+                        Add Comment
+                    </button>
                 </div>
             )
         } else {
@@ -203,31 +210,40 @@ class TicketPage extends Component {
                 <div>
                     <Paper>
                         <Toolbar>
+                            <div className="toolbar">
                             <NativeSelect
-                                onChange={this.handleTicketChange('assigned_technician_ID')}
-                            >
+                                onChange={this.handleTicketChange('assigned_technician_ID')}>
                                 <option> All Tickets </option>
                                 <option> My Tickets </option>
                             </NativeSelect>
-                            <Button className="button"  variant="contained" onClick={this.submitTicketHandler}>
+                            <button className="button2" onClick={this.submitTicketHandler}>
                                 Create Ticket
-                            </Button>
+                            </button>
+                            </div>
                         </Toolbar>
                         <TicketTable
                             allOfTheTickets={this.state.allOfTheTickets}
                             loadTicket={this.loadTicket}
                         />
                     </Paper>
-                    <Paper>
-                        {this.state.theTicket === null ? <h1>Select Ticket Information</h1> : <h1>{this.state.theTicket.subject}</h1>}
-                        {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
-                        <this.CreateCommentUI />
+                        <div className="marginTop">
+                            {this.state.theTicket === null ? null :
+                            <Paper>
+                                <div className="papel">
+                                {this.state.theTicket === null ? null : <h3>{this.state.theTicket.subject}</h3>}
+                                {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
+                                <this.CreateCommentUI />
+                                </div>
+                            </Paper>
+                            }
+                        </div>
+                    <div className="papel2">
                         {/* {this.state.allOfTheComments[0] === undefined ? <h1>Select Ticket Information</h1> : <h1>{this.state.allOfTheComments[0].ticket_ID}</h1>} */}
                         {this.state.allOfTheComments.reverse().map((value, index) => {
                             return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} />
                         })
                         }
-                    </Paper>
+                    </div>
                 </div>
             );
         }
