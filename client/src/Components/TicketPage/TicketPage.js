@@ -86,7 +86,15 @@ class TicketPage extends Component {
                     return response.json();
                 }
             }.bind(this))
-            .then(data => this.setState({ allOfTheTickets: data }))
+            .then(data => {
+                console.log(data);
+                data.forEach(item => {
+                    var date = new Date(item.time_submitted * 1000);
+                    item.time_submitted = (date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
+                });
+                console.log(data);
+                this.setState({ allOfTheTickets: data })
+        })
             .catch(err => console.log(err))
     }
 
@@ -128,6 +136,10 @@ class TicketPage extends Component {
     }
 
     handleSaveComment() {
+        if(this.state.newComment.trim() === '') {
+            return null;
+        }
+
         fetch('/comments/new/' + this.state.theTicket.ticket_ID, {
             method: 'post',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token },
@@ -160,12 +172,6 @@ class TicketPage extends Component {
         if (this.state.theTicket !== null && this.state.loggedinTech.technician_ID !== null) {
             return (
                 <div className="theBox">
-                    {/* <textarea       
-                        name="newComment"                 
-                        className="textarea"
-                        value={this.state.newComment}
-                        onChange={e => this.changeHandler(e)}
-                    /> */}
                     <TextField
                     name = "newComment"
                     value={this.state.newComment}
@@ -173,13 +179,14 @@ class TicketPage extends Component {
                     label="Add a comment..."
                     fullWidth
                     multiline
+                    rowsMax="5"
                     InputLabelProps={{
                         shrink: true,
                     }}
                     variant="outlined"
                     />
                     <button
-                        class="button"
+                        className="button"
                         onClick={this.handleSaveComment}>
                         Add Comment
                     </button>
@@ -226,8 +233,8 @@ class TicketPage extends Component {
                             loadTicket={this.loadTicket}
                         />
                     </Paper>
-                        <div className="marginTop">
-                            {this.state.theTicket === null ? null :
+                    <div className="marginTop">
+                        {this.state.theTicket === null ? null :
                             <Paper>
                                 <div className="papel">
                                 {this.state.theTicket === null ? null : <h3>{this.state.theTicket.subject}</h3>}
@@ -235,12 +242,12 @@ class TicketPage extends Component {
                                 <this.CreateCommentUI />
                                 </div>
                             </Paper>
-                            }
-                        </div>
+                        }
+                    </div>
                     <div className="papel2">
                         {/* {this.state.allOfTheComments[0] === undefined ? <h1>Select Ticket Information</h1> : <h1>{this.state.allOfTheComments[0].ticket_ID}</h1>} */}
                         {this.state.theTicket === null ? null : this.state.allOfTheComments.slice().reverse().map((value, index) => {
-                            return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} />
+                            return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} creation_date={new Date(value.creation_date * 1000)} />
                         })
                         }
                     </div>

@@ -20,12 +20,12 @@ class TicketTable extends Component {
     constructor(props) {
         super(props);
         this.headCells = [
-            {id: 'ticket_ID', field: 'ticket_ID', title: 'Ticket ID'},
-            {id: 'subject', field: 'subject', title: 'Subject'},
-            {id: 'customer_ID', field: 'customer_ID', title: 'Customer ID'},
-            {id: 'severity', field: 'severity', title: 'Severity'},
+            {id: 'ticket_ID', field: 'ticket_ID', title: 'ID'},
+            {id: 'subject', field: 'subject', title: 'Summary'},
+            {id: 'customer_ID', field: 'customer_ID', title: 'Creator'},
+            {id: 'severity', field: 'severity', title: 'Urgency'},
             {id: 'time_submitted', field: 'time_submitted', title: 'Time Submitted'},
-            {id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'Technician ID'},
+            {id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'Assignee'},
         ];
 
         this.tableIcons = {
@@ -58,7 +58,7 @@ class TicketTable extends Component {
                 icons={this.tableIcons}
                 columns={this.headCells}
                 data={this.props.allOfTheTickets}
-                onRowClick={(event,rowData) => (this.props.loadTicket(rowData.ticket_ID))}
+                onRowClick={(event, rowData) => (this.props.loadTicket(rowData.ticket_ID))}
                 options={{selection:true}}
                 actions={[
                     {
