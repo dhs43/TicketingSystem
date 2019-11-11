@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import "./Home.css";
 
@@ -70,9 +69,9 @@ class Home extends Component {
                                 <h5>
                                     Have an Issue?
                             </h5>
-                            <Button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
+                            <button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
                                     SUBMIT TICKET
-                            </Button>
+                            </button>
                                 <h5>
                                     Technician Sign In
                             </h5>
@@ -92,13 +91,13 @@ class Home extends Component {
                                     value={this.state.password}
                                     onChange={e => this.changeHandler(e)}
                                 />
-                                <Button
+                                <button
                                     className="button"
                                     color="primary"
                                     variant="contained"
                                     type="submit">
                                     Login
-                            </Button>
+                                </button>
                                 <p>Don't have an account? Too bad!</p>
                             </form>
                         </div>

@@ -25,6 +25,8 @@
     width: 100px;
     height: 30px;
     background-color: #5C8021;
+    border-radius: 5px;
+    border-color: #5C8021;
 }
 
 .button2:hover
@@ -35,15 +37,39 @@
     width: 100px;
     height: 30px;
     background-color: rgb(117, 164, 42);
+    border-radius: 5px;
+    border-color: #5C8021;
 }
 
-.papel
+.description
+{
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-direction: column;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    border-radius: 5px;
+    border-color: #5C8021;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 1.2em;
+    flex-direction: row;
+}
+
+.commentUI
 {
     padding: 10px;
     flex-direction: column;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    border-radius: 5px;
+    border-color: #5C8021;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 1.2em;
+    flex-direction: row;
 }
 
-.papel2
+
+.comment-area
 {
     margin: 10px;
     padding: 20px;
@@ -70,9 +96,10 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 70%;
+    width: 100%;
     margin-top: 10px;
     border-radius: 5px;
+    border-color: #5C8021;
     color: white;
     height: 40px;
     background-color: #5C8021;
@@ -83,10 +110,11 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 70%;
+    width: 100%;
     margin-top: 10px;
     border-radius: 5px;
     color: white;
     height: 40px;
     background-color: rgb(117, 164, 42);
+    border-color: #5C8021;
 }
