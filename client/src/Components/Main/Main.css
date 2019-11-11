@@ -15,7 +15,6 @@
     background-color: #FFFFFF;
     height: 100%;
     width: 100%;
-    min-height: 1000px;
     min-width: 500px;
 }
 
@@ -47,12 +46,7 @@
     margin: 0 100px 0 100px;
     height: 100%;
     min-width: 350px;
-    min-height: 400px;
-    padding-top: 5px;
-    padding-bottom: 100px;
-    padding-left: 5px;
-    padding-right: 5px;
-    
+    padding: 5px;
 }
 
 .logout
@@ -66,24 +60,23 @@
 .logout_button
 {
   border-style: solid;
-  border-width: 1px;
-  border-color: transparent;
-  color: white;
+  border-radius: 5px; 
+  border-color: #5C8021;
   width: 100px;
   height: 30px;
   background-color: #5C8021;
+  color: white;
 }
 
 .logout_button:hover
 {
   border-style: solid;
   border-width: 1px;
-  border-color: transparent;
   border-radius: 5px;
-  color: white;
   width: 100px;
   height: 30px;
-  background-color: transparent;
+  background-color: #25551b;
+  color: white;
 }
 
 .screen
@@ -198,4 +191,3 @@
     background-color: #F2F2F2;
     height: 100%;
 }
-

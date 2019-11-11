@@ -235,18 +235,20 @@ class TicketPage extends Component {
                     </Paper>
                     <div className="marginTop">
                         {this.state.theTicket === null ? null :
-                            <Paper>
-                                <div className="papel">
+                            <div className="description">
                                 {this.state.theTicket === null ? null : <h3>{this.state.theTicket.subject}</h3>}
                                 {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
-                                <this.CreateCommentUI />
-                                </div>
-                            </Paper>
+                            </div>
                         }
                     </div>
-                    <div className="papel2">
-                        {/* {this.state.allOfTheComments[0] === undefined ? <h1>Select Ticket Information</h1> : <h1>{this.state.allOfTheComments[0].ticket_ID}</h1>} */}
-                        {this.state.theTicket === null ? null : this.state.allOfTheComments.slice().reverse().map((value, index) => {
+                    <div className="comment-area">
+                        {this.state.theTicket === null ? null : 
+                            <div className="commentUI">
+                                <this.CreateCommentUI />
+                            </div>
+                        } 
+                        {this.state.theTicket === null ? null : 
+                            this.state.allOfTheComments.slice().reverse().map((value, index) => {
                             return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} creation_date={new Date(value.creation_date * 1000)} />
                         })
                         }
