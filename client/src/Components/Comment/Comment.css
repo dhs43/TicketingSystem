@@ -3,3 +3,9 @@
     margin: 10px;
     padding: 2px;
 }
+
+.time-ago
+{
+    float: right;
+    margin: 10px;
+}

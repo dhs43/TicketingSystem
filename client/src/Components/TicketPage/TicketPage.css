@@ -3,6 +3,7 @@
     height: 110px;
     width: 100%;
     padding: 0 auto 0 auto;
+    flex-direction: column;
 }
 
 .marginTop
@@ -39,10 +40,12 @@
 .papel
 {
     padding: 10px;
+    flex-direction: column;
 }
 
 .papel2
 {
+    margin: 10px;
     padding: 20px;
 }
 
