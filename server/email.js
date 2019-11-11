@@ -48,7 +48,7 @@ mailListener.on("mail", function (mail, seqno, attributes) {
     // Remove quoted email from replies
     var splitText = text.split(/\r?\n/);
     for (var i = 0; i < splitText.length; i++) {
-        if (splitText[i].includes("ResNet Helpdesk - Ticket #") === false) {
+        if (splitText[i].includes("hsuhelpdeskproject@gmail.com") === false) {
             clean_text += splitText[i] + '\n';
         } else {
             break;
