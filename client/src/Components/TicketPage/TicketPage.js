@@ -179,7 +179,6 @@ class TicketPage extends Component {
                     label="Add a comment..."
                     fullWidth
                     multiline
-                    rowsMax="5"
                     InputLabelProps={{
                         shrink: true,
                     }}
