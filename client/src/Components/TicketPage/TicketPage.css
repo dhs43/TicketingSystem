@@ -1,6 +1,6 @@
 .theBox
 {
-    height: 110px;
+    height: auto;
     width: 100%;
     padding: 0 auto 0 auto;
     flex-direction: column;
