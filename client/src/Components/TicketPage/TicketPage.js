@@ -3,12 +3,10 @@ import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
 import "./TicketPage.css";
-import { green } from '@material-ui/core/colors';
 
 class TicketPage extends Component {
     constructor(props) {
@@ -45,7 +43,6 @@ class TicketPage extends Component {
     }
 
     loadTechnician() {
-        console.log("Getting tech");
         if (localStorage.user !== undefined) {
             fetch('/users/getUser/' + localStorage.user, {
                 headers: {
@@ -87,12 +84,10 @@ class TicketPage extends Component {
                 }
             }.bind(this))
             .then(data => {
-                console.log(data);
                 data.forEach(item => {
                     var date = new Date(item.time_submitted * 1000);
                     item.time_submitted = (date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
                 });
-                console.log(data);
                 this.setState({ allOfTheTickets: data })
         })
             .catch(err => console.log(err))
