@@ -3,6 +3,16 @@
     background-color: #F2F2F2;
     height: 100%;
     width: 100%;
+    min-width: 700px;
+}
+
+.hsuheader1
+{
+  height: 40px;
+  display: flex;
+  margin-left: 18px;
+  align-items: center;
+  color: #FFFFFF;
 }
 
 .paper
@@ -10,7 +20,7 @@
 
     width: 300px;
     padding: 20px;
-    margin: 100px auto 0 auto;
+    margin: 100px auto 100px auto;
     border-style: solid;
     border-color: #F2F2F2;
     background-color: #F2F2F2;
@@ -23,20 +33,38 @@
     justify-content: center;
 }
 
-.appbar
+.appbarHome
 {
     width: 100%;
-    height: 50px;
+    height: 70px;
     padding: auto 0 auto 0;
-    background-color: #3f51b5;
+    background-color: #25551b;
     text-align: left;
+    /* width: 100%;
+    height: 80px;
+    padding: auto 0 auto 0;
+    background-color: #25551b;
+    text-align: left;
+    display: flex; */
 }
 
-.title
+.titleHome
 {
     color: #FFFFFF;
     margin: 0;
     padding-left: 100px;
+    font-family:  Lato;
+    font-size: 50px;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;  
+    /* height: 41px;
+    width: 790px;
+    font-family:  Lato;
+    font-size: 50px;
+    font-weight: 300;  
+    display: block;
+    margin: 1%;
+    -webkit-font-smoothing: antialiased; */
 }
 
 .outline2
