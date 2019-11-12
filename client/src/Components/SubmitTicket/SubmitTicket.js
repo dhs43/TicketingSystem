@@ -89,6 +89,9 @@ class SubmitTicket extends Component {
                     alert("Error submitting ticket");
                 }
             });
+
+            this.props.history.push('/');
+
     }
 
 

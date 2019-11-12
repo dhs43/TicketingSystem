@@ -15,30 +15,44 @@
     background-color: #FFFFFF;
     height: 100%;
     width: 100%;
-    min-width: 500px;
+    min-width: 700px;
 }
 
 
 .appbar
 {
-    width: 100%;
+    /* width: 100%;
     height: 80px;
     padding: auto 0 auto 0;
     background-color: #25551b;
-    text-align: left;
+    text-align: left; */
     display: flex;
+    width: 100%;
+    height: 70px;
+    /* padding: auto 0 auto 0; */
+    background-color: #25551b;
+    text-align: left;
 }
 
 .title
 {
-    height: 41px;
+  size: auto;
+  color: #FFFFFF;
+  margin: 0;
+  padding-left: 100px;
+  font-family:  Lato;
+  font-size: 50px;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased; 
+
+    /* height: 41px;
     width: 790px;
     font-family:  Lato;
     font-size: 50px;
     font-weight: 300;  
     display: block;
     margin: 1%;
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased; */
 }
 .outline2
 {
