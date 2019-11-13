@@ -14,12 +14,46 @@
     flex-direction: column;
 }
 
-Radio{
-    color: "primary"
+.submitTicketHeader
+{
+    text-align: center;
+    font-size: 40px;
+    color: #5C8021;
+    margin: 12px;
+    font-family:  Lato;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;  
 }
 
 .medium{
     width: 70%;
 }
 
-/*TextField*/
+.submitTicketButton
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    border-color: #5C8021;
+    color: white;
+    height: 40px;
+    background-color: #5C8021;
+    font-size: large;
+}
+
+.submitTicketButton:hover
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    background-color: rgb(117, 164, 42);
+    border-color: #5C8021;
+}
