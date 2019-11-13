@@ -4,6 +4,7 @@
     height: 100%;
     width: 100%;
     min-width: 700px;
+    min-height: 1200px;
 }
 
 .hsuheader1
@@ -78,4 +79,5 @@
 .outline
 {
     background-color: #F2F2F2;
+    min-height: 1200px;
 }

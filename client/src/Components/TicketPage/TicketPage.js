@@ -110,7 +110,7 @@ class TicketPage extends Component {
             .then(data => this.setState({ theTicket: data }))
             .catch(err => console.log(err));
 
-        this.loadAllComments(num);
+        this.loadAllComments(num);  
     }
 
     loadAllComments(num) {
