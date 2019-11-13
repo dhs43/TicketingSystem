@@ -20,12 +20,12 @@ class TicketTable extends Component {
     constructor(props) {
         super(props);
         this.headCells = [
-            {id: 'ticket_ID', field: 'ticket_ID', title: 'ID'},
-            {id: 'subject', field: 'subject', title: 'Summary'},
-            {id: 'customer_ID', field: 'customer_ID', title: 'Creator'},
-            {id: 'severity', field: 'severity', title: 'Urgency'},
-            {id: 'time_submitted', field: 'time_submitted', title: 'Time Submitted'},
-            {id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'Assignee'},
+            {id: 'ticket_ID', field: 'ticket_ID', title: 'ID', cellStyle:{ minWidth: 10, width: '5%'}},
+            {id: 'subject', field: 'subject', title: 'Subject', cellStyle:{ minWidth: 300, width: '33%'}},
+            {id: 'customer_ID', field: 'customer_ID', title: 'Customer', cellStyle:{ minWidth: 200, width: '16%'}},
+            {id: 'severity', field: 'severity', title: 'Urgency', cellStyle:{ minWidth: 50, width: '10%'}},
+            {id: 'time_submitted', field: 'time_submitted', title: 'Date', cellStyle:{ minWidth: 75, width: '16%'}},
+            {id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'User', cellStyle:{ minWidth: 200, width: '16%'}},
         ];
 
         this.tableIcons = {
@@ -59,14 +59,14 @@ class TicketTable extends Component {
                 columns={this.headCells}
                 data={this.props.allOfTheTickets}
                 onRowClick={(event, rowData) => (this.props.loadTicket(rowData.ticket_ID))}
-                options={{selection:true}}
-                actions={[
-                    {
-                        tooltip:'Delete Tickets',
-                        icon:this.tableIcons.Delete,
-                        onClick:(event, data) => alert("You want to delete" + data.length + "rows")
-                    }
-                ]}
+                options={{padding:'dense', pageSize: 15, pageSizeOptions: [15, 25, 50], rowStyle:{ overflowY: 'scroll'}}}
+                // actions={[
+                //     {
+                //         tooltip:'Delete Tickets',
+                //         icon:this.tableIcons.Delete,
+                //         onClick:(event, data) => alert("You want to delete" + data.length + "rows")
+                //     }
+                // ]}
             />
         );
     }
