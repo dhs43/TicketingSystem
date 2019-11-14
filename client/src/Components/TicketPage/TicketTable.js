@@ -15,17 +15,22 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Toolbar from '@material-ui/core/Toolbar';
 
 class TicketTable extends Component {
     constructor(props) {
         super(props);
         this.headCells = [
-            {id: 'ticket_ID', field: 'ticket_ID', title: 'ID', cellStyle:{ minWidth: 10, width: '5%'}},
-            {id: 'subject', field: 'subject', title: 'Subject', cellStyle:{ minWidth: 300, width: '33%'}},
-            {id: 'customer_ID', field: 'customer_ID', title: 'Customer', cellStyle:{ minWidth: 200, width: '16%'}},
+            {id: 'ticket_ID', field: 'ticket_ID', title: 'ID', cellStyle:{ minWidth: 5, width: '1%'}},
+            {id: 'subject', field: 'subject', title: 'Subject', cellStyle:{ minWidth: 300, width: '55%'}},
+            {id: 'customer_ID', field: 'customer_ID', title: 'Customer', cellStyle:{ minWidth: 60, width: '12%'}},
             {id: 'severity', field: 'severity', title: 'Urgency', cellStyle:{ minWidth: 50, width: '10%'}},
-            {id: 'time_submitted', field: 'time_submitted', title: 'Date', cellStyle:{ minWidth: 75, width: '16%'}},
-            {id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'User', cellStyle:{ minWidth: 200, width: '16%'}},
+            {id: 'time_submitted', field: 'time_submitted', title: 'Date', cellStyle:{ minWidth: 50, width: '10%'}},
+            {id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'User', cellStyle:{ minWidth: 60, width: '12%'}},
         ];
 
         this.tableIcons = {
@@ -50,24 +55,39 @@ class TicketTable extends Component {
 
     }
     render() {
+        // Styles
+        const theme = createMuiTheme({
+            palette: {
+                primary: { main: '#FFA500' }, // orange
+                secondary: { main: '#25551b' } // dark green
+            },
+        });
+
         return(
-            <MaterialTable
-                hover
-                title={"Ticket Table"}
-                className={"table"}
-                icons={this.tableIcons}
-                columns={this.headCells}
-                data={this.props.allOfTheTickets}
-                onRowClick={(event, rowData) => (this.props.loadTicket(rowData.ticket_ID))}
-                options={{padding:'dense', pageSize: 15, pageSizeOptions: [15, 25, 50], rowStyle:{ overflowY: 'scroll'}}}
-                // actions={[
-                //     {
-                //         tooltip:'Delete Tickets',
-                //         icon:this.tableIcons.Delete,
-                //         onClick:(event, data) => alert("You want to delete" + data.length + "rows")
-                //     }
-                // ]}
-            />
+            <MuiThemeProvider theme={theme}>
+                <MaterialTable
+                    hover
+                    title={
+                        <Toolbar>
+                            <div className="toolbar">
+                            <FormControl>
+                                <Select onChange={console.log("change")} defaultValue={'all'}>
+                                    <MenuItem value='all'>All Tickets</MenuItem>
+                                    <MenuItem value='my_tickets'>My Tickets</MenuItem>
+                                    <MenuItem value='unassigned'>Unassigned</MenuItem>
+                                </Select>
+                            </FormControl>
+                            </div>
+                        </Toolbar>
+                    }
+                    className={"table"}
+                    icons={this.tableIcons}
+                    columns={this.headCells}
+                    data={this.props.allOfTheTickets}
+                    onRowClick={(event, rowData) => (this.props.loadTicket(rowData.ticket_ID))}
+                    options={{padding:'dense', pageSize: 15, pageSizeOptions: [5, 15, 25, 50], rowStyle:{ overflowY: 'scroll'}}}
+                />
+            </MuiThemeProvider>
         );
     }
 }
