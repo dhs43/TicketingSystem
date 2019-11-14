@@ -14,7 +14,7 @@
   color: #FFFFFF;
 }
 
-.loginFrame
+.mainFrame
 {
     width: 300px;
     padding: 20px;
@@ -51,17 +51,16 @@
     -webkit-font-smoothing: antialiased;  
 }
 
-.loginOutline2
+.loginFrame
 {
-    background-color: #FFFFFF;
-    margin: 0 100px 0 100px;
-    padding: 100px 0 100px 0;
-    min-width: 400px;
-    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .loginOutline1
 {
     background-color: #F2F2F2;
     height: auto;
+    margin: 0 100px 0 100px;
+    padding: 100px 0 100px 0;
 }

@@ -72,14 +72,14 @@ class Home extends Component {
                         </h1>
                     </div>
                     <div className="loginOutline1">
-                        <div className="loginOutline2">
-                            <form className="loginFrame" onSubmit={e => this.submitHandler(e)}>
+                        <div className="mainFrame">
                             <h5>
                                     Have an Issue?
                             </h5>
                             <button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
                                     SUBMIT TICKET
                             </button>
+                            <form className="loginFrame" onSubmit={e => this.submitHandler(e)}>
                                 <h5>
                                     Technician Sign In
                                 </h5>

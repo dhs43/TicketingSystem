@@ -3,9 +3,9 @@ import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from "@material-ui/core/TextField";
-import NativeSelect from '@material-ui/core/NativeSelect';
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import "./TicketPage.css";
 
 class TicketPage extends Component {
@@ -38,8 +38,6 @@ class TicketPage extends Component {
         this.CreateCommentUI = this.CreateCommentUI.bind(this);
         this.loadTechnician = this.loadTechnician.bind(this);
         this.submitTicketHandler = this.submitTicketHandler.bind(this);
-        this.handleTicketChange = this.handleTicketChange.bind(this);
-
     }
 
     loadTechnician() {
@@ -164,26 +162,36 @@ class TicketPage extends Component {
     } 
 
     CreateCommentUI() {
+        // Styles
+        const theme = createMuiTheme({
+            palette: {
+                primary: { main: '#FFA500' }, // orange
+                secondary: { main: '#25551b' } // dark green
+            },
+        });
+
         if (this.state.theTicket !== null && this.state.loggedinTech.technician_ID !== null) {
             return (
                 <div className="theBox">
-                    <TextField
-                    name = "newComment"
-                    value={this.state.newComment}
-                    onChange={e => this.changeHandler(e)}
-                    label="Add a comment..."
-                    fullWidth
-                    multiline
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    variant="outlined"
-                    />
-                    <button
-                        className="button"
-                        onClick={this.handleSaveComment}>
-                        Add Comment
-                    </button>
+                    <MuiThemeProvider theme={theme}>
+                        <TextField
+                        name = "newComment"
+                        value={this.state.newComment}
+                        onChange={e => this.changeHandler(e)}
+                        label="Add a comment..."
+                        fullWidth
+                        multiline
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        />
+                        <button
+                            className="button"
+                            onClick={this.handleSaveComment}>
+                            Add Comment
+                        </button>
+                    </MuiThemeProvider>
                 </div>
             )
         } else {
@@ -196,13 +204,6 @@ class TicketPage extends Component {
     }
 
 
-    handleTicketChange = assigned_technician_ID => event => {
-        // this.setState({
-        //     ...state,
-        //     [name]: event.target.value,
-        // });
-    };
-
     render() {
         if (this.state.loggedin === false) {
             return <Redirect to='/' />
@@ -212,14 +213,9 @@ class TicketPage extends Component {
                     <Paper>
                         <Toolbar>
                             <div className="toolbar">
-                            <NativeSelect
-                                onChange={this.handleTicketChange('assigned_technician_ID')}>
-                                <option> All Tickets </option>
-                                <option> My Tickets </option>
-                            </NativeSelect>
-                            <button className="button2" onClick={this.submitTicketHandler}>
-                                Create Ticket
-                            </button>
+                                <button className="button2" onClick={this.submitTicketHandler}>
+                                    Create Ticket
+                                </button>
                             </div>
                         </Toolbar>
                         <TicketTable
