@@ -30,7 +30,7 @@ class TicketTable extends Component {
             {id: 'customer_ID', field: 'customer_ID', title: 'Customer', cellStyle:{ minWidth: 60, width: '12%'}},
             {id: 'severity', field: 'severity', title: 'Urgency', cellStyle:{ minWidth: 50, width: '10%'}},
             {id: 'time_submitted', field: 'time_submitted', title: 'Date', cellStyle:{ minWidth: 50, width: '10%'}},
-            {id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'User', cellStyle:{ minWidth: 60, width: '12%'}},
+            {id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'Assignee', cellStyle:{ minWidth: 60, width: '12%'}},
         ];
 
         this.tableIcons = {
@@ -86,6 +86,69 @@ class TicketTable extends Component {
                     data={this.props.allOfTheTickets}
                     onRowClick={(event, rowData) => (this.props.loadTicket(rowData.ticket_ID))}
                     options={{padding:'dense', pageSize: 15, pageSizeOptions: [5, 15, 25, 50], rowStyle:{ overflowY: 'scroll'}}}
+                    columns={[
+                        {
+                            title: 'ID',
+                            field: 'ticket_ID',
+                        },
+                        {
+                            title: 'Subject',
+                            field: 'subject',
+                            customSort: (a, b) => {
+                                if (a.subject.toLowerCase() > b.subject.toLowerCase()) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
+                            }
+                        },
+                        {
+                            title: 'Customer',
+                            field: 'customer_ID',
+                            customSort: (a, b) => {
+                                if (a.customer_ID.toLowerCase() > b.customer_ID.toLowerCase()) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
+                            }
+                        },
+                        {
+                            title: 'Urgency',
+                            field: 'severity',
+                            customSort: (a, b) => {
+                                if (a.severity === 'low') {
+                                    return -1;
+                                } else if (a.severity === 'high' && b.severity === 'medium') {
+                                    return 1;
+                                } else if (a.severity === 'medium' && b.severity === 'high') {
+                                    return -1;
+                                } else if (a.severity === b.severity) {
+                                    return 1;
+                                }
+                            }
+                        },
+                        {
+                            title: 'Date',
+                            field: 'time_submitted',
+                        },
+                        {
+                            title: 'Assignee',
+                            field: 'assigned_technician_ID',
+                            customSort: (a, b) => {
+                                if (b.assigned_technician_ID === null) {
+                                    return 1
+                                }else if (a.assigned_technician_ID === null) {
+                                    return -1;
+                                }
+                                if (a.assigned_technician_ID.toLowerCase() > b.assigned_technician_ID.toLowerCase()) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
+                            }
+                        },
+                    ]}
                 />
             </MuiThemeProvider>
         );

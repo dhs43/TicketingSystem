@@ -84,7 +84,7 @@ class TicketPage extends Component {
             .then(data => {
                 data.forEach(item => {
                     var date = new Date(item.time_submitted * 1000);
-                    item.time_submitted = (date.getMonth()+1) + '/' + date.getDate() + '/' + date.getFullYear();
+                    item.time_submitted = (("0" + (date.getMonth() + 1)).slice(-2)) + '/' + (("0" + date.getDate()).slice(-2)) + '/' + date.getFullYear();
                 });
                 this.setState({ allOfTheTickets: data })
         })
