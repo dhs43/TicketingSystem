@@ -7,7 +7,7 @@ class Comment extends Component {
     render() {
         return (
             <Paper>
-                <div className="box">
+                <div className="commentBox">
                     <TimeAgo className="time-ago" date={this.props.creation_date} />
                     <h4>{this.props.author_ID}</h4>
                     <p>{this.props.text}</p>

@@ -42,6 +42,7 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
+// Assign a ticket to a technician
 router.post('/assign/:ticket_id/:technician_id', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;
     var technician_ID = req.params.technician_id;
@@ -56,8 +57,40 @@ router.post('/assign/:ticket_id/:technician_id', (req, res, next) => {
                 console.log(err);
                 res.send(err);
                 return null;
-            }else{
+            } else {
                 res.send("Ticket assigned successfully");
+            }
+        });
+        connection.release();
+    });
+});
+
+// Delete a tick
+router.get('/delete/:ticket_id', (req, res, next) => {
+    var ticket_ID = req.params.ticket_id;
+
+    var deleteCommentsStatement = "DELETE FROM comments \
+                                   WHERE ticket_ID = \"" + ticket_ID + "\";"
+
+    var deleteTicketStatement = "DELETE FROM ticket \
+                                 WHERE ticket_ID = \"" + ticket_ID + "\";"
+
+    getConnection(function (err, connection) {
+        connection.query(deleteCommentsStatement, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+                return null;
+            } else {
+                connection.query(deleteTicketStatement, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.send(err);
+                        return null;
+                    } else {
+                        res.send("Ticket deleted successfully");
+                    }
+                });
             }
         });
         connection.release();

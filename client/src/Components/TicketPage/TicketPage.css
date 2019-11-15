@@ -41,6 +41,13 @@
     border-color: #5C8021;
 }
 
+.ticketSubject
+{
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
 .description
 {
     padding-left: 20px;
@@ -53,6 +60,7 @@
     border-width: 1px;
     font-size: 1.2em;
     flex-direction: row;
+    white-space: pre-line;
 }
 
 .commentUI
@@ -117,4 +125,36 @@
     height: 40px;
     background-color: rgb(117, 164, 42);
     border-color: #5C8021;
+}
+
+.assignButtons
+{
+    float: right;
+}
+
+.assignButtons button
+{
+    background-color: transparent;
+    border-color: transparent;
+    line-height: 1.75;
+    margin: 1px;
+    padding: 2px 5px 2px 5px;
+}
+
+.assignButtons button:hover
+{
+    cursor: pointer;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    transition: 250ms
+}
+
+.deleteButton:hover
+{
+    color: red;
+}
+
+.acceptButton:hover
+{
+    color: green;
 }

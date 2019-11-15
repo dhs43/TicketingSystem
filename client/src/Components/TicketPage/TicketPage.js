@@ -25,7 +25,8 @@ class TicketPage extends Component {
                 "technician_ID": '',
                 "firstname": '',
                 "lastname": '',
-                "is_admin": false
+                "active_user": 0,
+                "is_admin": 0
             }
         };
 
@@ -40,6 +41,7 @@ class TicketPage extends Component {
         this.loadTechnician = this.loadTechnician.bind(this);
         this.submitTicketHandler = this.submitTicketHandler.bind(this);
         this.ticketManagement = this.ticketManagement.bind(this);
+        this.deleteTicketHandler = this.deleteTicketHandler.bind(this);
     }
 
     loadTechnician() {
@@ -62,7 +64,8 @@ class TicketPage extends Component {
                         technician_ID: data.technician_ID,
                         firstname: data.first_name,
                         lastname: data.last_name,
-                        is_admin: data.active_user
+                        active_user: data.active_user,
+                        is_admin: data.is_admin
                     }
                 }))
                 .catch(err => console.log(err))
@@ -88,8 +91,8 @@ class TicketPage extends Component {
                     var date = new Date(item.time_submitted * 1000);
                     item.time_submitted = (("0" + (date.getMonth() + 1)).slice(-2)) + '/' + (("0" + date.getDate()).slice(-2)) + '/' + date.getFullYear();
                 });
-                this.setState({ allOfTheTickets: data })
-        })
+                this.setState({ allOfTheTickets: data.reverse() })
+            })
             .catch(err => console.log(err))
     }
 
@@ -110,7 +113,7 @@ class TicketPage extends Component {
             .then(data => this.setState({ theTicket: data }))
             .catch(err => console.log(err));
 
-        this.loadAllComments(num);  
+        this.loadAllComments(num);
     }
 
     loadAllComments(num) {
@@ -131,7 +134,7 @@ class TicketPage extends Component {
     }
 
     handleSaveComment() {
-        if(this.state.newComment.trim() === '') {
+        if (this.state.newComment.trim() === '') {
             return null;
         }
 
@@ -161,7 +164,51 @@ class TicketPage extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
-    } 
+    }
+
+    submitTicketHandler() {
+        this.props.history.push('/SubmitTicket');
+    }
+
+    deleteTicketHandler() {
+        var this_ticket_id = this.state.theTicket.ticket_ID;
+        fetch('/tickets/delete/' + this_ticket_id, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+        })
+            .then(response => response.text())
+            .then(response => {
+                if (response === "Ticket deleted successfully") {
+                    this.setState({ theTicket: null });
+                    alert("Deleted ticket #" + this_ticket_id);
+                } else {
+                    alert("Error deleting ticket");
+                }
+            });
+    }
+
+    ticketManagement() {
+        if (this.state.loggedinTech.is_admin === 1) {
+            return (
+                <div className="assignButtons">
+                    <button
+                        className="deleteButton"
+                        onClick={this.deleteTicketHandler}>
+                        Delete
+                    </button>
+                    <button className="acceptButton"> Accept </button>
+                    <button> Assign </button>
+                </div>
+            );
+        } else {
+            return (
+                <div className="assignButtons">
+                    <button className="acceptButton"> Accept Ticket </button>
+                    <button> Assign Ticket </button>
+                </div>
+            );
+        }
+    }
 
     CreateCommentUI() {
         // Styles
@@ -177,16 +224,16 @@ class TicketPage extends Component {
                 <div className="theBox">
                     <MuiThemeProvider theme={theme}>
                         <TextField
-                        name = "newComment"
-                        value={this.state.newComment}
-                        onChange={e => this.changeHandler(e)}
-                        label="Add a comment..."
-                        fullWidth
-                        multiline
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
+                            name="newComment"
+                            value={this.state.newComment}
+                            onChange={e => this.changeHandler(e)}
+                            label="Add a comment..."
+                            fullWidth
+                            multiline
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="outlined"
                         />
                         <button
                             className="button"
@@ -195,24 +242,10 @@ class TicketPage extends Component {
                         </button>
                     </MuiThemeProvider>
                 </div>
-            )
+            );
         } else {
             return (<div />);
         }
-    }
-
-    submitTicketHandler() {
-        this.props.history.push('/SubmitTicket');
-    }
-
-    ticketManagement(num){
-       return(
-           <div>
-               <Button> Delete Ticket </Button>
-               <Button> Accept Ticket </Button>
-               <Button> Assign Ticket </Button>
-           </div>
-       ) ;
     }
 
     render() {
@@ -237,22 +270,22 @@ class TicketPage extends Component {
                     <div className="marginTop">
                         {this.state.theTicket === null ? null :
                             <div className="description">
-                                {this.ticketManagement(this.state.theTicket)}
-                                {this.state.theTicket === null ? null : <h3>{this.state.theTicket.subject}</h3>}
+                                <this.ticketManagement />
+                                {this.state.theTicket === null ? null : <h3 className="ticketSubject">{this.state.theTicket.subject}</h3>}
                                 {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
                             </div>
                         }
                     </div>
                     <div className="comment-area">
-                        {this.state.theTicket === null ? null : 
+                        {this.state.theTicket === null ? null :
                             <div className="commentUI">
                                 <this.CreateCommentUI />
                             </div>
-                        } 
-                        {this.state.theTicket === null ? null : 
+                        }
+                        {this.state.theTicket === null ? null :
                             this.state.allOfTheComments.slice().reverse().map((value, index) => {
-                            return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} creation_date={new Date(value.creation_date * 1000)} />
-                        })
+                                return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} creation_date={new Date(value.creation_date * 1000)} />
+                            })
                         }
                     </div>
                 </div>
