@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "./Main.css";
 
 import TicketPage from "../TicketPage/TicketPage";
+import DataViz from "../DataViz/DataViz";
 
 class Main extends Component {
     constructor(props) {
@@ -102,7 +103,7 @@ class Main extends Component {
                                 /> : null}
 
                             {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
-                            {(this.state.screen === "DataV") ? <p>Data Visualization</p> : null}
+                            {(this.state.screen === "DataV") ? <DataViz /> : null}
                         </div>
                     </div>
                 </div>
