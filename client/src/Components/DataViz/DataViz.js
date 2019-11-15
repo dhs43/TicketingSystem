@@ -7,7 +7,7 @@ class DataViz extends Component {
     render(){
         return(
           <div>
-              Data Visualization
+              <p> Data Visualization </p>
           </div>
         );
     }
