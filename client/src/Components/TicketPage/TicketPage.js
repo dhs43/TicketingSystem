@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from "@material-ui/core/TextField";
 import Comment from "../Comment/Comment.js";
@@ -38,6 +39,7 @@ class TicketPage extends Component {
         this.CreateCommentUI = this.CreateCommentUI.bind(this);
         this.loadTechnician = this.loadTechnician.bind(this);
         this.submitTicketHandler = this.submitTicketHandler.bind(this);
+        this.ticketManagement = this.ticketManagement.bind(this);
     }
 
     loadTechnician() {
@@ -203,6 +205,15 @@ class TicketPage extends Component {
         this.props.history.push('/SubmitTicket');
     }
 
+    ticketManagement(num){
+       return(
+           <div>
+               <Button> Delete Ticket </Button>
+               <Button> Accept Ticket </Button>
+               <Button> Assign Ticket </Button>
+           </div>
+       ) ;
+    }
 
     render() {
         if (this.state.loggedin === false) {
@@ -226,6 +237,7 @@ class TicketPage extends Component {
                     <div className="marginTop">
                         {this.state.theTicket === null ? null :
                             <div className="description">
+                                {this.ticketManagement(this.state.theTicket)}
                                 {this.state.theTicket === null ? null : <h3>{this.state.theTicket.subject}</h3>}
                                 {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
                             </div>
