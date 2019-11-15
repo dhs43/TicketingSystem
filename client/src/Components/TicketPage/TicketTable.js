@@ -103,7 +103,7 @@ class TicketTable extends Component {
                         <Toolbar>
                             <div className="toolbar">
                                 <FormControl>
-                                    <Select onChange={(event) => console.log(event.target.value)} defaultValue={'all'}>
+                                    <Select onChange={(event) => this.props.filterHandler(event.target.value)} defaultValue={'all'}>
                                         <MenuItem value='all'>All Tickets</MenuItem>
                                         <MenuItem value='my_tickets'>My Tickets</MenuItem>
                                         <MenuItem value='unassigned'>Unassigned</MenuItem>
