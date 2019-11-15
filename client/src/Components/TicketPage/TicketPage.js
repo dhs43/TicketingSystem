@@ -27,7 +27,8 @@ class TicketPage extends Component {
                 "lastname": '',
                 "active_user": 0,
                 "is_admin": 0
-            }
+            },
+            filter: 'all',
         };
 
         this.loadTechnician();
@@ -42,6 +43,8 @@ class TicketPage extends Component {
         this.submitTicketHandler = this.submitTicketHandler.bind(this);
         this.ticketManagement = this.ticketManagement.bind(this);
         this.deleteTicketHandler = this.deleteTicketHandler.bind(this);
+        this.acceptTicketHandler = this.acceptTicketHandler.bind(this);
+        this.filterHandler = this.filterHandler.bind(this);
     }
 
     loadTechnician() {
@@ -73,7 +76,63 @@ class TicketPage extends Component {
     }
 
     loadAllTickets() {
-        fetch('/tickets/all', {
+        console.log(this.state.filter)
+        if (this.state.filter === 'my_tickets') {
+            this.loadMyTickets();
+        } else if (this.state.filter === 'unassigned') {
+            this.loadUnassignedTickets();
+        } else {
+
+            fetch('/tickets/all', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.token
+                }
+            })
+                .then(function (response) {
+                    if (response.status === 403) {
+                        localStorage.removeItem('token');
+                        this.setState({ loggedin: false });
+                    } else {
+                        return response.json();
+                    }
+                }.bind(this))
+                .then(data => {
+                    data.forEach(item => {
+                        var date = new Date(item.time_submitted * 1000);
+                        item.time_submitted = (("0" + (date.getMonth() + 1)).slice(-2)) + '/' + (("0" + date.getDate()).slice(-2)) + '/' + date.getFullYear();
+                    });
+                    this.setState({ allOfTheTickets: data.reverse() })
+                })
+                .catch(err => console.log(err))
+        }
+    }
+
+    loadMyTickets() {
+        fetch('/tickets/my_tickets/' + this.state.loggedinTech.technician_ID, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token
+            }
+        })
+            .then(function (response) {
+                if (response.status === 403) {
+                    localStorage.removeItem('token');
+                    this.setState({ loggedin: false });
+                } else {
+                    return response.json();
+                }
+            }.bind(this))
+            .then(data => {
+                data.forEach(item => {
+                    var date = new Date(item.time_submitted * 1000);
+                    item.time_submitted = (("0" + (date.getMonth() + 1)).slice(-2)) + '/' + (("0" + date.getDate()).slice(-2)) + '/' + date.getFullYear();
+                });
+                this.setState({ allOfTheTickets: data.reverse() })
+            })
+            .catch(err => console.log(err))
+    }
+
+    loadUnassignedTickets() {
+        fetch('/tickets/unassigned', {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.token
             }
@@ -187,6 +246,28 @@ class TicketPage extends Component {
             });
     }
 
+    acceptTicketHandler() {
+        fetch('/tickets/assign/' + this.state.theTicket.ticket_ID + '/' + this.state.loggedinTech.technician_ID, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+        })
+            .then(response => response.text())
+            .then(response => {
+                if (response === "Ticket assigned successfully") {
+                    this.loadAllTickets();
+                } else {
+                    alert("Error assigning ticket");
+                }
+            });
+    }
+
+    filterHandler(value) {
+        this.setState({ filter: value }, function () {
+            this.loadAllTickets();
+        });
+        // run a fetch. make routes with sql queries matching filter.
+    }
+
     ticketManagement() {
         if (this.state.loggedinTech.is_admin === 1) {
             return (
@@ -196,7 +277,10 @@ class TicketPage extends Component {
                         onClick={this.deleteTicketHandler}>
                         Delete
                     </button>
-                    <button className="acceptButton"> Accept </button>
+                    <button
+                        className="acceptButton"
+                        onClick={this.acceptTicketHandler}>
+                        Accept </button>
                     <button> Assign </button>
                 </div>
             );
@@ -265,6 +349,7 @@ class TicketPage extends Component {
                         <TicketTable
                             allOfTheTickets={this.state.allOfTheTickets}
                             loadTicket={this.loadTicket}
+                            filterHandler={this.filterHandler}
                         />
                     </Paper>
                     <div className="marginTop">
