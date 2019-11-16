@@ -25,10 +25,17 @@ class TicketTable extends Component {
     constructor(props) {
         super(props);
         this.headCells = [
-            { id: 'ticket_ID', field: 'ticket_ID', title: 'ID', cellStyle: { minWidth: 5, width: '1%' } },
-            { id: 'subject', field: 'subject', title: 'Subject', cellStyle: { minWidth: 300, width: '55%' } },
             {
-                id: 'customer_ID', field: 'customer_ID', title: 'Customer', cellStyle: { minWidth: 60, width: '12%' },
+                id: 'ticket_ID',
+                field: 'ticket_ID',
+                title: 'ID',
+                cellStyle: { minWidth: 5, width: '1%' }
+            },
+            {
+                id: 'subject',
+                field: 'subject',
+                title: 'Subject',
+                cellStyle: { minWidth: 300, width: '55%' },
                 customSort: (a, b) => {
                     if (a.subject.toLowerCase() > b.subject.toLowerCase()) {
                         return 1;
@@ -38,7 +45,10 @@ class TicketTable extends Component {
                 }
             },
             {
-                id: 'severity', field: 'severity', title: 'Urgency', cellStyle: { minWidth: 50, width: '10%' },
+                id: 'customer_ID',
+                field: 'customer_ID',
+                title: 'Customer',
+                cellStyle: { minWidth: 60, width: '12%' },
                 customSort: (a, b) => {
                     if (a.customer_ID.toLowerCase() > b.customer_ID.toLowerCase()) {
                         return 1;
@@ -47,9 +57,11 @@ class TicketTable extends Component {
                     }
                 }
             },
-            { id: 'time_submitted', field: 'time_submitted', title: 'Date', cellStyle: { minWidth: 50, width: '10%' } },
             {
-                id: 'assigned_technician_ID', field: 'assigned_technician_ID', title: 'Assignee', cellStyle: { minWidth: 60, width: '12%' },
+                id: 'severity',
+                field: 'severity',
+                title: 'Urgency',
+                cellStyle: { minWidth: 50, width: '10%' },
                 customSort: (a, b) => {
                     if (a.severity === 'low') {
                         return -1;
@@ -59,6 +71,29 @@ class TicketTable extends Component {
                         return -1;
                     } else if (a.severity === b.severity) {
                         return 1;
+                    }
+                }
+            },
+            {
+                id: 'time_submitted',
+                field: 'time_submitted',
+                title: 'Date',
+                cellStyle: { minWidth: 50, width: '10%' },
+            },
+            {
+                id: 'assigned_technician_ID',
+                field: 'assigned_technician_ID',
+                title: 'Assignee',
+                cellStyle: { minWidth: 60, width: '12%' },
+                customSort: (a, b) => {
+                    if (a.assigned_technician_ID === null) {
+                        return 1;
+                    } else if (b.assigned_technician_ID === null) {
+                        return -1;
+                    } else if (a.assigned_technician_ID.toLowerCase() > b.assigned_technician_ID.toLowerCase()) {
+                        return 1;
+                    } else {
+                        return -1;
                     }
                 }
             },
@@ -116,7 +151,13 @@ class TicketTable extends Component {
                     icons={this.tableIcons}
                     data={this.props.allOfTheTickets}
                     onRowClick={(event, rowData) => (this.props.loadTicket(rowData.ticket_ID))}
-                    options={{ padding: 'dense', pageSize: 15, pageSizeOptions: [5, 15, 25, 50], rowStyle: { overflowY: 'scroll' } }}
+                    options={{
+                        padding: 'dense',
+                        pageSize: 15,
+                        pageSizeOptions: [5, 15, 25, 50],
+                        rowStyle: { overflowY: 'scroll' },
+                        sorting: true
+                    }}
                 />
             </MuiThemeProvider>
         );
