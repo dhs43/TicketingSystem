@@ -162,5 +162,23 @@ router.get('/getUser/:user_id', (req, res, next) => {
     });
 });
 
+router.get('/all_technicians', (req, res, next) => {
+    var statement = "SELECT * FROM technicians;"
+
+    getConnection(function (err, connection) {
+        connection.query(statement, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+                return null;
+            } else {
+                res.send(result);
+            }
+        });
+        connection.release();
+    });
+});
+
+
 
 module.exports = router;

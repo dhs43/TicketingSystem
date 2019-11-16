@@ -103,7 +103,7 @@ router.get('/assign/:ticket_id/:technician_id', (req, res, next) => {
     });
 });
 
-// Delete a tick
+// Delete a ticket
 router.get('/delete/:ticket_id', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;
 
