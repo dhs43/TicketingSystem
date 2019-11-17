@@ -34,9 +34,9 @@ router.post('/', (req, res, next) => {
     date = new Date();
 
     var ticketStatement = "INSERT INTO ticket \
-                    (subject, customer_ID, description, status, time_spent, time_submitted, location, severity) \
+                    (subject, customer_ID, customer_name, description, status, time_spent, time_submitted, location, severity) \
                     VALUES \
-                    (\"" + subject + "\", \"" + email + "\", \"" + description + "\", \"open\", 0, \"" + date.getTime() / 1000 + "\", \"" + location + "\", \"" + severity + "\");";
+                    (\"" + subject + "\", \"" + email + "\", \"" + firstname + " " + lastname + "\", \"" + description + "\", \"open\", 0, \"" + date.getTime() / 1000 + "\", \"" + location + "\", \"" + severity + "\");";
 
     var customerStatement = "INSERT INTO customer \
                     (customer_ID, first_name, last_name, phone_number, location) \

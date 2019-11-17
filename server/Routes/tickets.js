@@ -25,9 +25,9 @@ router.get('/all', (req, res, next) => {
 });
 
 // Get my tickets
-router.get('/my_tickets/:technician_ID', (req, res, next) => {
-    var technician_ID = req.params.technician_ID;
-    var statement = "SELECT * FROM ticket WHERE assigned_technician_ID = \"" + technician_ID + "\";";
+router.get('/my_tickets/:technician_name', (req, res, next) => {
+    var technician_name = req.params.technician_name;
+    var statement = "SELECT * FROM ticket WHERE assigned_technician = \"" + technician_name + "\";";
 
     getConnection(function (err, connection) {
         connection.query(statement, function (err, result) {
@@ -45,7 +45,7 @@ router.get('/my_tickets/:technician_ID', (req, res, next) => {
 
 // Get unassigned tickets
 router.get('/unassigned', (req, res, next) => {
-    var statement = "SELECT * FROM ticket WHERE assigned_technician_ID IS NULL;";
+    var statement = "SELECT * FROM ticket WHERE assigned_technician IS NULL;";
 
     getConnection(function (err, connection) {
         connection.query(statement, function (err, result) {
@@ -81,12 +81,12 @@ router.get('/:id', (req, res, next) => {
 });
 
 // Assign a ticket to a technician
-router.get('/assign/:ticket_id/:technician_id', (req, res, next) => {
+router.get('/assign/:ticket_id/:technician_name', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;
-    var technician_ID = req.params.technician_id;
+    var technician_name = req.params.technician_name;
 
     var statement = "UPDATE ticket \
-                     SET assigned_technician_ID = \"" + technician_ID + "\" \
+                     SET assigned_technician = \"" + technician_name + "\" \
                      WHERE ticket_ID = \"" + ticket_ID + "\";";
 
     getConnection(function (err, connection) {
