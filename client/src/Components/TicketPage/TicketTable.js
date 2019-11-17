@@ -45,12 +45,12 @@ class TicketTable extends Component {
                 }
             },
             {
-                id: 'customer_ID',
-                field: 'customer_ID',
-                title: 'Customer',
-                cellStyle: { minWidth: 60, width: '12%' },
+                id: 'customer_name',
+                field: 'customer_name',
+                title: 'Author',
+                cellStyle: { minWidth: 60, width: '15%' },
                 customSort: (a, b) => {
-                    if (a.customer_ID.toLowerCase() > b.customer_ID.toLowerCase()) {
+                    if (a.customer_name.toLowerCase() > b.customer_name.toLowerCase()) {
                         return 1;
                     } else {
                         return -1;
@@ -81,16 +81,16 @@ class TicketTable extends Component {
                 cellStyle: { minWidth: 50, width: '10%' },
             },
             {
-                id: 'assigned_technician_ID',
-                field: 'assigned_technician_ID',
+                id: 'assigned_technician',
+                field: 'assigned_technician',
                 title: 'Assignee',
-                cellStyle: { minWidth: 60, width: '12%' },
+                cellStyle: { minWidth: 100, width: '12%' },
                 customSort: (a, b) => {
-                    if (a.assigned_technician_ID === null) {
-                        return 1;
-                    } else if (b.assigned_technician_ID === null) {
+                    if (a.assigned_technician === null) {
                         return -1;
-                    } else if (a.assigned_technician_ID.toLowerCase() > b.assigned_technician_ID.toLowerCase()) {
+                    } else if (b.assigned_technician === null) {
+                        return 1;
+                    } else if (a.assigned_technician.toLowerCase() > b.assigned_technician.toLowerCase()) {
                         return 1;
                     } else {
                         return -1;
@@ -120,6 +120,7 @@ class TicketTable extends Component {
         };
 
     }
+
     render() {
         // Styles
         const theme = createMuiTheme({

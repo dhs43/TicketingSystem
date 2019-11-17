@@ -108,7 +108,7 @@ class TicketPage extends Component {
     }
 
     loadMyTickets() {
-        fetch('/tickets/my_tickets/' + this.state.loggedinTech.technician_ID, {
+        fetch('/tickets/my_tickets/' + this.state.loggedinTech.firstname + ' ' + this.state.loggedinTech.lastname, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.token
             }
@@ -230,24 +230,26 @@ class TicketPage extends Component {
     }
 
     deleteTicketHandler() {
-        var this_ticket_id = this.state.theTicket.ticket_ID;
-        fetch('/tickets/delete/' + this_ticket_id, {
-            method: 'get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
-        })
-            .then(response => response.text())
-            .then(response => {
-                if (response === "Ticket deleted successfully") {
-                    this.setState({ theTicket: null });
-                    alert("Deleted ticket #" + this_ticket_id);
-                } else {
-                    alert("Error deleting ticket");
-                }
-            });
+        if (window.confirm("Are you sure you'd like to delete this ticket?")) {
+            var this_ticket_id = this.state.theTicket.ticket_ID;
+            fetch('/tickets/delete/' + this_ticket_id, {
+                method: 'get',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+            })
+                .then(response => response.text())
+                .then(response => {
+                    if (response === "Ticket deleted successfully") {
+                        this.setState({ theTicket: null });
+                        alert("Deleted ticket #" + this_ticket_id);
+                    } else {
+                        alert("Error deleting ticket");
+                    }
+                });
+        }
     }
 
     acceptTicketHandler() {
-        fetch('/tickets/assign/' + this.state.theTicket.ticket_ID + '/' + this.state.loggedinTech.technician_ID, {
+        fetch('/tickets/assign/' + this.state.theTicket.ticket_ID + '/' + this.state.loggedinTech.firstname + ' ' + this.state.loggedinTech.lastname, {
             method: 'get',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
         })
@@ -269,29 +271,22 @@ class TicketPage extends Component {
     }
 
     ticketManagement() {
-        if (this.state.loggedinTech.is_admin === 1) {
-            return (
-                <div className="assignButtons">
-                    <button
-                        className="deleteButton"
-                        onClick={this.deleteTicketHandler}>
-                        Delete
+        return (
+            <div className="assignButtons">
+                {this.state.loggedinTech.is_admin === 1 ? <button
+                    className="deleteButton"
+                    onClick={this.deleteTicketHandler}>
+                    Delete
                     </button>
-                    <button
-                        className="acceptButton"
-                        onClick={this.acceptTicketHandler}>
-                        Accept </button>
-                    <button> Assign </button>
-                </div>
-            );
-        } else {
-            return (
-                <div className="assignButtons">
-                    <button className="acceptButton"> Accept Ticket </button>
-                    <button> Assign Ticket </button>
-                </div>
-            );
-        }
+                    : null}
+                {this.state.theTicket.assigned_technician !== this.state.loggedinTech.firstname + ' ' + this.state.loggedinTech.lastname ? <button
+                    className="acceptButton"
+                    onClick={this.acceptTicketHandler}>
+                    Accept </button>
+                    : null}
+                <button> Assign </button>
+            </div>
+        );
     }
 
     CreateCommentUI() {

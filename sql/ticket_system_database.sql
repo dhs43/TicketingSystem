@@ -14,8 +14,8 @@ DROP TABLE customer;
 CREATE TABLE customer
 (
  customer_ID varchar(55),
- first_name varchar(15),
- last_name varchar(15),
+ first_name varchar(25),
+ last_name varchar(25),
  phone_number char(12),
  location varchar(15),
  PRIMARY KEY (customer_ID)
@@ -63,7 +63,8 @@ CREATE TABLE ticket
   ticket_ID int auto_increment NOT NULL,
   subject varchar(100),
   customer_ID varchar(55),
-  assigned_technician_ID varchar(55),
+  customer_name varchar(51),
+  assigned_technician varchar(51),
   description text,
   status varchar(7), --open, closed, waiting
   time_spent int, --time in seconds
