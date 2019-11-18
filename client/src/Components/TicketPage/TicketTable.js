@@ -140,9 +140,10 @@ class TicketTable extends Component {
                             <div className="toolbar">
                                 <FormControl>
                                     <Select onChange={(event) => this.props.filterHandler(event.target.value)} defaultValue={'all'}>
-                                        <MenuItem value='all'>All Tickets</MenuItem>
+                                        <MenuItem value='all'>Open</MenuItem>
                                         <MenuItem value='my_tickets'>My Tickets</MenuItem>
                                         <MenuItem value='unassigned'>Unassigned</MenuItem>
+                                        <MenuItem value='closed'>Closed</MenuItem>
                                     </Select>
                                 </FormControl>
                             </div>
@@ -154,7 +155,7 @@ class TicketTable extends Component {
                     onRowClick={(event, rowData) => (this.props.loadTicket(rowData.ticket_ID))}
                     options={{
                         padding: 'dense',
-                        pageSize: 15,
+                        pageSize: 10,
                         pageSizeOptions: [5, 15, 25, 50],
                         rowStyle: { overflowY: 'scroll' },
                         sorting: true

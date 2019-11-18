@@ -32,8 +32,11 @@ class TicketPage extends Component {
         };
 
         this.loadTechnician();
-        this.loadAllTickets();
-        this.loadAllTickets = this.loadAllTickets.bind(this);
+        this.loadTickets();
+        this.loadTickets = this.loadTickets.bind(this);
+        this.loadMyTickets = this.loadMyTickets.bind(this);
+        this.loadUnassignedTickets = this.loadUnassignedTickets.bind(this);
+        this.loadClosedTickets = this.loadClosedTickets.bind(this);
         this.loadAllComments = this.loadAllComments.bind(this);
         this.loadTicket = this.loadTicket.bind(this);
         this.handleSaveComment = this.handleSaveComment.bind(this);
@@ -45,6 +48,7 @@ class TicketPage extends Component {
         this.deleteTicketHandler = this.deleteTicketHandler.bind(this);
         this.acceptTicketHandler = this.acceptTicketHandler.bind(this);
         this.filterHandler = this.filterHandler.bind(this);
+        this.updateStatus = this.updateStatus.bind(this);
     }
 
     loadTechnician() {
@@ -75,15 +79,16 @@ class TicketPage extends Component {
         }
     }
 
-    loadAllTickets() {
-        console.log(this.state.filter)
+    loadTickets() {
         if (this.state.filter === 'my_tickets') {
             this.loadMyTickets();
         } else if (this.state.filter === 'unassigned') {
             this.loadUnassignedTickets();
+        } else if (this.state.filter === 'closed') {
+            this.loadClosedTickets();
         } else {
 
-            fetch('/tickets/all', {
+            fetch('/tickets/open', {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.token
                 }
@@ -133,6 +138,30 @@ class TicketPage extends Component {
 
     loadUnassignedTickets() {
         fetch('/tickets/unassigned', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.token
+            }
+        })
+            .then(function (response) {
+                if (response.status === 403) {
+                    localStorage.removeItem('token');
+                    this.setState({ loggedin: false });
+                } else {
+                    return response.json();
+                }
+            }.bind(this))
+            .then(data => {
+                data.forEach(item => {
+                    var date = new Date(item.time_submitted * 1000);
+                    item.time_submitted = (("0" + (date.getMonth() + 1)).slice(-2)) + '/' + (("0" + date.getDate()).slice(-2)) + '/' + date.getFullYear();
+                });
+                this.setState({ allOfTheTickets: data.reverse() })
+            })
+            .catch(err => console.log(err))
+    }
+
+    loadClosedTickets() {
+        fetch('/tickets/closed', {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.token
             }
@@ -256,7 +285,7 @@ class TicketPage extends Component {
             .then(response => response.text())
             .then(response => {
                 if (response === "Ticket assigned successfully") {
-                    this.loadAllTickets();
+                    this.loadTickets();
                 } else {
                     alert("Error assigning ticket");
                 }
@@ -265,9 +294,49 @@ class TicketPage extends Component {
 
     filterHandler(value) {
         this.setState({ filter: value }, function () {
-            this.loadAllTickets();
+            this.loadTickets();
+            this.setState({theTicket: null});
         });
         // run a fetch. make routes with sql queries matching filter.
+    }
+
+    updateStatus(status) {
+        if (status === "close") {
+            fetch('/tickets/close/' + this.state.theTicket.ticket_ID, {
+                method: 'get',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+            })
+                .then(response => response.text())
+                .then(response => {
+                    if (response === "Ticket closed successfully") {
+                        this.loadTickets();
+                        var ticket_ID = this.state.theTicket.ticket_ID
+                        this.setState({theTicket: null});
+                        this.loadTicket(ticket_ID);
+                    } else {
+                        alert("Error closing status");
+                    }
+                });
+            return;
+        }
+        if (status === "not waiting" || status === "reopen") {
+            status = "open";
+        }
+        fetch('/tickets/update_status/' + this.state.theTicket.ticket_ID + '/' + status, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+        })
+            .then(response => response.text())
+            .then(response => {
+                if (response === "Ticket status updated successfully") {
+                    this.loadTickets();
+                    var ticket_ID = this.state.theTicket.ticket_ID
+                    this.setState({theTicket: null});
+                    this.loadTicket(ticket_ID);
+                } else {
+                    alert("Error updating ticket status");
+                }
+            });
     }
 
     ticketManagement() {
@@ -279,12 +348,26 @@ class TicketPage extends Component {
                     Delete
                     </button>
                     : null}
+                
                 {this.state.theTicket.assigned_technician !== this.state.loggedinTech.firstname + ' ' + this.state.loggedinTech.lastname ? <button
                     className="acceptButton"
                     onClick={this.acceptTicketHandler}>
                     Accept </button>
                     : null}
                 <button> Assign </button>
+
+                {this.state.theTicket.status === "open" || this.state.theTicket.status === "waiting"
+                    ?
+                <select onChange={(e) => this.updateStatus(e.target.value)} className="selectStatus">
+                    <option value="" selected disabled>{this.state.theTicket.status.charAt(0).toUpperCase() + this.state.theTicket.status.slice(1)}</option>
+                    <option value="close">Close</option>
+                    {this.state.theTicket.status === "open" ? <option value="waiting">Waiting</option> : <option value="not waiting">Not waiting</option>}
+                </select>
+                    :
+                <select onChange={(e) => this.updateStatus(e.target.value)} className="selectStatus">
+                    <option value="" selected disabled>{this.state.theTicket.status.charAt(0).toUpperCase() + this.state.theTicket.status.slice(1)}</option>
+                    <option value="reopen">Reopen</option>
+                </select>}
             </div>
         );
     }
