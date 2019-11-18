@@ -21,11 +21,11 @@ class Main extends Component {
     }
 
     componentDidMount() {
-        this.loadTicket();
+        this.loadTickets();
     }
 
-    loadTicket() {
-        fetch('/tickets/all', {
+    loadTickets() {
+        fetch('/tickets/open', {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.token
             }
