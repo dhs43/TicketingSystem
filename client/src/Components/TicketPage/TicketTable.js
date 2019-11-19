@@ -151,7 +151,7 @@ class TicketTable extends Component {
                                         <MenuItem value='closed'>Closed</MenuItem>
                                     </Select>
                                 </FormControl>
-                                <button className="createTicketButton" onClick={this.submitTicketHandler}>
+                                <button className="createTicketButton" onClick={this.props.submitTicketHandler}>
                                     Create Ticket
                                 </button>
                             </div>
