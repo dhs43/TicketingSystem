@@ -30,7 +30,7 @@ class SubmitTicket extends Component {
             submitted: false
         };
 
-        // taken from Home.js to handle user input and submission
+        // taken from Login.js to handle user input and submission
         this.changeHandler = this.changeHandler.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
     }
