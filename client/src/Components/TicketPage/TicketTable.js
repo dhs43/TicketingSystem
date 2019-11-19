@@ -24,6 +24,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 class TicketTable extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            selectedTicket: null
+        }
+
         this.headCells = [
             {
                 id: 'ticket_ID',
@@ -146,19 +151,25 @@ class TicketTable extends Component {
                                         <MenuItem value='closed'>Closed</MenuItem>
                                     </Select>
                                 </FormControl>
+                                <button className="createTicketButton" onClick={this.submitTicketHandler}>
+                                    Create Ticket
+                                </button>
                             </div>
                         </Toolbar>
                     }
                     className={"table"}
                     icons={this.tableIcons}
                     data={this.props.allOfTheTickets}
-                    onRowClick={(event, rowData) => (this.props.loadTicket(rowData.ticket_ID))}
+                    onRowClick={(event, rowData) => {
+                        this.setState({selectedTicket: rowData.ticket_ID});
+                        this.props.loadTicket(rowData.ticket_ID);
+                    }}
                     options={{
                         padding: 'dense',
                         pageSize: 10,
                         pageSizeOptions: [5, 15, 25, 50],
+                        sorting: true,
                         rowStyle: { overflowY: 'scroll' },
-                        sorting: true
                     }}
                 />
             </MuiThemeProvider>
