@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
 import TextField from "@material-ui/core/TextField";
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
@@ -417,13 +415,6 @@ class TicketPage extends Component {
             return (
                 <div>
                     <Paper>
-                        <Toolbar>
-                            <div className="toolbar">
-                                <button className="button2" onClick={this.submitTicketHandler}>
-                                    Create Ticket
-                                </button>
-                            </div>
-                        </Toolbar>
                         <TicketTable
                             allOfTheTickets={this.state.allOfTheTickets}
                             loadTicket={this.loadTicket}
