@@ -419,6 +419,7 @@ class TicketPage extends Component {
                             allOfTheTickets={this.state.allOfTheTickets}
                             loadTicket={this.loadTicket}
                             filterHandler={this.filterHandler}
+                            submitTicketHandler={this.submitTicketHandler}
                         />
                     </Paper>
                     <div className="marginTop">
