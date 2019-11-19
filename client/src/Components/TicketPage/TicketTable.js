@@ -167,9 +167,12 @@ class TicketTable extends Component {
                     options={{
                         padding: 'dense',
                         pageSize: 10,
-                        pageSizeOptions: [5, 15, 25, 50],
+                        pageSizeOptions: [], // [5, 15, 25, 50],
                         sorting: true,
-                        rowStyle: { overflowY: 'scroll' },
+                        rowStyle: rowData => ({ 
+                            overflowY: 'scroll',
+                            backgroundColor: this.state.selectedTicket === rowData.ticket_ID ? "#ffb54f" : "white"
+                        }),
                     }}
                 />
             </MuiThemeProvider>
