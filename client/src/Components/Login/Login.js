@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import TextField from '@material-ui/core/TextField';
-import "./Home.css";
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import "./Login.css";
 
 
-class Home extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
 
@@ -53,6 +54,15 @@ class Home extends Component {
     }
 
     render() {
+        // Styles
+        const theme = createMuiTheme({
+            palette: {
+                primary: { main: '#25551b' }, // orange
+                secondary: { main: '#FFA500' } // dark green
+            },
+        });
+
+
         if (localStorage.token !== undefined) {
             return <Redirect to='/Main' />
         } else {
@@ -79,35 +89,37 @@ class Home extends Component {
                             <button className="button" color="primary" variant="contained" onClick={this.submitTicketHandler}>
                                     SUBMIT TICKET
                             </button>
-                            <form className="loginFrame" onSubmit={e => this.submitHandler(e)}>
-                                <h5>
-                                    Technician Sign In
-                                </h5>
-                                <TextField
-                                    label="Email"
-                                    name="email"
-                                    variant="filled"
-                                    value={this.state.email}
-                                    onChange={e => this.changeHandler(e)}
-                                />
-                                <TextField
-                                    label="Password"
-                                    name="password"
-                                    margin="normal"
-                                    variant="filled"
-                                    type="password"
-                                    value={this.state.password}
-                                    onChange={e => this.changeHandler(e)}
-                                />
-                                <button
-                                    className="button"
-                                    color="primary"
-                                    variant="contained"
-                                    type="submit">
-                                    Login
-                                </button>
-                                <p>Don't have an account? Too bad!</p>
-                            </form>
+                            <MuiThemeProvider theme={theme}>
+                                <form className="loginFrame" onSubmit={e => this.submitHandler(e)}>
+                                    <h5>
+                                        Technician Sign In
+                                    </h5>
+                                    <TextField
+                                        label="Email"
+                                        name="email"
+                                        variant="filled"
+                                        value={this.state.email}
+                                        onChange={e => this.changeHandler(e)}
+                                    />
+                                    <TextField
+                                        label="Password"
+                                        name="password"
+                                        margin="normal"
+                                        variant="filled"
+                                        type="password"
+                                        value={this.state.password}
+                                        onChange={e => this.changeHandler(e)}
+                                    />
+                                    <button
+                                        className="button"
+                                        color="primary"
+                                        variant="contained"
+                                        type="submit">
+                                        Login
+                                    </button>
+                                    <p>Don't have an account? Too bad!</p>
+                                </form>
+                            </MuiThemeProvider>
                         </div>
                     </div>
                 </div>
@@ -116,4 +128,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default Login;
