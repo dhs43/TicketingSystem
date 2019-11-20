@@ -4,6 +4,9 @@ import Paper from '@material-ui/core/Paper';
 import TextField from "@material-ui/core/TextField";
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import "./TicketPage.css";
 
@@ -47,6 +50,7 @@ class TicketPage extends Component {
         this.acceptTicketHandler = this.acceptTicketHandler.bind(this);
         this.filterHandler = this.filterHandler.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
+        this.assignTicketHandler = this.assignTicketHandler.bind(this);
     }
 
     loadTechnician() {
@@ -289,6 +293,28 @@ class TicketPage extends Component {
                 }
             });
     }
+    assignTicketHandler(){
+        let techs = [];
+        fetch('/users/all_technicians', {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+            })
+            .then(response => response.json())
+            .then(response => {
+                for (let i =0; i < response.length; i++)
+                {
+                    techs.push(
+                        <option
+                            key={response[i].technician_ID}
+                            value={response[i].technician_ID}>
+                        {response[i].first_name + " " + response[i].last_name}
+                        </option>);
+                }
+                console.log(techs);
+                return techs;
+            })
+    }
+
 
     filterHandler(value) {
         this.setState({ filter: value }, function () {
@@ -352,7 +378,10 @@ class TicketPage extends Component {
                     onClick={this.acceptTicketHandler}>
                     Accept </button>
                     : null}
-                <button> Assign </button>
+
+                <select className="selectStatus">
+                    {this.assignTicketHandler()}
+                </select>
 
                 {this.state.theTicket.status === "open" || this.state.theTicket.status === "waiting"
                     ?
