@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import "./Main.css";
-
+import './MainActivity.css';
 import TicketPage from "../TicketPage/TicketPage";
 import DataViz from "../DataViz/DataViz";
+import bellIcon from '../../res/notification.svg';
+import Activity from '../Activity/Activity';
 
 class Main extends Component {
     constructor(props) {
         super(props);
-        this.state = { screen: "Tickets" };
+        this.state = { 
+            screen: "Tickets",
+            activity: "main_without_activity"
+        };
 
         // Redirect if not logged in
         if (localStorage.token === undefined) {
@@ -18,6 +23,7 @@ class Main extends Component {
         this.handleInventoryClick = this.handleInventoryClick.bind(this);
         this.handleDataVClick = this.handleDataVClick.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.toggleActivity = this.toggleActivity.bind(this);
     }
 
     componentDidMount() {
@@ -64,6 +70,14 @@ class Main extends Component {
         this.props.history.push('/');
     }
 
+    toggleActivity() {
+        if (this.state.activity === "main_without_activity") {
+            this.setState({activity: "main_with_activity"});
+        } else {
+            this.setState({activity: "main_without_activity"});
+        }
+    }
+
     render() {
         return (
             <div className="backdrop">
@@ -79,6 +93,9 @@ class Main extends Component {
                     <h1 className="title">
                         ResNet Helpdesk
                     </h1>
+                    <div className="notifications">
+                        <img src={bellIcon} className="bellIcon" onClick={this.toggleActivity} alt="bell icon" />
+                    </div>
                     <div className="logout">
                         <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
                     </div>
@@ -95,15 +112,18 @@ class Main extends Component {
                             Data Visualizer
                             </div>
                     </div>
-                    <div className="outline2">
-                        <div>
+                    <div>
+                        <div className={this.state.activity}>
                             {(this.state.screen === "Tickets") ?
-                                <TicketPage
+                                    <TicketPage
                                     history={this.props.history}
                                 /> : null}
 
                             {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
                             {(this.state.screen === "DataV") ? <DataViz /> : null}
+                        </div>
+                        <div id="activityWindow" className={this.state.activity}>
+                            {(this.state.activity === "main_with_activity") ? <Activity /> : null}
                         </div>
                     </div>
                 </div>

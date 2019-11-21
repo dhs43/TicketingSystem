@@ -413,7 +413,7 @@ class TicketPage extends Component {
             return <Redirect to='/' />
         } else {
             return (
-                <div>
+                <div className="ticketPage">
                     <Paper>
                         <TicketTable
                             allOfTheTickets={this.state.allOfTheTickets}
