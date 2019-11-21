@@ -5,6 +5,7 @@ const mysql = require('mysql');
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
+const fs = require('fs');
 router.use(bodyParser.json());
 
 if (dotenv.error) {
@@ -20,7 +21,9 @@ var mysql_pool = mysql.createPool({
     password: process.env.SQL_PASSWORD,
     database: 'ticket_system',
     port: 3306,
-    ssl: 'Amazon RDS'
+    ssl: {
+        ca: fs.readFileSync(__dirname + '/rds-ca-2019-root.pem')
+    }
 });
 
 var getConnection = function (callback) {

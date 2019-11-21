@@ -16,7 +16,6 @@
     height: 100%;
     width: 100%;
     min-width: 700px;
-    min-height: 1200px;
 }
 
 
@@ -46,20 +45,11 @@
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
 }
-.outline2
-{
-    background-color: #FFFFFF;
-    margin: 0 100px 0 100px;
-    height: 100%;
-    min-width: 350px;
-    padding: 5px;
-    min-height: 1200px;
-}
 
 .logout
 {
   margin-right: 100px;
-  margin-left: auto;
+  margin-left: 50px;
   margin-top: auto;
   margin-bottom: auto;
 }
@@ -202,6 +192,5 @@
 .outline
 {
     background-color: #F2F2F2;
-    height: 100%;
-    min-height: 1200px;
+    height: min-content;
 }
