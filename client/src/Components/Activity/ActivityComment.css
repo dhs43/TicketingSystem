@@ -1,0 +1,13 @@
+.activity_background
+{
+    position: relative;
+    padding: 10px;
+    margin-right: 5px;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.activity_comment
+{
+    padding: 5px;
+}
