@@ -171,7 +171,7 @@ class TicketTable extends Component {
                         sorting: true,
                         rowStyle: rowData => ({ 
                             overflowY: 'scroll',
-                            backgroundColor: this.state.selectedTicket === rowData.ticket_ID ? "#ffb54f" : "white"
+                            backgroundColor: this.state.selectedTicket === rowData.ticket_ID ? "#ffc266" : "white"
                         }),
                     }}
                 />

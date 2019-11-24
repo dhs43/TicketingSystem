@@ -9,6 +9,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import "./TicketPage.css";
+import { MarkAsRead } from '../Activity/Activity';
 
 class TicketPage extends Component {
     constructor(props) {
@@ -204,6 +205,7 @@ class TicketPage extends Component {
             .catch(err => console.log(err));
 
         this.loadAllComments(num);
+        MarkAsRead(num, this.state.loggedinTech.technician_ID);
     }
 
     loadAllComments(num) {
@@ -293,24 +295,23 @@ class TicketPage extends Component {
                 }
             });
     }
-    assignTicketHandler(){
+    assignTicketHandler() {
         let techs = [];
         fetch('/users/all_technicians', {
             method: 'get',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
-            })
+        })
             .then(response => response.json())
             .then(response => {
-                for (let i =0; i < response.length; i++)
-                {
+                for (let i = 0; i < response.length; i++) {
                     techs.push(
                         <option
                             key={response[i].technician_ID}
                             value={response[i].technician_ID}>
-                        {response[i].first_name + " " + response[i].last_name}
+                            {response[i].first_name + " " + response[i].last_name}
                         </option>);
                 }
-                console.log(techs);
+                //console.log(techs);
                 return techs;
             })
     }
@@ -319,7 +320,7 @@ class TicketPage extends Component {
     filterHandler(value) {
         this.setState({ filter: value }, function () {
             this.loadTickets();
-            this.setState({theTicket: null});
+            this.setState({ theTicket: null });
         });
         // run a fetch. make routes with sql queries matching filter.
     }
@@ -335,7 +336,7 @@ class TicketPage extends Component {
                     if (response === "Ticket closed successfully") {
                         this.loadTickets();
                         var ticket_ID = this.state.theTicket.ticket_ID
-                        this.setState({theTicket: null});
+                        this.setState({ theTicket: null });
                         this.loadTicket(ticket_ID);
                     } else {
                         alert("Error closing status");
@@ -355,7 +356,7 @@ class TicketPage extends Component {
                 if (response === "Ticket status updated successfully") {
                     this.loadTickets();
                     var ticket_ID = this.state.theTicket.ticket_ID
-                    this.setState({theTicket: null});
+                    this.setState({ theTicket: null });
                     this.loadTicket(ticket_ID);
                 } else {
                     alert("Error updating ticket status");
@@ -372,7 +373,7 @@ class TicketPage extends Component {
                     Delete
                     </button>
                     : null}
-                
+
                 {this.state.theTicket.assigned_technician !== this.state.loggedinTech.firstname + ' ' + this.state.loggedinTech.lastname ? <button
                     className="acceptButton"
                     onClick={this.acceptTicketHandler}>
@@ -385,16 +386,16 @@ class TicketPage extends Component {
 
                 {this.state.theTicket.status === "open" || this.state.theTicket.status === "waiting"
                     ?
-                <select onChange={(e) => this.updateStatus(e.target.value)} className="selectStatus">
-                    <option value="" selected disabled>{this.state.theTicket.status.charAt(0).toUpperCase() + this.state.theTicket.status.slice(1)}</option>
-                    <option value="close">Close</option>
-                    {this.state.theTicket.status === "open" ? <option value="waiting">Waiting</option> : <option value="not waiting">Not waiting</option>}
-                </select>
+                    <select onChange={(e) => this.updateStatus(e.target.value)} className="selectStatus">
+                        <option value="" selected disabled>{this.state.theTicket.status.charAt(0).toUpperCase() + this.state.theTicket.status.slice(1)}</option>
+                        <option value="close">Close</option>
+                        {this.state.theTicket.status === "open" ? <option value="waiting">Waiting</option> : <option value="not waiting">Not waiting</option>}
+                    </select>
                     :
-                <select onChange={(e) => this.updateStatus(e.target.value)} className="selectStatus">
-                    <option value="" selected disabled>{this.state.theTicket.status.charAt(0).toUpperCase() + this.state.theTicket.status.slice(1)}</option>
-                    <option value="reopen">Reopen</option>
-                </select>}
+                    <select onChange={(e) => this.updateStatus(e.target.value)} className="selectStatus">
+                        <option value="" selected disabled>{this.state.theTicket.status.charAt(0).toUpperCase() + this.state.theTicket.status.slice(1)}</option>
+                        <option value="reopen">Reopen</option>
+                    </select>}
             </div>
         );
     }

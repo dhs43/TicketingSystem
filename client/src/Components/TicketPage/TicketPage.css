@@ -61,6 +61,7 @@
     font-size: 1.2em;
     flex-direction: row;
     white-space: pre-line;
+    background-color: #FFFFFF;
 }
 
 .commentUI
@@ -81,6 +82,8 @@
 {
     margin: 10px;
     padding: 20px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
 }
 
 .textarea
