@@ -134,3 +134,20 @@ CREATE TABLE linked_devices
 );
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+/*
+-------------------- CREATING THE ACTIVITY TABLE --------------------
+*/
+
+DROP TABLE activity;
+
+CREATE TABLE activity
+(
+    technician_ID varchar(55) NOT NULL,
+    ticket_ID int NOT NULL,
+    last_seen_comment_ID int,
+    FOREIGN KEY(technician_ID) REFERENCES technicians(technician_ID),
+    FOREIGN KEY(last_seen_comment_ID) REFERENCES comments(comment_ID),
+    PRIMARY KEY(technician_ID, ticket_ID)
+);
