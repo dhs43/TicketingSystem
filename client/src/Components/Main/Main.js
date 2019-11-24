@@ -9,9 +9,10 @@ import Activity from '../Activity/Activity';
 class Main extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             screen: "Tickets",
-            activity: "main_without_activity"
+            activity: "main_without_activity",
+            notificationIcon: "unselected"
         };
 
         // Redirect if not logged in
@@ -72,9 +73,15 @@ class Main extends Component {
 
     toggleActivity() {
         if (this.state.activity === "main_without_activity") {
-            this.setState({activity: "main_with_activity"});
+            this.setState({
+                activity: "main_with_activity",
+                notificationIcon: "selected"
+            });
         } else {
-            this.setState({activity: "main_without_activity"});
+            this.setState({
+                activity: "main_without_activity",
+                notificationIcon: "unselected"
+            });
         }
     }
 
@@ -93,7 +100,7 @@ class Main extends Component {
                     <h1 className="title">
                         ResNet Helpdesk
                     </h1>
-                    <div className="notifications">
+                    <div id="notificationsButton" className={this.state.notificationIcon}>
                         <img src={bellIcon} className="bellIcon" onClick={this.toggleActivity} alt="bell icon" />
                     </div>
                     <div className="logout">
@@ -113,17 +120,19 @@ class Main extends Component {
                             </div>
                     </div>
                     <div>
-                        <div className={this.state.activity}>
-                            {(this.state.screen === "Tickets") ?
+                        <div id="main_grid" className={this.state.activity}>
+                            <div className={this.state.activity}>
+                                {(this.state.screen === "Tickets") ?
                                     <TicketPage
-                                    history={this.props.history}
-                                /> : null}
+                                        history={this.props.history}
+                                    /> : null}
 
-                            {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
-                            {(this.state.screen === "DataV") ? <DataViz /> : null}
-                        </div>
-                        <div id="activityWindow" className={this.state.activity}>
-                            {(this.state.activity === "main_with_activity") ? <Activity /> : null}
+                                {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
+                                {(this.state.screen === "DataV") ? <DataViz /> : null}
+                            </div>
+                            <div id="activityWindow" className={this.state.activity}>
+                                <Activity />
+                            </div>
                         </div>
                     </div>
                 </div>

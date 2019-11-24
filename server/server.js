@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const jwt = require('jsonwebtoken');
-const emailListener = require('./email'); // Do not remove
+const emailListener = require('./email'); // Do not remove--triggers file
 const PORT = process.env.PORT || 8000;
 
 // VERIFY LOGIN
@@ -36,12 +36,14 @@ const userRoutes = require('./Routes/users');
 const submitTicketRoute = require('./Routes/submitTicket');
 const ticketRoutes = require('./Routes/tickets');
 const commentRoutes = require('./Routes/comments');
+const activityRoutes = require('./Routes/activity');
 
 // ROUTES
 app.use('/users', userRoutes);
 app.use('/submitTicket', submitTicketRoute);
 app.use('/tickets', verifyToken, ticketRoutes);
 app.use('/comments', verifyToken, commentRoutes);
+app.use('/activity', verifyToken, activityRoutes);
 
 
 // ROUTE TO REACT CLIENT FILES
