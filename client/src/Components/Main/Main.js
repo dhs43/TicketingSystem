@@ -9,7 +9,7 @@ import Activity from '../Activity/Activity';
 class Main extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             screen: "Tickets",
             activity: "main_without_activity",
             notificationIcon: "unselected"
@@ -120,17 +120,19 @@ class Main extends Component {
                             </div>
                     </div>
                     <div>
-                        <div className={this.state.activity}>
-                            {(this.state.screen === "Tickets") ?
+                        <div id="main_grid" className={this.state.activity}>
+                            <div className={this.state.activity}>
+                                {(this.state.screen === "Tickets") ?
                                     <TicketPage
-                                    history={this.props.history}
-                                /> : null}
+                                        history={this.props.history}
+                                    /> : null}
 
-                            {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
-                            {(this.state.screen === "DataV") ? <DataViz /> : null}
-                        </div>
-                        <div id="activityWindow" className={this.state.activity}>
-                            <Activity />
+                                {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
+                                {(this.state.screen === "DataV") ? <DataViz /> : null}
+                            </div>
+                            <div id="activityWindow" className={this.state.activity}>
+                                <Activity />
+                            </div>
                         </div>
                     </div>
                 </div>
