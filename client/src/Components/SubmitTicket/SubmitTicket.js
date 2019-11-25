@@ -90,7 +90,7 @@ class SubmitTicket extends Component {
                 }
             });
 
-            this.props.history.push('/');
+        this.props.history.push('/');
 
     }
 
@@ -99,12 +99,12 @@ class SubmitTicket extends Component {
     render() {
         // Styles Radio buttons 
         const theme = createMuiTheme({
-        palette: {
-            primary: { main: '#5C8021' }, // Purple and green play nicely together.
-            secondary: { main: '#25551b' }, // This is just green.A700 as hex.
+            palette: {
+                primary: { main: '#5C8021' }, // Purple and green play nicely together.
+                secondary: { main: '#25551b' }, // This is just green.A700 as hex.
             },
         });
-        
+
         return (
             <div>
                 <div className="hsuheader1">
@@ -121,125 +121,125 @@ class SubmitTicket extends Component {
                     </h1>
                 </div>
                 <MuiThemeProvider theme={theme}>
-                <form className="submitTicket" onSubmit={e => this.submitHandler(e)}>
-                    <h1 className="submitTicketHeader"> Submit Ticket </h1>
-                    <TextField
-                        required
-                        className="medium"
-                        label="First Name"
-                        name="firstname"
-                        margin="normal"
-                        variant="filled"
-                        value={this.state.firstname}
-                        onChange={e => this.changeHandler(e)}
-                    />
-                    <TextField
-                        className="medium"
-                        label="Last Name"
-                        name="lastname"
-                        margin="normal"
-                        variant="filled"
-                        value={this.state.lastname}
-                        onChange={e => this.changeHandler(e)}
-                    />
-                    <TextField
-                        required
-                        className="medium"
-                        label="Student Email Address"
-                        name="email"
-                        margin="normal"
-                        variant="filled"
-                        value={this.state.email}
-                        onChange={e => this.changeHandler(e)}
-                    />
-                    <TextField
-                        className="medium"
-                        label="Phone Number"
-                        name="phone"
-                        margin="normal"
-                        variant="filled"
-                        value={this.state.phone}
-                        onChange={e => this.phoneChangeHandler(e)}
-                    />
-                    <FormLabel component="legend"> Location </FormLabel>
-                    <RadioGroup
-                        aria-label="location"
-                        name="location"
-                        value={this.state.location}
-                        onChange={e => this.changeHandler(e)}>
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="Canyon"
-                            value="canyon" />
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="The Hill"
-                            value="hill" />
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="Cypress"
-                            value="cypress" />
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="Creekview"
-                            value="creekview" />
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="Campus Apartments"
-                            value="campus_apartments" />
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="College Creek"
-                            value="college_creek" />
-                    </RadioGroup>
+                    <form className="submitTicket" onSubmit={e => this.submitHandler(e)}>
+                        <h1 className="submitTicketHeader"> Submit Ticket </h1>
+                        <TextField
+                            required
+                            className="medium"
+                            label="First Name"
+                            name="firstname"
+                            margin="normal"
+                            variant="filled"
+                            value={this.state.firstname}
+                            onChange={e => this.changeHandler(e)}
+                        />
+                        <TextField
+                            className="medium"
+                            label="Last Name"
+                            name="lastname"
+                            margin="normal"
+                            variant="filled"
+                            value={this.state.lastname}
+                            onChange={e => this.changeHandler(e)}
+                        />
+                        <TextField
+                            required
+                            className="medium"
+                            label="Student Email Address"
+                            name="email"
+                            margin="normal"
+                            variant="filled"
+                            value={this.state.email}
+                            onChange={e => this.changeHandler(e)}
+                        />
+                        <TextField
+                            className="medium"
+                            label="Phone Number"
+                            name="phone"
+                            margin="normal"
+                            variant="filled"
+                            value={this.state.phone}
+                            onChange={e => this.phoneChangeHandler(e)}
+                        />
+                        <FormLabel component="legend"> Location </FormLabel>
+                        <RadioGroup
+                            aria-label="location"
+                            name="location"
+                            value={this.state.location}
+                            onChange={e => this.changeHandler(e)}>
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="Canyon"
+                                value="canyon" />
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="The Hill"
+                                value="hill" />
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="Cypress"
+                                value="cypress" />
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="Creekview"
+                                value="creekview" />
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="Campus Apartments"
+                                value="campus_apartments" />
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="College Creek"
+                                value="college_creek" />
+                        </RadioGroup>
 
-                    <TextField
-                        required
-                        label="Ticket Subject"
-                        name="subject"
-                        margin="normal"
-                        variant="outlined"
-                        value={this.state.subject}
-                        onChange={e => this.changeHandler(e)}
-                    />
-                    <TextField
-                        required
-                        label="Description of Issue"
-                        name="description"
-                        multiline
-                        margin="normal"
-                        variant="outlined"
-                        rows="3"
-                        value={this.state.description}
-                        onChange={e => this.changeHandler(e)}
-                    />
-                    <FormLabel componet="legend" > Urgency </FormLabel>
-                    <RadioGroup
-                        aria-label="severity"
-                        name="severity"
-                        value={this.state.severity}
-                        onChange={e => this.changeHandler(e)}>
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="High"
-                            value="high" />
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="Medium"
-                            value="medium" />
-                        <FormControlLabel
-                            control={<Radio color="primary" />}
-                            label="Low"
-                            value="low" />
-                    </RadioGroup>
-                    <button
-                        className="submitTicketButton"
-                        color="primary"
-                        variant="contained"
-                        type="submit">
-                        Submit Ticket
+                        <TextField
+                            required
+                            label="Ticket Subject"
+                            name="subject"
+                            margin="normal"
+                            variant="outlined"
+                            value={this.state.subject}
+                            onChange={e => this.changeHandler(e)}
+                        />
+                        <TextField
+                            required
+                            label="Description of Issue"
+                            name="description"
+                            multiline
+                            margin="normal"
+                            variant="outlined"
+                            rows="3"
+                            value={this.state.description}
+                            onChange={e => this.changeHandler(e)}
+                        />
+                        <FormLabel componet="legend" > Urgency </FormLabel>
+                        <RadioGroup
+                            aria-label="severity"
+                            name="severity"
+                            value={this.state.severity}
+                            onChange={e => this.changeHandler(e)}>
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="High"
+                                value="high" />
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="Medium"
+                                value="medium" />
+                            <FormControlLabel
+                                control={<Radio color="primary" />}
+                                label="Low"
+                                value="low" />
+                        </RadioGroup>
+                        <button
+                            className="submitTicketButton"
+                            color="primary"
+                            variant="contained"
+                            type="submit">
+                            Submit Ticket
                     </button>
-                </form>
+                    </form>
                 </MuiThemeProvider>
             </div>
         );

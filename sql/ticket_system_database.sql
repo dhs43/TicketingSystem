@@ -6,22 +6,6 @@ SET SQL_SAFE_UPDATES = 0;
 
 
 /*
--------------------- CREATING THE CUSTOMER TABLE --------------------
-*/
-
-DROP TABLE customer;
-
-CREATE TABLE customer
-(
- customer_ID varchar(55),
- first_name varchar(25),
- last_name varchar(25),
- phone_number char(12),
- location varchar(15),
- PRIMARY KEY (customer_ID)
-);
-
-/*
 -------------------- CREATING THE TECHNICIAN TABLE --------------------
 */
 
@@ -72,7 +56,8 @@ CREATE TABLE ticket
   time_closed int, --time in seconds
   location varchar(55),
   severity varchar(6), --low, medium, high
-  FOREIGN KEY (customer_ID) REFERENCES customer(customer_ID),
+  phone_number char(12),
+  KEY customer_ID (customer_ID),
   PRIMARY KEY (ticket_ID)
 );
 
