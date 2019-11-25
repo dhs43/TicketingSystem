@@ -117,7 +117,7 @@ router.post('/newUser', (req, res, next) => {
 });
 
 
-// Get technician details
+// Get user details
 router.get('/getUser/:user_id', (req, res, next) => {
     var user_ID = req.params.user_id;
 
