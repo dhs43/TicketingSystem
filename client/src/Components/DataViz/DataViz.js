@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {max, scaleOrdinal,schemeSet2, pie, entries,arc, select } from  'd3';
+import callMe from './utils';
 
 class DataViz extends Component {
     constructor(props) {
@@ -7,9 +7,6 @@ class DataViz extends Component {
 
         this.windowHeight = window.innerHeight;
         this.windowWidth = window.innerWidth;
-        this.pieDimensions={w: this.windowWidth/4, h:this.windowHeight/4};
-        this.margin= 40;
-        this.radius = max(this.pieDimensions.w, this.pieDimensions.h) - this.margin;
 
         this.state = {
             allOfTheTickets: [],
@@ -54,37 +51,20 @@ class DataViz extends Component {
     }
 
     render(){
-        let data = {a: 9, b: 20, c:30, d:8, e:12};
-        let color = scaleOrdinal()
-            .domain(data)
-            .range(schemeSet2);
-
-        let mepie = pie()
-            .value(function(d) {return d.value; });
-
-        let data_ready = mepie(entries(data));
-
-        let arcGenerator = arc()
-            .innerRadius(0)
-            .outerRadius(this.radius);
-
         return(
-          <div>
-              <p>  Data Visualization  </p>
-              <svg
-                  width={this.windowWidth}
-                  height={this.windowHeight}
-              >
-                  <g
-                      transform={"translate(" + this.pieDimensions.w + "," + this.pieDimensions.h + ")"}
-                  >
-                      <circle x={0} y={50} r={100}> </circle>
-                  </g>
-              </svg>
-          </div>
+            <div id={"heyAllyouPeople"}>
+                <p> Data Visualization </p>
+                <svg
+                    transform={"translate(" + 0 + "," + 0 + ")"}
+                    width={this.windowWidth - 500}
+                    height={this.windowHeight - 200}
+                    id={'dashboard'}
+                >
+                    {callMe('#dashboard', this.state.allOfTheTickets)}
+                </svg>
+            </div>
         );
     }
-
 }
 
 export default DataViz;
