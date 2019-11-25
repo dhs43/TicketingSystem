@@ -52,6 +52,7 @@ class TicketPage extends Component {
         this.filterHandler = this.filterHandler.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
         this.assignTicketHandler = this.assignTicketHandler.bind(this);
+        this.LoadTicketDetails = this.LoadTicketDetails.bind(this);
     }
 
     loadTechnician() {
@@ -364,6 +365,29 @@ class TicketPage extends Component {
             });
     }
 
+    LoadTicketDetails() {
+        console.log("pee");
+        var user_phone = undefined;
+
+        fetch('/users/getUser/' + this.state.theTicket.customer_ID, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+        })
+            .then(response => response.json())
+            .then(response => {
+                if (response === "No matching user found") {
+                    console.log("Unable to fetch user details.");
+                } else {
+                    console.log(response.phone_number);
+                    user_phone = response.phone_number;
+                }
+            });
+
+        return (
+            <div>{user_phone}</div>
+        )
+    }
+
     ticketManagement() {
         return (
             <div className="assignButtons">
@@ -456,7 +480,12 @@ class TicketPage extends Component {
                         {this.state.theTicket === null ? null :
                             <div className="description">
                                 <this.ticketManagement />
-                                {this.state.theTicket === null ? null : <h3 className="ticketSubject">{this.state.theTicket.subject}</h3>}
+                                {this.state.theTicket === null ? null : 
+                                     <div> 
+                                          <h3 className="ticketSubject">{this.state.theTicket.subject}</h3>
+                                          <this.LoadTicketDetails />
+                                    </div>
+                                }
                                 {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
                             </div>
                         }
