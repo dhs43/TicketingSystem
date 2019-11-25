@@ -58,6 +58,38 @@ router.get('/mark_as_read/:ticket_id/:technician_id', (req, res, next) => {
     });
 });
 
+router.get('/get_activity/:technician_id', (req, res, next) => {
+    var technician_ID = req.params.technician_id;
+    var updates = undefined;
 
+    var statement = 'SELECT ticket_ID, MAX(comment_ID) comment_ID\
+                     FROM comments \
+                     GROUP BY ticket_ID;';
+
+    getConnection(function (err, connection) {
+        connection.query(statement, function(err, result) {
+            if (err) {
+                console.log(err);
+                res.send("Max comment error");
+                return null;
+            } else {
+                for (var i = 0; i < result.length; i++) {
+                    console.log(result[i]);
+                }
+                res.send(result);
+            }
+        });
+        connection.release();
+    });
+
+    // 1. Check which tickets have out-of-date last-read comments
+            // A. Fetch last comment_ID from all tickets
+            // B. Check if activity table shows technician has read it
+                    // 1. If not, add it to an activity list.
+                    // 2. If read, skip it
+    // 2. Fetch the most recent comments
+    // 3. Display those comments in the activity.
+    // 4. If the user clicks on one, it should load that ticket, which will then mark it as read.
+});
 
 module.exports = router;
