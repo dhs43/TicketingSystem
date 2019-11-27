@@ -3,9 +3,6 @@ import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
 import "./TicketPage.css";
 import { MarkAsRead } from '../Activity/Activity';
 import NewComment from './NewComment';
@@ -30,6 +27,7 @@ class TicketPage extends Component {
                 "is_admin": 0
             },
             filter: 'all',
+            technicians: [],
         };
 
         this.loadTechnician();
@@ -49,6 +47,7 @@ class TicketPage extends Component {
         this.updateStatus = this.updateStatus.bind(this);
         this.assignTicketHandler = this.assignTicketHandler.bind(this);
         this.RenderTicketDetails = this.RenderTicketDetails.bind(this);
+        this.makeDropDown = this.makeDropDown.bind(this);
     }
 
     loadTechnician() {
@@ -268,17 +267,33 @@ class TicketPage extends Component {
             .then(response => response.json())
             .then(response => {
                 for (let i = 0; i < response.length; i++) {
-                    techs.push(
-                        <option
-                            key={response[i].technician_ID}
-                            value={response[i].technician_ID}>
-                            {response[i].first_name + " " + response[i].last_name}
-                        </option>);
+                    if (response[i].technician_ID !== this.state.loggedinTech.technician_ID) {
+                        techs.push(
+                            {
+                                key: response[i].technician_ID,
+                                value: response[i].technician_ID,
+                                first_name: response[i].first_name,
+                                last_name: response[i].last_name,
+                            });
+                    }
                 }
-                //console.log(techs);
-                return techs;
-            })
+                this.setState({technicians: techs});
+            });
     }
+
+    makeDropDown(){
+            return(
+                <select onChange={(e) => this.updateStatus(e.target.value)} className="selectStatus">
+                    <option value="" selected disabled>Assign To Technician </option>
+                    {this.state.technicians.map(d=>
+                        <option key={d.key} value={d.value}>
+                            {d.first_name + " " + d.last_name}
+                        </option>
+                    )}
+                </select>
+            );
+    }
+
 
 
     filterHandler(value) {
@@ -329,6 +344,7 @@ class TicketPage extends Component {
     }
 
     ticketManagement() {
+        let techs = this.assignTicketHandler();
         return (
             <div className="assignButtons">
                 {this.state.loggedinTech.is_admin === 1 ? <button
@@ -344,9 +360,7 @@ class TicketPage extends Component {
                     Accept </button>
                     : null}
 
-                <select className="selectStatus">
-                    {this.assignTicketHandler()}
-                </select>
+                {this.makeDropDown()}
 
                 {this.state.theTicket.status === "open" || this.state.theTicket.status === "waiting"
                     ?
@@ -412,10 +426,9 @@ class TicketPage extends Component {
                         {this.state.theTicket === null ? null :
                             <div className="details">
                                 <this.ticketManagement />
-                                {console.log("WHY")}
                                 {this.state.theTicket === null ? null : <h3 className="ticketSubject">{this.state.theTicket.subject}</h3>}
                                 {this.state.theTicket === null ? null : <p className="ticketDescription">{this.state.theTicket.description}</p>}
-                                <this.RenderTicketDetails />
+                                {/*<this.RenderTicketDetails />*/}
                             </div>
                         }
                     </div>
