@@ -386,7 +386,7 @@ class TicketPage extends Component {
             return (
                 <div className="ticketDetails">
                     {this.state.theTicket.customer_name + "\n"}
-                    {this.state.theTicket.phone_number === "" ? null : "(" + this.state.theTicket.phone_number.slice(0, 3) + ")" + this.state.theTicket.phone_number.slice(4) + "\n"}
+                    { this.state.theTicket.phone_number === null || this.state.theTicket.phone_number === "" ? null : "(" + this.state.theTicket.phone_number.slice(0, 3) + ")" + this.state.theTicket.phone_number.slice(4) + "\n"}
                     {location + '\n'}
                     {this.state.theTicket.customer_ID + "\n"}
                 </div>
