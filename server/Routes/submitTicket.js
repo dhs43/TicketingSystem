@@ -44,50 +44,40 @@ router.post('/', (req, res, next) => {
                     (\"" + email + "\", \"" + firstname + "\", \"" + lastname + "\", \"" + phone + "\", \"" + location + "\") \
                     ON DUPLICATE KEY UPDATE first_name=\"" + firstname + "\", last_name=\"" + lastname + "\", phone_number=\"" + phone + "\", location=\"" + location + "\";";
 
-    getConnection(function (err, connection) {
-        connection.query(customerStatement, function (err, result) {
-            if (err) {
-                console.log(err);
-                res.send("Customer creation failed");
-                return null;
-            }
-        });
 
-        connection.query(ticketStatement, function (err, result) {
-            if (err) {
-                console.log(err);
-                res.send("Ticket creation failed");
-                return null;
-            } else {
-                // Email user confirmation
-                var emailStatement = "SELECT ticket_ID FROM ticket WHERE customer_ID = \"" + email + "\" ORDER BY time_submitted DESC;";
-                getConnection(function (err, emailConnection) {
-                    connection.query(emailStatement, function (err, result) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var mailOptions = {
-                                from: 'hsuhelpdeskproject@gmail.com',
-                                to: email,
-                                subject: 'ResNet - Ticket #' + result[0].ticket_ID,
-                                text: 'We have received your ticket and will respond ASAP! \n\nYour problem description:\n' + description + '\n\nReply to this email if you need to update your ticket.\nResNet Helpdesk - Ticket #' + result[0].ticket_ID
-                            };
+    connection.query(ticketStatement, function (err, result) {
+        if (err) {
+            console.log(err);
+            res.send("Ticket creation failed");
+            return null;
+        } else {
+            // Email user confirmation
+            var emailStatement = "SELECT ticket_ID FROM ticket WHERE customer_ID = \"" + email + "\" ORDER BY time_submitted DESC;";
+            getConnection(function (err, emailConnection) {
+                connection.query(emailStatement, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        var mailOptions = {
+                            from: 'hsuhelpdeskproject@gmail.com',
+                            to: email,
+                            subject: 'ResNet - Ticket #' + result[0].ticket_ID,
+                            text: 'We have received your ticket and will respond ASAP! \n\nYour problem description:\n' + description + '\n\nReply to this email if you need to update your ticket.\nResNet Helpdesk - Ticket #' + result[0].ticket_ID
+                        };
 
-                            transporter.sendMail(mailOptions, function (err, info) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    console.log("Confirmation email sent");
-                                }
-                            });
-                        }
-                    });
-                    emailConnection.release();
+                        transporter.sendMail(mailOptions, function (err, info) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("Confirmation email sent");
+                            }
+                        });
+                    }
                 });
-                res.send("Ticket created successfully");
-            }
-        });
-        connection.release();
+                emailConnection.release();
+            });
+            res.send("Ticket created successfully");
+        }
     });
 });
 

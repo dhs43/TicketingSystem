@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
-import TextField from "@material-ui/core/TextField";
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import "./TicketPage.css";
 import { MarkAsRead } from '../Activity/Activity';
+import NewComment from './NewComment';
 
 class TicketPage extends Component {
     constructor(props) {
@@ -41,9 +40,6 @@ class TicketPage extends Component {
         this.loadClosedTickets = this.loadClosedTickets.bind(this);
         this.loadAllComments = this.loadAllComments.bind(this);
         this.loadTicket = this.loadTicket.bind(this);
-        this.handleSaveComment = this.handleSaveComment.bind(this);
-        this.changeHandler = this.changeHandler.bind(this);
-        this.CreateCommentUI = this.CreateCommentUI.bind(this);
         this.loadTechnician = this.loadTechnician.bind(this);
         this.submitTicketHandler = this.submitTicketHandler.bind(this);
         this.ticketManagement = this.ticketManagement.bind(this);
@@ -52,7 +48,7 @@ class TicketPage extends Component {
         this.filterHandler = this.filterHandler.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
         this.assignTicketHandler = this.assignTicketHandler.bind(this);
-        this.LoadTicketDetails = this.LoadTicketDetails.bind(this);
+        this.RenderTicketDetails = this.RenderTicketDetails.bind(this);
     }
 
     loadTechnician() {
@@ -226,39 +222,6 @@ class TicketPage extends Component {
             .catch(err => console.log(err))
     }
 
-    handleSaveComment() {
-        if (this.state.newComment.trim() === '') {
-            return null;
-        }
-
-        fetch('/comments/new/' + this.state.theTicket.ticket_ID, {
-            method: 'post',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token },
-            body: JSON.stringify({
-                firstname: this.state.firstname,
-                author_id: this.state.loggedinTech.technician_ID,
-                author_name: this.state.loggedinTech.firstname + ' ' + this.state.loggedinTech.lastname,
-                text: this.state.newComment,
-                internal: this.state.internal
-            })
-        })
-            .then(response => response.text())
-            .then(response => {
-                if (response === "Comment created successfully") {
-                    this.setState({ newComment: '', internal: 'false' }); // Clear textbox
-                    this.loadAllComments(this.state.theTicket.ticket_ID);
-                } else {
-                    alert("Error submitting ticket");
-                }
-            });
-    }
-
-    changeHandler(e) {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-    }
-
     submitTicketHandler() {
         this.props.history.push('/SubmitTicket');
     }
@@ -365,29 +328,6 @@ class TicketPage extends Component {
             });
     }
 
-    LoadTicketDetails() {
-        console.log("pee");
-        var user_phone = undefined;
-
-        fetch('/users/getUser/' + this.state.theTicket.customer_ID, {
-            method: 'get',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
-        })
-            .then(response => response.json())
-            .then(response => {
-                if (response === "No matching user found") {
-                    console.log("Unable to fetch user details.");
-                } else {
-                    console.log(response.phone_number);
-                    user_phone = response.phone_number;
-                }
-            });
-
-        return (
-            <div>{user_phone}</div>
-        )
-    }
-
     ticketManagement() {
         return (
             <div className="assignButtons">
@@ -424,41 +364,33 @@ class TicketPage extends Component {
         );
     }
 
-    CreateCommentUI() {
-        // Styles
-        const theme = createMuiTheme({
-            palette: {
-                primary: { main: '#FFA500' }, // orange
-                secondary: { main: '#25551b' } // dark green
-            },
-        });
+    RenderTicketDetails() {
+        if (this.state.theTicket === null) {
+            return <div></div>;
+        } else {
+            var location = undefined;
+            if (this.state.theTicket.location === "canyon") {
+                location = "Canyon";
+            } else if (this.state.theTicket.location === "hill") {
+                location = "Hill";
+            } else if (this.state.theTicket.location === "cypress") {
+                location = "Cypress";
+            } else if (this.state.theTicket.location === "creekview") {
+                location = "Creekview";
+            } else if (this.state.theTicket.location === "campus_apartments") {
+                location = "Campus Apartments";
+            } else if (this.state.theTicket.location === "college_creek") {
+                location = "College Creek";
+            }
 
-        if (this.state.theTicket !== null && this.state.loggedinTech.technician_ID !== null) {
             return (
-                <div className="theBox">
-                    <MuiThemeProvider theme={theme}>
-                        <TextField
-                            name="newComment"
-                            value={this.state.newComment}
-                            onChange={e => this.changeHandler(e)}
-                            label="Add a comment..."
-                            fullWidth
-                            multiline
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            variant="outlined"
-                        />
-                        <button
-                            className="button"
-                            onClick={this.handleSaveComment}>
-                            Add Comment
-                        </button>
-                    </MuiThemeProvider>
+                <div className="ticketDetails">
+                    {this.state.theTicket.customer_name + "\n"}
+                    {this.state.theTicket.phone_number === "" ? null : "(" + this.state.theTicket.phone_number.slice(0, 3) + ")" + this.state.theTicket.phone_number.slice(4) + "\n"}
+                    {location + '\n'}
+                    {this.state.theTicket.customer_ID + "\n"}
                 </div>
             );
-        } else {
-            return (<div />);
         }
     }
 
@@ -478,22 +410,19 @@ class TicketPage extends Component {
                     </Paper>
                     <div className="marginTop">
                         {this.state.theTicket === null ? null :
-                            <div className="description">
+                            <div className="details">
                                 <this.ticketManagement />
-                                {this.state.theTicket === null ? null : 
-                                     <div> 
-                                          <h3 className="ticketSubject">{this.state.theTicket.subject}</h3>
-                                          <this.LoadTicketDetails />
-                                    </div>
-                                }
-                                {this.state.theTicket === null ? null : <p>{this.state.theTicket.description}</p>}
+                                {console.log("WHY")}
+                                {this.state.theTicket === null ? null : <h3 className="ticketSubject">{this.state.theTicket.subject}</h3>}
+                                {this.state.theTicket === null ? null : <p className="ticketDescription">{this.state.theTicket.description}</p>}
+                                <this.RenderTicketDetails />
                             </div>
                         }
                     </div>
                     <div className="comment-area">
                         {this.state.theTicket === null ? null :
                             <div className="commentUI">
-                                <this.CreateCommentUI />
+                                <NewComment theTicket={this.state.theTicket} loggedinTech={this.state.loggedinTech} loadAllComments={this.loadAllComments} />
                             </div>
                         }
                         {this.state.theTicket === null ? null :
