@@ -8,7 +8,6 @@ import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
 } from 'recharts';
 
-
 class DataViz extends Component {
     constructor(props) {
         super(props);
