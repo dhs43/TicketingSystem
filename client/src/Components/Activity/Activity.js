@@ -20,9 +20,27 @@ export function MarkAsRead(ticket_ID, technician_ID) {
 
 
 class Activity extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
+    constructor(props) {
+        super(props);
+
+        this.getActivity = this.getActivity.bind(this);
+        this.getActivity();
+    }
+
+    getActivity() {
+        fetch('/activity/get_activity/' + localStorage.user, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+        })
+            .then(response => response.text())
+            .then(response => {
+                if (response === "Max comment error") {
+                    console.log("Max comment error");
+                } else {
+                    console.log(response);
+                }
+            });
+    }
 
     render() {
         return (

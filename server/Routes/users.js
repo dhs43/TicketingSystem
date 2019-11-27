@@ -135,26 +135,7 @@ router.get('/getUser/:user_id', (req, res, next) => {
                     // Found a technician matching given ID
                     res.send(result[0]);
                 } else {
-
-                    // Look for matching customer
-                    var customerStatement = "SELECT * FROM customer WHERE customer_ID = \"" + user_ID + "\";";
-
-                    getConnection(function (err, customerConnection) {
-                        customerConnection.query(customerStatement, function (err, result) {
-                            if (err) {
-                                console.log(err);
-                                res.send(err);
-                                return null;
-                            } else {
-                                if (result[0] !== undefined) {
-                                    res.send(result[0]);
-                                } else {
-                                    res.send("No matching user found");
-                                }
-                            }
-                        });
-                        customerConnection.release();
-                    });
+                    res.send("No matching user found");
                 }
             }
         });
