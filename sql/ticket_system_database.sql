@@ -18,6 +18,7 @@ CREATE TABLE technicians
  last_name varchar(25),
  is_admin boolean,
  password varchar(95),
+ active_user boolean,
  PRIMARY KEY (technician_ID)
 );
 
@@ -75,6 +76,7 @@ CREATE TABLE comments
  creation_date int,
  last_edited int,
  internal boolean,
+ author_name varchar(51),
  text text,
  FOREIGN KEY (ticket_ID) REFERENCES ticket(ticket_ID),
  PRIMARY KEY (comment_ID)
