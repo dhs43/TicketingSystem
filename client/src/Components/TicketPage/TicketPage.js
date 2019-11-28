@@ -3,9 +3,6 @@ import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import Comment from "../Comment/Comment.js";
 import TicketTable from "./TicketTable";
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
 import "./TicketPage.css";
 import { MarkAsRead } from '../Activity/Activity';
 import NewComment from './NewComment';
@@ -31,6 +28,7 @@ class TicketPage extends Component {
             },
             allTechnicians: null,
             filter: 'all',
+            technicians: [],
         };
 
         this.loadTechnician();
@@ -52,6 +50,7 @@ class TicketPage extends Component {
         this.updateStatus = this.updateStatus.bind(this);
         this.loadAllTechnicians = this.loadAllTechnicians.bind(this);
         this.RenderTicketDetails = this.RenderTicketDetails.bind(this);
+        this.makeDropDown = this.makeDropDown.bind(this);
     }
 
     loadTechnician() {
@@ -291,6 +290,7 @@ class TicketPage extends Component {
     }
 
 
+
     filterHandler(value) {
         this.setState({ filter: value }, function () {
             this.loadTickets();
@@ -339,6 +339,7 @@ class TicketPage extends Component {
     }
 
     ticketManagement() {
+        let techs = this.assignTicketHandler();
         return (
             <div className="assignButtons">
                 {this.state.loggedinTech.is_admin === 1 ? <button
@@ -451,10 +452,9 @@ class TicketPage extends Component {
                         {this.state.theTicket === null ? null :
                             <div className="details">
                                 <this.ticketManagement />
-                                {console.log("WHY")}
                                 {this.state.theTicket === null ? null : <h3 className="ticketSubject">{this.state.theTicket.subject}</h3>}
                                 {this.state.theTicket === null ? null : <p className="ticketDescription">{this.state.theTicket.description}</p>}
-                                <this.RenderTicketDetails />
+                                {/*<this.RenderTicketDetails />*/}
                             </div>
                         }
                     </div>
