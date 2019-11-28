@@ -33,7 +33,8 @@ CREATE TABLE devices
  device_ID int auto_increment NOT NULL,
  serial_number varchar(20),
  model varchar(15),
- date_purchased date,
+ location varchar(20),
+ status text,
  PRIMARY KEY (device_ID)
 );
 
@@ -51,12 +52,12 @@ CREATE TABLE ticket
   customer_name varchar(51),
   assigned_technician varchar(51),
   description text,
-  status varchar(7), --open, closed, waiting
-  time_spent int, --time in seconds
-  time_submitted int, --time in seconds 
-  time_closed int, --time in seconds
+  status varchar(7), /*open, closed, waiting */
+  time_spent int, /*time in seconds*/
+  time_submitted int, /*time in seconds*/ 
+  time_closed int, /*time in seconds*/
   location varchar(55),
-  severity varchar(6), --low, medium, high
+  severity varchar(6), /*low, medium, high*/
   phone_number char(12),
   KEY customer_ID (customer_ID),
   PRIMARY KEY (ticket_ID)
