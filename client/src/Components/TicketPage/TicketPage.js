@@ -50,7 +50,6 @@ class TicketPage extends Component {
         this.updateStatus = this.updateStatus.bind(this);
         this.loadAllTechnicians = this.loadAllTechnicians.bind(this);
         this.RenderTicketDetails = this.RenderTicketDetails.bind(this);
-        this.makeDropDown = this.makeDropDown.bind(this);
     }
 
     loadTechnician() {
