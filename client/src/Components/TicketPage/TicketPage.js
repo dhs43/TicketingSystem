@@ -29,11 +29,13 @@ class TicketPage extends Component {
                 "active_user": 0,
                 "is_admin": 0
             },
+            allTechnicians: null,
             filter: 'all',
         };
 
         this.loadTechnician();
         this.loadTickets();
+        this.loadAllTechnicians();
         this.loadTickets = this.loadTickets.bind(this);
         this.loadMyTickets = this.loadMyTickets.bind(this);
         this.loadUnassignedTickets = this.loadUnassignedTickets.bind(this);
@@ -45,9 +47,10 @@ class TicketPage extends Component {
         this.ticketManagement = this.ticketManagement.bind(this);
         this.deleteTicketHandler = this.deleteTicketHandler.bind(this);
         this.acceptTicketHandler = this.acceptTicketHandler.bind(this);
+        this.assignTicketHandler = this.assignTicketHandler.bind(this);
         this.filterHandler = this.filterHandler.bind(this);
         this.updateStatus = this.updateStatus.bind(this);
-        this.assignTicketHandler = this.assignTicketHandler.bind(this);
+        this.loadAllTechnicians = this.loadAllTechnicians.bind(this);
         this.RenderTicketDetails = this.RenderTicketDetails.bind(this);
     }
 
@@ -245,6 +248,21 @@ class TicketPage extends Component {
         }
     }
 
+    assignTicketHandler(technician_name) {
+        fetch('/tickets/assign/' + this.state.theTicket.ticket_ID + '/' + technician_name, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
+        })
+            .then(response => response.text())
+            .then(response => {
+                if (response === "Ticket assigned successfully") {
+                    this.loadTickets();
+                } else {
+                    alert("Error assigning ticket");
+                }
+            });
+    }
+
     acceptTicketHandler() {
         fetch('/tickets/assign/' + this.state.theTicket.ticket_ID + '/' + this.state.loggedinTech.firstname + ' ' + this.state.loggedinTech.lastname, {
             method: 'get',
@@ -259,7 +277,8 @@ class TicketPage extends Component {
                 }
             });
     }
-    assignTicketHandler() {
+
+    loadAllTechnicians() {
         let techs = [];
         fetch('/users/all_technicians', {
             method: 'get',
@@ -267,17 +286,8 @@ class TicketPage extends Component {
         })
             .then(response => response.json())
             .then(response => {
-                for (let i = 0; i < response.length; i++) {
-                    techs.push(
-                        <option
-                            key={response[i].technician_ID}
-                            value={response[i].technician_ID}>
-                            {response[i].first_name + " " + response[i].last_name}
-                        </option>);
-                }
-                //console.log(techs);
-                return techs;
-            })
+                this.setState({allTechnicians: response})
+            });
     }
 
 
@@ -344,8 +354,37 @@ class TicketPage extends Component {
                     Accept </button>
                     : null}
 
-                <select className="selectStatus">
-                    {this.assignTicketHandler()}
+                <select className="selectStatus" onChange={(e) => this.assignTicketHandler(e.target.value)}>
+                    {this.state.theTicket.assigned_technician === null ? <option value="" selected="selected" disabled>Assign</option> : null}
+                    {this.state.allTechnicians === null
+                        ?
+                        null
+                        :
+                        this.state.allTechnicians.map((tech, i) => {
+                            var full_name = tech.first_name + " " + tech.last_name;
+                            if (this.state.theTicket.assigned_technician === null) {
+                                return (
+                                    <option
+                                        selected={this.state.theTicket.assigned_technician === full_name ? "selected" : ""}
+                                        disabled={this.state.theTicket.assigned_technician === full_name ? "disabled" : ""}
+                                        key={tech.technician_ID}
+                                        value={full_name}>
+                                        {full_name}
+                                    </option>
+                                )
+                            } else {
+                                return (
+                                    <option
+                                        selected={this.state.theTicket.assigned_technician === full_name ? "selected" : ""}
+                                        disabled={this.state.theTicket.assigned_technician === full_name ? "disabled" : ""}
+                                        key={tech.technician_ID}
+                                        value={full_name}>
+                                        {full_name}
+                                    </option>
+                                )
+                            }
+                        })
+                    }
                 </select>
 
                 {this.state.theTicket.status === "open" || this.state.theTicket.status === "waiting"
