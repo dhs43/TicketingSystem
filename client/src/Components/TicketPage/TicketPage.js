@@ -247,6 +247,10 @@ class TicketPage extends Component {
     }
 
     assignTicketHandler(technician_name) {
+        if (technician_name === undefined) {
+            return;
+        }
+
         fetch('/tickets/assign/' + this.state.theTicket.ticket_ID + '/' + technician_name, {
             method: 'get',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
@@ -425,7 +429,7 @@ class TicketPage extends Component {
             return (
                 <div className="ticketDetails">
                     {this.state.theTicket.customer_name + "\n"}
-                    { this.state.theTicket.phone_number === null || this.state.theTicket.phone_number === "" ? null : "(" + this.state.theTicket.phone_number.slice(0, 3) + ")" + this.state.theTicket.phone_number.slice(4) + "\n"}
+                    {this.state.theTicket.phone_number === null || this.state.theTicket.phone_number === "" ? null : "(" + this.state.theTicket.phone_number.slice(0, 3) + ")" + this.state.theTicket.phone_number.slice(4) + "\n"}
                     {location + '\n'}
                     {this.state.theTicket.customer_ID + "\n"}
                 </div>
@@ -453,7 +457,7 @@ class TicketPage extends Component {
                                 <this.ticketManagement />
                                 {this.state.theTicket === null ? null : <h3 className="ticketSubject">{this.state.theTicket.subject}</h3>}
                                 {this.state.theTicket === null ? null : <p className="ticketDescription">{this.state.theTicket.description}</p>}
-                                {/*<this.RenderTicketDetails />*/}
+                                <this.RenderTicketDetails />
                             </div>
                         }
                     </div>

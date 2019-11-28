@@ -36,48 +36,43 @@ router.post('/', (req, res, next) => {
     var ticketStatement = "INSERT INTO ticket \
                     (subject, customer_ID, customer_name, description, status, time_spent, time_submitted, location, severity) \
                     VALUES \
-                    (\"" + subject + "\", \"" + email + "\", \"" + firstname + " " + lastname + "\", \"" + description + "\", \"open\", 0, \"" + date.getTime() / 1000 + "\", \"" + location + "\", \"" + severity + "\");";
+                    (\"" + subject + "\", \"" + email + "\", \"" + firstname + " " + lastname + "\", \"" + description + "\", \"open\", 0, \"" + date.getTime() / 1000 + "\", \"" + location + "\", \"" + severity + "\", \"" + phone + "\");";
 
-    var customerStatement = "INSERT INTO customer \
-                    (customer_ID, first_name, last_name, phone_number, location) \
-                    VALUES \
-                    (\"" + email + "\", \"" + firstname + "\", \"" + lastname + "\", \"" + phone + "\", \"" + location + "\") \
-                    ON DUPLICATE KEY UPDATE first_name=\"" + firstname + "\", last_name=\"" + lastname + "\", phone_number=\"" + phone + "\", location=\"" + location + "\";";
-
-
-    connection.query(ticketStatement, function (err, result) {
-        if (err) {
-            console.log(err);
-            res.send("Ticket creation failed");
-            return null;
-        } else {
-            // Email user confirmation
-            var emailStatement = "SELECT ticket_ID FROM ticket WHERE customer_ID = \"" + email + "\" ORDER BY time_submitted DESC;";
-            getConnection(function (err, emailConnection) {
-                connection.query(emailStatement, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        var mailOptions = {
-                            from: 'hsuhelpdeskproject@gmail.com',
-                            to: email,
-                            subject: 'ResNet - Ticket #' + result[0].ticket_ID,
-                            text: 'We have received your ticket and will respond ASAP! \n\nYour problem description:\n' + description + '\n\nReply to this email if you need to update your ticket.\nResNet Helpdesk - Ticket #' + result[0].ticket_ID
-                        };
-
-                        transporter.sendMail(mailOptions, function (err, info) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                console.log("Confirmation email sent");
-                            }
-                        });
-                    }
+    getConnection(function (err, ticketConnection) {
+        ticketConnection.query(ticketStatement, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send("Ticket creation failed");
+                return null;
+            } else {
+                // Email user confirmation
+                var emailStatement = "SELECT ticket_ID FROM ticket WHERE customer_ID = \"" + email + "\" ORDER BY time_submitted DESC;";
+                getConnection(function (err, emailConnection) {
+                    emailConnection.query(emailStatement, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            var mailOptions = {
+                                from: 'hsuhelpdeskproject@gmail.com',
+                                to: email,
+                                subject: 'ResNet - Ticket #' + result[0].ticket_ID,
+                                text: 'We have received your ticket and will respond ASAP! \n\nYour problem description:\n' + description + '\n\nReply to this email if you need to update your ticket.\nResNet Helpdesk - Ticket #' + result[0].ticket_ID
+                            };
+    
+                            transporter.sendMail(mailOptions, function (err, info) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log("Confirmation email sent");
+                                }
+                            });
+                        }
+                    });
+                    emailConnection.release();
                 });
-                emailConnection.release();
-            });
-            res.send("Ticket created successfully");
-        }
+                res.send("Ticket created successfully");
+            }
+        });
     });
 });
 

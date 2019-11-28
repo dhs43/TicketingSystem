@@ -56,7 +56,7 @@ mailListener.on("mail", function (mail, seqno, attributes) {
     }
 
     // Before inserting a new comment, ensure the person emailing is the original author of the ticket
-    var customerStatement = "SELECT customer_name customer_ID FROM ticket WHERE ticket_ID = " + ticket_ID + ";";
+    var customerStatement = "SELECT customer_name, customer_ID FROM ticket WHERE ticket_ID = " + ticket_ID + ";";
 
     getConnection(function (err, connection) {
         connection.query(customerStatement, function (err, result) {
