@@ -46,7 +46,7 @@ class AreaGraph extends Component {
     render(){
         return(
             <AreaChart
-                width={this.props.width/2}
+                width={this.props.width/2.5}
                 height={this.props.height/2}
                 data={this.getTime(this.props.data)}
                 margin={{top:10, right:30, left:0, bottom: 0}}
@@ -55,7 +55,7 @@ class AreaGraph extends Component {
                 <XAxis dataKey="day" />
                 <YAxis dataKey="value" />
                 <Tooltip />
-                <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
+                <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#6a1b9a" />
             </AreaChart>
         );
     }

@@ -47,7 +47,7 @@ class LocationGraph extends Component {
     render(){
         return(
             <BarChart
-                width={this.props.width/1.5}
+                width={this.props.width/2.5}
                 height={this.props.height/2}
                 data={this.getLocation(this.props.data)}
                 margin={{
@@ -58,7 +58,7 @@ class LocationGraph extends Component {
                 <XAxis dataKey="location" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="value" fill="#8884d8" />
+                <Bar dataKey="value" fill="#26a69a" />
             </BarChart>
         );
     }

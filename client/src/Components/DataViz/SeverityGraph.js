@@ -31,7 +31,7 @@ class SeverityGraph extends Component {
     render() {
         return (
             <BarChart
-                width={this.props.width/1.5}
+                width={this.props.width/2.5}
                 height={this.props.height/2}
                 data={this.getSeverity(this.props.data)}
                 margin={{
@@ -42,7 +42,7 @@ class SeverityGraph extends Component {
                 <XAxis dataKey="severity" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="value" fill="#8884d8" />
+                <Bar dataKey="value" fill="#3f51b5" />
             </BarChart>
         )
     }
