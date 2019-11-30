@@ -281,7 +281,6 @@ class TicketPage extends Component {
     }
 
     loadAllTechnicians() {
-        let techs = [];
         fetch('/users/all_technicians', {
             method: 'get',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
@@ -342,7 +341,6 @@ class TicketPage extends Component {
     }
 
     ticketManagement() {
-        let techs = this.assignTicketHandler();
         return (
             <div className="assignButtons">
                 {this.state.loggedinTech.is_admin === 1 ? <button
@@ -430,7 +428,7 @@ class TicketPage extends Component {
                 <div className="ticketDetails">
                     {this.state.theTicket.customer_name + "\n"}
                     {this.state.theTicket.phone_number === null || this.state.theTicket.phone_number === "" ? null : "(" + this.state.theTicket.phone_number.slice(0, 3) + ")" + this.state.theTicket.phone_number.slice(4) + "\n"}
-                    {location + '\n'}
+                    {this.state.theTicket.location === "" ? null : location + '\n'}
                     {this.state.theTicket.customer_ID + "\n"}
                 </div>
             );
