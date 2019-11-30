@@ -64,19 +64,37 @@ class SubmitTicket extends Component {
     submitHandler(e) {
         e.preventDefault();
 
-        console.log(this.state);
+        if (this.state.firstname.trim() === "") {
+            alert("Please enter your first name");
+            return;
+        }
+
+        const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
+        if (this.state.email.trim() === "" || !emailRegex.test(this.state.email.trim())) {
+            alert("Please enter a valid email");
+            return;
+        }
+
+        if (this.state.subject.trim() === "") {
+            alert("Please enter a ticket subject");
+            return;
+        }
+        if (this.state.description.trim() === "") {
+            alert("Please enter a ticket description");
+            return;
+        }
 
         fetch('/submitTicket/', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                firstname: this.state.firstname,
-                lastname: this.state.lastname,
-                email: this.state.email,
-                phone: this.state.phone,
-                location: this.state.location,
-                subject: this.state.subject,
-                description: this.state.description,
+                firstname: this.state.firstname.trim(),
+                lastname: this.state.lastname.trim(),
+                email: this.state.email.trim(),
+                phone: this.state.phone.trim(),
+                location: this.state.location.trim(),
+                subject: this.state.subject.trim(),
+                description: this.state.description.trim(),
                 severity: this.state.severity
             })
         })

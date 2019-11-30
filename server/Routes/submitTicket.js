@@ -22,6 +22,7 @@ var transporter = nodemailer.createTransport({
 
 // Submit ticket route
 router.post('/', (req, res, next) => {
+
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
     var email = req.body.email;
@@ -34,7 +35,7 @@ router.post('/', (req, res, next) => {
     date = new Date();
 
     var ticketStatement = "INSERT INTO ticket \
-                    (subject, customer_ID, customer_name, description, status, time_spent, time_submitted, location, severity) \
+                    (subject, customer_ID, customer_name, description, status, time_spent, time_submitted, location, severity, phone_number) \
                     VALUES \
                     (\"" + subject + "\", \"" + email + "\", \"" + firstname + " " + lastname + "\", \"" + description + "\", \"open\", 0, \"" + date.getTime() / 1000 + "\", \"" + location + "\", \"" + severity + "\", \"" + phone + "\");";
 

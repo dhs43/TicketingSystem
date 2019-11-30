@@ -8,7 +8,7 @@ import LocationGraph from "./LocationGraph";
 import SeverityGraph from "./SeverityGraph";
 
 import "./DataViz.css";
-const prettySeconds = require('pretty-seconds');
+//const prettySeconds = require('pretty-seconds');
 
 class DataViz extends Component {
     constructor(props) {
@@ -57,7 +57,7 @@ class DataViz extends Component {
                 .then(data => {
                     this.setState({ allOfTheTickets: data.reverse() });
                     this.sortTickets(7);
-                    this.setState({total_time: prettySeconds(this.calculateTime(this.state.allOfTheTickets))});
+                    //this.setState({total_time: prettySeconds(this.calculateTime(this.state.allOfTheTickets))});
                 })
                 .catch(err => console.log(err))
         }
@@ -80,7 +80,7 @@ class DataViz extends Component {
             relevant_tickets: tickets,
         });
         this.setState({
-            relevant_time: prettySeconds(this.calculateTime(this.state.relevant_tickets))
+            //relevant_time: prettySeconds(this.calculateTime(this.state.relevant_tickets))
         });
         return tickets;
     }
