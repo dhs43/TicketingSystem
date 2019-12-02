@@ -10,6 +10,7 @@ import SeverityGraph from "./SeverityGraph";
 import format from 'format-duration';
 
 import "./DataViz.css";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 
 class DataViz extends Component {
     constructor(props) {
@@ -105,8 +106,18 @@ class DataViz extends Component {
             });
         };
 
+        //styles
+        const theme = createMuiTheme({
+            palette: {
+                primary: { main: '#FFA500' }, // orange
+                secondary: { main: '#25551b' } // dark green
+            },
+        });
+
+
         return(
             <div>
+                <MuiThemeProvider theme={theme}>
                     <h1 className={"dataTitle"}> Ticket Data </h1>
                     <FormControl className={"selectTimeframe"}>
                         <FormHelperText> Tickets from Time Period</FormHelperText>
@@ -194,6 +205,7 @@ class DataViz extends Component {
                         </Paper>
                     </Grid>
                 </Grid>
+                </MuiThemeProvider>
             </div>
         );
     }

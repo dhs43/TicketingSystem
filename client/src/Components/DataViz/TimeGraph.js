@@ -34,7 +34,7 @@ class TimeGraph extends Component {
         let year = a.getFullYear();
         let month = months[a.getMonth()];
         let date = a.getDate();
-        let time = month + " " + date;
+        let time = month + " " + date; //as of now only month and day will be used to calculate tickets as this viz only accounts for last year
         return time;
     }
 
@@ -74,7 +74,7 @@ class TimeGraph extends Component {
             <AreaChart
                 width={this.props.width/2.5}
                 height={this.props.height/2}
-                data={this.getTime(this.props.data, this.props.time_period)}
+                data={this.getTime(this.props.data, this.props.time_period)}  //based on how data is passed max of one year will be passed
                 margin={{
                     top: 5, right: 30, left: 20, bottom: 52,
                 }}
