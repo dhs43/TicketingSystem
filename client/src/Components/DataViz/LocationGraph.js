@@ -1,7 +1,21 @@
 import React, { Component } from 'react';
 import {
-    BarChart, Bar, Legend, CartesianGrid, XAxis, YAxis, Tooltip,
+    BarChart, Bar, Label, CartesianGrid, XAxis, YAxis, Tooltip,
 } from 'recharts';
+
+class CustomizedAxisTick extends Component {
+    render() {
+        const {
+            x, y, stroke, payload,
+        } = this.props;
+
+        return (
+            <g transform={`translate(${x},${y})`}>
+                <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+            </g>
+        );
+    }
+}
 
 class LocationGraph extends Component {
     constructor(props) {
@@ -10,12 +24,12 @@ class LocationGraph extends Component {
     }
 
     getLocation(tickets){
-        let data = [{location:"canyon", value:0},
-            {location:"hill", value:0},
-            {location:"cypress", value:0},
-            {location:"creekview", value:0},
-            {location:"campus_apartments", value:0},
-            {location:"college_creek", value:0},
+        let data = [
+            {location:"Cypress", value:0},
+            {location:"Creekview", value:0},
+            {location:"Hill", value:0},
+            {location:"Apts", value:0},
+            {location:"College Creek", value:0},
         ];
 
         tickets.forEach(d => {
@@ -51,15 +65,23 @@ class LocationGraph extends Component {
                 height={this.props.height/2}
                 data={this.getLocation(this.props.data)}
                 margin={{
-                    top: 5, right: 30, left: 0, bottom: 5,
+                    top: 0, right: 0, left: 20, bottom: 55,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="location" />
-                <YAxis />
+                <XAxis dataKey="location" type="category" tick={<CustomizedAxisTick />}>
+                    <Label value="Location" offset={35} position="bottom" />
+                </XAxis>
+                <YAxis>
+                    <Label value="Num Tickets" position="left" angle={-90} />
+                </YAxis>
                 <Tooltip />
-                <Bar dataKey="value" fill="#26a69a" />
+                <Bar dataKey="value"
+                     fill="#ad1457"
+                     barSize={30}
+                />
             </BarChart>
+
         );
     }
 }
