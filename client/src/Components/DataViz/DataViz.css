@@ -22,3 +22,11 @@
 .selectTimeframe{
     float: right;
 }
+
+.dataTitle{
+    float:left;
+}
+
+.tooShort{
+    padding-bottom:1.3em;
+}
