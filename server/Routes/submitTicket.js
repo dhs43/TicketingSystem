@@ -71,9 +71,34 @@ router.post('/', (req, res, next) => {
                     });
                     emailConnection.release();
                 });
-                res.send("Ticket created successfully");
+                getConnection(function (err, activityConnection) {
+                    // Insert initial activity values for each technician
+
+                    var statement = "SELECT * FROM technicians;"
+
+                    getConnection(function (err, ticketsConnection) {
+                        ticketsConnection.query(statement, function (err, result) {
+                            if (err) {
+                                console.log(err);
+                                res.send(err);
+                                return null;
+                            } else {
+                                
+                                var activityStatement = "INSERT into activity \
+                                                        (technician_ID, ticket_ID, last_seen_comment_ID) \
+                                                        VALUES ();";
+
+
+
+                                res.send("Ticket created successfully");
+                            }
+                        });
+                        ticketsConnection.release();
+                    });
+                });
             }
         });
+        ticketConnection.release();
     });
 });
 

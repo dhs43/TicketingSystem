@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
 
+// Marks a ticket as read when viewing it
 router.get('/mark_as_read/:ticket_id/:technician_id', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;
     var technician_ID = req.params.technician_id;
@@ -57,6 +58,7 @@ router.get('/mark_as_read/:ticket_id/:technician_id', (req, res, next) => {
     });
 });
 
+// Fetches tickets with unread comments
 router.get('/get_activity/:technician_id', (req, res, next) => {
     var technician_ID = req.params.technician_id;
     var updates = undefined;
