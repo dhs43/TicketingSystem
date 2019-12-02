@@ -119,4 +119,24 @@ router.post('/edit/:comment_id', (req, res, next) => {
     });
 });
 
+// Get last commment from ticket
+router.get('/last_comment/:ticket_id', (req, res, next) => {
+    var ticket_ID = req.params.ticket_id;
+
+    var statement = "SELECT author_name, text FROM comments WHERE ticket_ID = \"" + ticket_ID + "\" ORDER BY comment_ID DESC LIMIT 0, 1;";
+
+    getConnection(function (err, connection) {
+        connection.query(statement, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send("Could not fetch last comment from ticket " + ticket_ID);
+                return null;
+            } else {
+                res.send(result[0]);
+            }
+        });
+        connection.release();
+    });
+});
+
 module.exports = router;
