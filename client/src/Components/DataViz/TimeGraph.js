@@ -6,7 +6,7 @@ import {
 class CustomizedAxisTick extends Component {
     render() {
         const {
-            x, y, stroke, payload,
+            x, y, payload,
         } = this.props;
 
         return (
@@ -31,7 +31,7 @@ class TimeGraph extends Component {
         let a = new Date(UNIX_timestamp * 1000);
 
         let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        let year = a.getFullYear();
+        // let year = a.getFullYear();
         let month = months[a.getMonth()];
         let date = a.getDate();
         let time = month + " " + date; //as of now only month and day will be used to calculate tickets as this viz only accounts for last year
@@ -65,7 +65,6 @@ class TimeGraph extends Component {
                 }
             });
         });
-        console.log(data);
         return data;
     }
 

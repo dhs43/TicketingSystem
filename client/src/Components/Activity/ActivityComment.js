@@ -57,7 +57,7 @@ class ActivityComment extends Component {
     render() {
         return (
             <Paper className="activity_paper" onClick={this.state.theTicket === null ? null : () => this.props.changeSelectedTicket(this.state.theTicket.ticket_ID)} >
-                <div class="activity_comment">
+                <div className="activity_comment">
                     {this.state.theTicket === null ? "Loading..." :
                         <div>
                             <div className="ticket_activity_bold">Ticket #{this.state.theTicket.ticket_ID}</div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FormControl, Select, MenuItem, InputLabel, FormHelperText} from '@material-ui/core';
+import {FormControl, Select, MenuItem, FormHelperText} from '@material-ui/core';
 import {Grid, Paper} from '@material-ui/core';
 
 import PieGraph from './PieGraph.js';
