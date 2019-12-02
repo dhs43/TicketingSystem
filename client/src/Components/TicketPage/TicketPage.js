@@ -287,7 +287,7 @@ class TicketPage extends Component {
         })
             .then(response => response.json())
             .then(response => {
-                this.setState({allTechnicians: response})
+                this.setState({ allTechnicians: response })
             });
     }
 

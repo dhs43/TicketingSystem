@@ -25,6 +25,7 @@ class Main extends Component {
         this.handleDataVClick = this.handleDataVClick.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.toggleActivity = this.toggleActivity.bind(this);
+        this.updateActivity = this.updateActivity.bind(this);
     }
 
     componentDidMount() {
@@ -85,6 +86,10 @@ class Main extends Component {
         }
     }
 
+    updateActivity(ticket_ID) {
+        this.setState({ currentTicket: ticket_ID });
+    }
+
     render() {
         return (
             <div className="backdrop">
@@ -125,13 +130,14 @@ class Main extends Component {
                                 {(this.state.screen === "Tickets") ?
                                     <TicketPage
                                         history={this.props.history}
+                                        updateActivity={this.updateActivity}
                                     /> : null}
 
                                 {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
                                 {(this.state.screen === "DataV") ? <DataViz /> : null}
                             </div>
                             <div id="activityWindow" className={this.state.activity}>
-                                <Activity />
+                                <Activity currentTicket={this.state.currentTicket} />
                             </div>
                         </div>
                     </div>

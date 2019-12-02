@@ -37,6 +37,7 @@ const submitTicketRoute = require('./Routes/submitTicket');
 const ticketRoutes = require('./Routes/tickets');
 const commentRoutes = require('./Routes/comments');
 const activityRoutes = require('./Routes/activity');
+const inventoryRoutes = require('./Routes/inventory');
 
 // ROUTES
 app.use('/users', userRoutes);
@@ -44,6 +45,7 @@ app.use('/submitTicket', submitTicketRoute);
 app.use('/tickets', verifyToken, ticketRoutes);
 app.use('/comments', verifyToken, commentRoutes);
 app.use('/activity', verifyToken, activityRoutes);
+app.use('/inventory', verifyToken, inventoryRoutes);
 
 
 // ROUTE TO REACT CLIENT FILES
