@@ -7,6 +7,24 @@ router.use(bodyParser.json());
 
 // ROUTES
 
+// get all tickets
+router.get('/all', (req, res, next) => {
+    var statement = "SELECT * FROM ticket;";
+
+    getConnection(function (err, connection) {
+        connection.query(statement, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send(err);
+                return null;
+            } else {
+                res.send(result);
+            }
+        });
+        connection.release();
+    });
+});
+
 // Close ticket
 router.get('/close/:ticket_id', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;

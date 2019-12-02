@@ -6,8 +6,17 @@
 }
 
 .dataNumber{
-    margin-top:0;
+    margin:0;
     text-align: center;
     font-size: xx-large;
     font-weight: bolder;
+}
+
+.graphTitle{
+    padding-top: 1em;
+    text-align: center;
+}
+
+.selectTimeframe{
+    float: right;
 }
