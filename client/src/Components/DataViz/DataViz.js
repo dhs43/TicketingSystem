@@ -131,19 +131,19 @@ class DataViz extends Component {
                     <Grid item xs={3}>
                         <Paper>
                             <h2 className={"dataHeader"}> Tickets Submitted </h2>
-                            <p className={"dataNumber"} style={{color: '#4caf50'}}> {this.state.allOfTheTickets.length}</p>
+                            <p className={"dataNumber"}> {this.state.allOfTheTickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
                             <h2 className={"dataHeader"}> Tickets Submitted for Time Period</h2>
-                            <p className={"dataNumber"} style={{color: '#1b5e20'}}> {this.state.relevant_tickets.length}</p>
+                            <p className={"dataNumber"}> {this.state.relevant_tickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
                             <h2 className={"dataHeader"}> Time Spent Resolving Issues (DD:HH:MM:SS)</h2>
-                            <p className={"dataNumber"} style={{color: '#8bc34a'}}>
+                            <p className={"dataNumber"} >
                                 {this.state.total_time}
                             </p>
                         </Paper>
@@ -151,7 +151,7 @@ class DataViz extends Component {
                     <Grid item xs={3}>
                         <Paper>
                             <h2 className={"dataHeader"}> Time Spent Resolving Issues for Time Period (DD:HH:MM:SS)</h2>
-                            <p className={"dataNumber"} style={{color: '#cddc39'}}>
+                            <p className={"dataNumber"}>
                                 {this.state.relevant_time}
                             </p>
                         </Paper>
