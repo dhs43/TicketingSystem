@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FormControl, Select, MenuItem, FormLabel} from '@material-ui/core';
+import {FormControl, Select, MenuItem, InputLabel, FormHelperText} from '@material-ui/core';
 import {Grid, Paper} from '@material-ui/core';
 
 import PieGraph from './PieGraph.js';
@@ -7,8 +7,9 @@ import AreaGraph from "./AreaGraph.js";
 import LocationGraph from "./LocationGraph";
 import SeverityGraph from "./SeverityGraph";
 
+import format from 'format-duration';
+
 import "./DataViz.css";
-//const prettySeconds = require('pretty-seconds');
 
 class DataViz extends Component {
     constructor(props) {
@@ -16,7 +17,6 @@ class DataViz extends Component {
         this.state = {
             allOfTheTickets: [],
             loggedin: true,
-            filter: 'all',
             relevant_tickets: [],
             total_time: "",
             relevant_time: "",
@@ -26,22 +26,19 @@ class DataViz extends Component {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
 
-        this.loadTickets();
-        this.loadTickets = this.loadTickets.bind(this);
+        this.loadAllTickets();
+        this.loadAllTickets = this.loadAllTickets.bind(this);
+
         this.sortTickets = this.sortTickets.bind(this);
         this.calculateTime = this.calculateTime.bind(this);
+
+        // this.format = require('format-duration');
+
     }
 
-    loadTickets() {
-        if (this.state.filter === 'my_tickets') {
-            this.loadMyTickets();
-        } else if (this.state.filter === 'unassigned') {
-            this.loadUnassignedTickets();
-        } else if (this.state.filter === 'closed') {
-            this.loadClosedTickets();
-        } else {
-
-            fetch('/tickets/open', {
+    loadAllTickets() {
+        if (this.state.loggedin === true){
+            fetch('/tickets/all', {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.token
                 }
@@ -57,11 +54,16 @@ class DataViz extends Component {
                 .then(data => {
                     this.setState({ allOfTheTickets: data.reverse() });
                     this.sortTickets(7);
-                    //this.setState({total_time: prettySeconds(this.calculateTime(this.state.allOfTheTickets))});
+                    console.log(this.state.allOfTheTickets);
+                    console.log("TOTAL TIME " + this.calculateTime(this.state.allOfTheTickets));
+                    this.setState({total_time: format(this.calculateTime(this.state.allOfTheTickets) * 1000)});
                 })
                 .catch(err => console.log(err))
+        }else{
+            alert("Error getting tickets");
         }
     }
+
 
     sortTickets(period){ // period in days. Default week is 7
         let tickets = [];
@@ -80,7 +82,7 @@ class DataViz extends Component {
             relevant_tickets: tickets,
         });
         this.setState({
-            //relevant_time: prettySeconds(this.calculateTime(this.state.relevant_tickets))
+            relevant_time: format(this.calculateTime(this.state.allOfTheTickets) * 1000)
         });
         return tickets;
     }
@@ -88,9 +90,13 @@ class DataViz extends Component {
     calculateTime(tickets){
         let total = 0;
         tickets.forEach((d)=>{
-               total = total + d.time_spent;
+               if (d.time_closed !== null ){
+                   let time_spent = d.time_closed - d.time_submitted;
+                   total = total + time_spent;
+               }
             }
         );
+        console.log("Calculate TIme total: " + total);
         return total;
     }
 
@@ -104,14 +110,14 @@ class DataViz extends Component {
 
         return(
             <div>
-                {/*<Paper>*/}
-                    <h1> Ticket Data </h1>
-                    <FormControl>
-                        <FormLabel for={"sort data"}> Time Period </FormLabel>
+                    <h1 className={"dataTitle"}> Ticket Data </h1>
+                    <FormControl className={"selectTimeframe"}>
+                        <FormHelperText> Tickets from Time Period</FormHelperText>
                         <Select
-                            name={"sort data"}
+                            name={"sort-data-select"}
                             onChange={handleChange()}
                             defaultValue={7}
+                            inputProps={{ 'aria-label': 'sort-data-select' }}
                         >
                             <MenuItem value={7} > Last Week </MenuItem>
                             <MenuItem value={30} > Last 30 Days</MenuItem>
@@ -121,35 +127,38 @@ class DataViz extends Component {
                             <MenuItem value={'all'} > All Time </MenuItem>
                         </Select>
                     </FormControl>
-                {/*</Paper>*/}
-                <Grid container spacing={3}>
+                <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        <Paper>
-                            <h2 className={"dataHeader"}> Total Number of Submitted Tickets</h2>
-                            <p className={"dataNumber"} style={{color: '#4caf50'}}> {this.state.allOfTheTickets.length}</p>
+                        <Paper className={"tooShort"}>
+                            <h2 className={"dataHeader"}> Tickets Submitted </h2>
+                            <p className={"dataNumber"}> {this.state.allOfTheTickets.length}</p>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Paper className={'tooShort'}>
+                            <h2 className={"dataHeader"}> Tickets Submitted for Time Period</h2>
+                            <p className={"dataNumber"}> {this.state.relevant_tickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
-                            <h2 className={"dataHeader"}> Total Tickets Submitted for Time Period</h2>
-                            <p className={"dataNumber"} style={{color: '#1b5e20'}}> {this.state.relevant_tickets.length}</p>
+                            <h2 className={"dataHeader"}> Time Spent Resolving Issues (DD:HH:MM:SS)</h2>
+                            <p className={"dataNumber"} >
+                                {this.state.total_time}
+                            </p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
-                            <h2 className={"dataHeader"}> Total Hours Spent Resolving Issues</h2>
-                            <p className={"dataNumber"} style={{color: '#8bc34a'}}> {}</p>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Paper>
-                            <h2 className={"dataHeader"}> Total Hours Spent Resolving Issues for Time Period</h2>
-                            <p className={"dataNumber"} style={{color: '#cddc39'}}>  Number</p>
+                            <h2 className={"dataHeader"}> Time Spent Resolving Issues for Time Period (DD:HH:MM:SS)</h2>
+                            <p className={"dataNumber"}>
+                                {this.state.relevant_time}
+                            </p>
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                         <Paper>
-                            <p> Current State of Tickets: Open, Closed, Waiting </p>
+                            <p className={"graphTitle"}> Current State of Tickets: Open, Closed, Waiting </p>
                             <PieGraph
                                 width={this.width}
                                 height={this.height}
@@ -159,7 +168,7 @@ class DataViz extends Component {
                     </Grid>
                     <Grid item xs={6}>
                         <Paper>
-                            <p> Tickets by Severity: High, Medium, Low </p>
+                            <p className={"graphTitle"}> Tickets by Severity: High, Medium, Low </p>
                             <SeverityGraph
                                 width={this.width}
                                 height={this.height}
@@ -169,7 +178,7 @@ class DataViz extends Component {
                     </Grid>
                     <Grid item xs={6}>
                         <Paper>
-                            <p> Tickets by Location </p>
+                            <p className={"graphTitle"}> Tickets by Location </p>
                             <LocationGraph
                                 width={this.width}
                                 height={this.height}
@@ -179,7 +188,7 @@ class DataViz extends Component {
                     </Grid>
                     <Grid item xs={6}>
                         <Paper>
-                            <p> Tickets submitted </p>
+                            <p className={"graphTitle"}> Tickets submitted </p>
                             <AreaGraph
                                 width={this.width}
                                 height={this.height}

@@ -315,7 +315,7 @@ class TicketPage extends Component {
                         this.setState({ theTicket: null });
                         this.loadTicket(ticket_ID);
                     } else {
-                        alert("Error closing status");
+
                     }
                 });
             return;
