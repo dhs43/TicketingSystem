@@ -45,6 +45,16 @@ mailListener.on("mail", function (mail, seqno, attributes) {
     var text = mail.text;
     var clean_text = '';
 
+    if (author_ID === "mailer-daemon@googlemail.com"
+        || author_ID === "no-reply@accounts.google.com") {
+        // If mailer-daemon, the given email probably can't be delivered to.
+        return;
+    }
+
+    if (Number.isInteger(ticket_ID) === false) {
+        return;
+    }
+
     // Remove quoted email from replies
     var splitText = text.split(/\r?\n/);
     for (var i = 0; i < splitText.length; i++) {

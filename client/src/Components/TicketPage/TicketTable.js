@@ -26,7 +26,7 @@ class TicketTable extends Component {
         super(props);
 
         this.state = {
-            selectedTicket: null
+            selectedTicket: this.props.activitySelectedTicket
         }
 
         this.headCells = [
@@ -123,7 +123,10 @@ class TicketTable extends Component {
             ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
             ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
         };
+    }
 
+    UNSAFE_componentWillReceiveProps() {
+        this.setState({ selectedTicket: this.props.activitySelectedTicket });
     }
 
     render() {
@@ -161,7 +164,7 @@ class TicketTable extends Component {
                     icons={this.tableIcons}
                     data={this.props.allOfTheTickets}
                     onRowClick={(event, rowData) => {
-                        this.setState({selectedTicket: rowData.ticket_ID});
+                        this.setState({ selectedTicket: rowData.ticket_ID });
                         this.props.loadTicket(rowData.ticket_ID);
                     }}
                     options={{
@@ -169,7 +172,7 @@ class TicketTable extends Component {
                         pageSize: 10,
                         pageSizeOptions: [], // [5, 15, 25, 50],
                         sorting: true,
-                        rowStyle: rowData => ({ 
+                        rowStyle: rowData => ({
                             overflowY: 'scroll',
                             backgroundColor: this.state.selectedTicket === rowData.ticket_ID ? "#ffc266" : "white"
                         }),
