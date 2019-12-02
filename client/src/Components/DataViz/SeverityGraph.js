@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    BarChart, Bar, Legend, CartesianGrid, XAxis, YAxis, Tooltip,
+    BarChart, Bar, Label, CartesianGrid, XAxis, YAxis, Tooltip,
 } from 'recharts';
 
 class SeverityGraph extends Component {
@@ -10,7 +10,11 @@ class SeverityGraph extends Component {
 
     }
     getSeverity(tickets){
-        let data = [{severity: 'high', value: 0}, {severity:'medium', value:0}, {severity:'low', value:0}, {severity:"no_response", value:0}];
+        let data = [{severity: 'High', value: 0},
+            {severity:'Medium', value:0},
+            {severity:'Low', value:0},
+            {severity:"No Response", value:0}];
+
         tickets.forEach(d=>{
             if (d.severity === 'high'){
                 data[0]['value']++;
@@ -32,17 +36,21 @@ class SeverityGraph extends Component {
         return (
             <BarChart
                 width={this.props.width/2.5}
-                height={this.props.height/2}
+                height={this.props.height/1.7}
                 data={this.getSeverity(this.props.data)}
                 margin={{
-                    top: 5, right: 30, left: 0, bottom: 5,
+                    top: 5, right: 30, left: 30, bottom: 20,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="severity" />
-                <YAxis />
+                <XAxis dataKey="severity">
+                    <Label value="Severity" offset={0} position="bottom" />
+                </XAxis>
+                <YAxis label={{ value: 'Num Tickets', angle: -90, position: 'left' }} />
                 <Tooltip />
-                <Bar dataKey="value" fill="#3f51b5" />
+                <Bar dataKey="value"
+                     fill="#3f51b5"
+                />
             </BarChart>
         )
     }

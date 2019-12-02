@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import {
-    BarChart, Bar, Legend, CartesianGrid, XAxis, YAxis, Tooltip,
+    ComposedChart, Bar, Label, CartesianGrid, XAxis, YAxis, Tooltip, BarChart,
 } from 'recharts';
+
+// import {
+//     ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+//     Legend,
+// } from 'recharts';
+
 
 class LocationGraph extends Component {
     constructor(props) {
@@ -10,12 +16,12 @@ class LocationGraph extends Component {
     }
 
     getLocation(tickets){
-        let data = [{location:"canyon", value:0},
-            {location:"hill", value:0},
-            {location:"cypress", value:0},
-            {location:"creekview", value:0},
-            {location:"campus_apartments", value:0},
-            {location:"college_creek", value:0},
+        let data = [{location:"Canyon", value:0},
+            {location:"Hill", value:0},
+            {location:"Cypress", value:0},
+            {location:"Creekview", value:0},
+            {location:"Campus Apartments", value:0},
+            {location:"College Creek", value:0},
         ];
 
         tickets.forEach(d => {
@@ -46,20 +52,38 @@ class LocationGraph extends Component {
 
     render(){
         return(
-            <BarChart
+            <ComposedChart
+                layout="vertical"
                 width={this.props.width/2.5}
                 height={this.props.height/2}
                 data={this.getLocation(this.props.data)}
                 margin={{
-                    top: 5, right: 30, left: 0, bottom: 5,
+                    top: 5, right: 30, left: 30, bottom: 20,
                 }}
             >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="location" />
-                <YAxis />
+                <CartesianGrid stroke="#f5f5f5" />
+                <XAxis type="number">
+                    <Label value="Num Tickets" offset={0} position="bottom" />
+                </XAxis>
+                <YAxis dataKey="location" type="category" >
+                    <Label value="Location" offset={-5} position="insideBottomLeft" angle={-90} />
+                </YAxis>
                 <Tooltip />
-                <Bar dataKey="value" fill="#26a69a" />
-            </BarChart>
+                <Bar dataKey="value"
+                     fill="#ad1457"
+                     barSize={30}
+                />
+            </ComposedChart>
+
+
+
+
+
+
+
+
+
+
         );
     }
 }
