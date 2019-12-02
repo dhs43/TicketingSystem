@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
-    ComposedChart, Bar, Label, CartesianGrid, XAxis, YAxis, Tooltip, BarChart,
+    BarChart, Bar, Label, CartesianGrid, XAxis, YAxis, Tooltip,
 } from 'recharts';
+
 
 // import {
 //     ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -52,28 +53,27 @@ class LocationGraph extends Component {
 
     render(){
         return(
-            <ComposedChart
-                layout="vertical"
+            <BarChart
                 width={this.props.width/2.5}
                 height={this.props.height/2}
                 data={this.getLocation(this.props.data)}
                 margin={{
-                    top: 5, right: 30, left: 30, bottom: 20,
+                    top: 5, right: 0, left: 20, bottom: 20,
                 }}
             >
-                <CartesianGrid stroke="#f5f5f5" />
-                <XAxis type="number">
-                    <Label value="Num Tickets" offset={0} position="bottom" />
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="location" type="category">
+                    <Label value="Location" offset={0} position="bottom" />
                 </XAxis>
-                <YAxis dataKey="location" type="category" >
-                    <Label value="Location" offset={-5} position="insideBottomLeft" angle={-90} />
+                <YAxis>
+                    <Label value="Num Tickets" position="left" angle={-90} />
                 </YAxis>
                 <Tooltip />
                 <Bar dataKey="value"
                      fill="#ad1457"
                      barSize={30}
                 />
-            </ComposedChart>
+            </BarChart>
 
 
 
