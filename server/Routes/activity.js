@@ -94,7 +94,6 @@ router.get('/get_activity/:technician_id', (req, res, next) => {
                             return null;
                         } else {
                             if (last_seen_comment_result[0] !== undefined) {
-                                console.log("Last seen comment ID: " + last_seen_comment_result[0].last_seen_comment_ID);
                                 // Check if the technician has previously read this ticket's latest comment
                                 if (last_seen_comment_result[0].last_seen_comment_ID < value.comment_ID
                                     || last_seen_comment_result[0].last_seen_comment_ID === null) {
