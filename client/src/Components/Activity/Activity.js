@@ -30,13 +30,6 @@ class Activity extends Component {
         this.getActivity();
     }
 
-    componentWillReceiveProps(ticket_ID) {
-        var new_list = this.state.updatedTickets;
-        var index = new_list.indexOf(ticket_ID);
-        new_list.splice(index, 1); // remove one element at index
-        this.setState({ updatedTickets: new_list })
-    }
-
     getActivity() {
         fetch('/activity/get_activity/' + localStorage.user, {
             method: 'get',
@@ -63,7 +56,7 @@ class Activity extends Component {
                         this.state.updatedTickets.map((value, index) => {
                             return (
                                 <div className="activity_background">
-                                    <ActivityComment ticket_ID={value} />
+                                    <ActivityComment ticket_ID={value} changeSelectedTicket={this.props.changeSelectedTicket} />
                                 </div>
                             )
                         })

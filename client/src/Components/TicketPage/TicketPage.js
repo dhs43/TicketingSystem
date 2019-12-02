@@ -52,6 +52,12 @@ class TicketPage extends Component {
         this.RenderTicketDetails = this.RenderTicketDetails.bind(this);
     }
 
+    UNSAFE_componentWillReceiveProps(newProps) {
+        if (newProps.selectedTicket !== null) {
+            this.loadTicket(newProps.selectedTicket);
+        }
+    }
+
     loadTechnician() {
         if (localStorage.user !== undefined) {
             fetch('/users/getUser/' + localStorage.user, {
@@ -447,6 +453,7 @@ class TicketPage extends Component {
                             loadTicket={this.loadTicket}
                             filterHandler={this.filterHandler}
                             submitTicketHandler={this.submitTicketHandler}
+                            activitySelectedTicket={this.props.selectedTicket}
                         />
                     </Paper>
                     <div className="marginTop">

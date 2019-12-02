@@ -6,7 +6,8 @@ class ActivityComment extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            theTicket: null
+            theTicket: null,
+            last_comment: null
         }
 
         this.loadTicket = this.loadTicket.bind(this);
@@ -29,16 +30,45 @@ class ActivityComment extends Component {
             }.bind(this))
             .then(data => {
                 this.setState({ theTicket: data })
-                console.log(data);
+
+                // Fetch last comment ****************************
+                fetch('comments/last_comment/' + num, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.token
+                    }
+                })
+                    .then(function (response) {
+                        if (response.status === 403) {
+                            localStorage.removeItem('token');
+                            this.setState({ loggedin: false });
+                        } else {
+                            return response.json();
+                        }
+                    }.bind(this))
+                    .then(data => {
+                        this.setState({ last_comment: data });
+                    })
+                    .catch(err => console.log(err));
+                // ***********************************************
             })
             .catch(err => console.log(err));
     }
 
     render() {
         return (
-            <Paper className="activity_paper">
+            <Paper className="activity_paper" onClick={this.state.theTicket === null ? null : () => this.props.changeSelectedTicket(this.state.theTicket.ticket_ID)} >
                 <div class="activity_comment">
-                    {this.state.theTicket === null ? "Loading..." : this.state.theTicket.subject}
+                    {this.state.theTicket === null ? "Loading..." :
+                        <div>
+                            <div className="ticket_activity_bold">Ticket #{this.state.theTicket.ticket_ID}</div>
+                            <div>{this.state.theTicket.subject}</div>
+                            <div className="ticket_activity_bold">{this.state.last_comment === null ? null : this.state.last_comment.author_name}</div>
+                            <div>
+                                {this.state.last_comment === null ? null : this.state.last_comment.text.slice(0, 100)}
+                                {this.state.last_comment !== null && this.state.last_comment.text.length > 100 ? "..." : null}
+                            </div>
+                        </div>
+                    }
                 </div>
             </Paper>
         );
