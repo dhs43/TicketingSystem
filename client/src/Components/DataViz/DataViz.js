@@ -110,7 +110,7 @@ class DataViz extends Component {
 
         return(
             <div>
-                    <h1> Ticket Data </h1>
+                    <h1 className={"dataTitle"}> Ticket Data </h1>
                     <FormControl className={"selectTimeframe"}>
                         <FormHelperText> Tickets from Time Period</FormHelperText>
                         <Select
@@ -129,13 +129,13 @@ class DataViz extends Component {
                     </FormControl>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        <Paper>
+                        <Paper className={"tooShort"}>
                             <h2 className={"dataHeader"}> Tickets Submitted </h2>
                             <p className={"dataNumber"}> {this.state.allOfTheTickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
-                        <Paper>
+                        <Paper className={'tooShort'}>
                             <h2 className={"dataHeader"}> Tickets Submitted for Time Period</h2>
                             <p className={"dataNumber"}> {this.state.relevant_tickets.length}</p>
                         </Paper>
