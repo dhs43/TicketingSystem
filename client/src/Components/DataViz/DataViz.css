@@ -15,6 +15,7 @@
 .graphTitle{
     padding-top: 1em;
     text-align: center;
+    font-weight: bolder;
 }
 
 .selectTimeframe{
