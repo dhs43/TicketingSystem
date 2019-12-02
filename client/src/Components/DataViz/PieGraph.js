@@ -110,7 +110,11 @@ class PieGraph extends Component{
                     key={"PieChartBaby"}
                 >
                     {
-                        this.props.data.map((entry, index) => <Cell  fill={COLORS[index % COLORS.length]}/>)
+                        this.props.data.map((entry, index) =>
+                            <Cell
+                                fill={COLORS[index % COLORS.length]}
+                                key={`pieSlice ${index}`}
+                            />)
                     }
                 </Pie>
             </PieChart>

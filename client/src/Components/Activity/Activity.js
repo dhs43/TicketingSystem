@@ -55,7 +55,7 @@ class Activity extends Component {
                         ?
                         this.state.updatedTickets.map((value, index) => {
                             return (
-                                <div className="activity_background">
+                                <div className="activity_background" key={`key - ${index}`}>
                                     <ActivityComment ticket_ID={value} changeSelectedTicket={this.props.changeSelectedTicket} />
                                 </div>
                             )
