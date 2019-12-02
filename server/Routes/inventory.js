@@ -45,15 +45,16 @@ router.get('/get_device/:device_id', (req, res, next) => {
 
 // Create a new device
 router.post('/new_device', (req, res, next) => {
+    var title = req.body.title;
     var serial_number = req.body.serial_number;
     var model = req.body.model;
     var location = req.body.location;
     var status = req.body.status;
 
     var statement = "INSERT INTO devices \
-                     (serial_number, model, location, status) \
+                     (title, serial_number, model, location, status) \
                      VALUES \
-                     (\"" + serial_number + "\", \"" + model + "\", \"" + location + "\", \"" + status + "\");";
+                     (\"" + title + "\", \"" + serial_number + "\", \"" + model + "\", \"" + location + "\", \"" + status + "\");";
 
     getConnection(function (err, connection) {
         connection.query(statement, function (err, result) {
@@ -72,15 +73,15 @@ router.post('/new_device', (req, res, next) => {
 // Update existing device by ID
 router.post('/update_device/:device_id', (req, res, next) => {
     var device_ID = req.params.device_id;
+    var title = req.body.title;
     var serial_number = req.body.serial_number;
     var model = req.body.model;
     var location = req.body.location;
     var status = req.body.status;
 
-    var statement = "INSERT INTO devices \
-                     (device_ID, serial_number, model, location, status) \
-                     VALUES \
-                     (\"" + device_ID + "\", \"" + serial_number + "\", \"" + model + "\", \"" + location + "\", \"" + status + "\");";
+    var statement = "UPDATE devices \
+                     SET title = \"" + title + "\", serial_number = \"" + serial_number + "\", model = \"" + model + "\", location = \"" + location + "\", status = \"" + status + "\" \
+                     WHERE device_ID = \"" + device_ID + "\";";
 
     getConnection(function (err, connection) {
         connection.query(statement, function (err, result) {
