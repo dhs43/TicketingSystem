@@ -107,6 +107,7 @@ class PieGraph extends Component{
                     fill={"#8884d8"}
                     dataKey="value"
                     onMouseEnter={this.onPieEnter}
+                    key={"PieChartBaby"}
                 >
                     {
                         this.props.data.map((entry, index) => <Cell  fill={COLORS[index % COLORS.length]}/>)
