@@ -3,6 +3,21 @@ import {
     AreaChart , Area, XAxis, YAxis, CartesianGrid, Tooltip, Label,
 } from 'recharts';
 
+class CustomizedAxisTick extends Component {
+    render() {
+        const {
+            x, y, stroke, payload,
+        } = this.props;
+
+        return (
+            <g transform={`translate(${x},${y})`}>
+                <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-25)">{payload.value}</text>
+            </g>
+        );
+    }
+}
+
+
 class TimeGraph extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +34,7 @@ class TimeGraph extends Component {
         let year = a.getFullYear();
         let month = months[a.getMonth()];
         let date = a.getDate();
-        let time = date + ' ' + month + ' ' + year;
+        let time = month + " " + date;
         return time;
     }
 
@@ -50,6 +65,7 @@ class TimeGraph extends Component {
                 }
             });
         });
+        console.log(data);
         return data;
     }
 
@@ -60,12 +76,12 @@ class TimeGraph extends Component {
                 height={this.props.height/2}
                 data={this.getTime(this.props.data, this.props.time_period)}
                 margin={{
-                    top: 5, right: 30, left: 30, bottom: 20,
+                    top: 5, right: 30, left: 20, bottom: 52,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date"  reversed={true}>
-                    <Label value="Time" position="bottom" />
+                <XAxis dataKey="date"  reversed={true} tick={<CustomizedAxisTick />}>
+                    <Label value="Time" offset={37} position="bottom" />
                 </XAxis>
                 <YAxis dataKey="value">
                     <Label value="Num Tickets" position="left" angle={-90} />
