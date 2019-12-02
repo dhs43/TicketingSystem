@@ -31,9 +31,9 @@ DROP TABLE devices;
 CREATE TABLE devices
 (
  device_ID int auto_increment NOT NULL,
- serial_number varchar(20),
- model varchar(15),
- location varchar(20),
+ serial_number varchar(50),
+ model varchar(50),
+ location varchar(50),
  status text,
  PRIMARY KEY (device_ID)
 );

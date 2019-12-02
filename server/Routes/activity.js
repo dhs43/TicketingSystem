@@ -9,7 +9,7 @@ router.use(bodyParser.json());
 router.get('/mark_as_read/:ticket_id/:technician_id', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;
     var technician_ID = req.params.technician_id;
-    var last_seen_comment_ID = undefined;
+    var new_comment_ID = undefined;
 
     var max_comment_statement = "SELECT MAX(comment_ID) comment_ID \
                                 FROM comments \
@@ -22,35 +22,38 @@ router.get('/mark_as_read/:ticket_id/:technician_id', (req, res, next) => {
                 res.send("Max comment error");
                 return null;
             } else {
-                last_seen_comment_ID = result[0].comment_ID;
+                new_comment_ID = result[0].comment_ID;
 
-                if (last_seen_comment_ID === undefined) {
+                if (new_comment_ID === undefined) {
                     console.log("No activity entry for this user/ticket");
                     res.send("No activity entry for this user/ticket")
                     return null;
                 } else {
 
-                    var update_statement = "UPDATE activity \
-                                            SET last_seen_comment_ID = \"" + last_seen_comment_ID + "\" \
+                    // If there are no comments on this ticket, skip update
+                    if (new_comment_ID !== null) {
+                        var update_statement = "UPDATE activity \
+                                            SET last_seen_comment_ID = \"" + new_comment_ID + "\" \
                                             WHERE ticket_ID = \"" + ticket_ID + "\" \
                                             AND technician_ID =  \"" + technician_ID + "\";";
 
-                    getConnection(function (err, update_connection) {
-                        update_connection.query(update_statement, function (err, result) {
-                            if (err) {
-                                console.log(err);
-                                res.send("Update last_seen_comment_ID error");
-                                return null;
-                            } else if (result.changedRows === 0) {
-                                console.log("Updated zero activity rows");
-                                res.send("Updated zero activity rows");
-                            } else {
-                                console.log("Sucessfully updated last_seen_comment_ID");
-                                res.send("Sucessfully updated last_seen_comment_ID");
-                            }
+                        getConnection(function (err, update_connection) {
+                            update_connection.query(update_statement, function (err, result) {
+                                if (err) {
+                                    console.log(err);
+                                    res.send("Update last_seen_comment_ID error");
+                                    return null;
+                                } else if (result.changedRows === 0) {
+                                    console.log("Updated zero activity rows");
+                                    res.send("Updated zero activity rows");
+                                } else {
+                                    console.log("Sucessfully updated last_seen_comment_ID");
+                                    res.send("Sucessfully updated last_seen_comment_ID");
+                                }
+                            });
+                            update_connection.release();
                         });
-                        update_connection.release();
-                    });
+                    }
                 }
             }
         });
@@ -91,13 +94,16 @@ router.get('/get_activity/:technician_id', (req, res, next) => {
                             return null;
                         } else {
                             if (last_seen_comment_result[0] !== undefined) {
-                                if (last_seen_comment_result[0].last_seen_comment_ID < value.comment_ID) {
+                                console.log("Last seen comment ID: " + last_seen_comment_result[0].last_seen_comment_ID);
+                                // Check if the technician has previously read this ticket's latest comment
+                                if (last_seen_comment_result[0].last_seen_comment_ID < value.comment_ID
+                                    || last_seen_comment_result[0].last_seen_comment_ID === null) {
                                     new_comments.push(value.ticket_ID);
                                 }
                             }
                             if (index + 1 === max_comment_result_length) {
                                 res.send(new_comments);
-                            }     
+                            }
                         }
                     });
                 });
@@ -107,8 +113,8 @@ router.get('/get_activity/:technician_id', (req, res, next) => {
     });
 
     // 1. Check which tickets have out-of-date last-read comments
-        // A. Fetch last comment_ID from all tickets
-        // B. Check if activity table shows technician has read it
+    // A. Fetch last comment_ID from all tickets
+    // B. Check if activity table shows technician has read it
     // 1. If not, add it to an activity list.
     // 2. If read, skip it
     // 2. Fetch the most recent comments
