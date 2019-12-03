@@ -51,7 +51,8 @@ mailListener.on("mail", function (mail, seqno, attributes) {
         return;
     }
 
-    if (Number.isInteger(ticket_ID) === false) {
+    if (Number.isInteger(parseInt(ticket_ID)) === false) {
+        console.log("ticket_ID is not an integer: " + ticket_ID);
         return;
     }
 
