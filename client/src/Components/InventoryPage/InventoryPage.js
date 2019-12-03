@@ -57,7 +57,7 @@ class InventoryPage extends Component {
             .then(response => response.text())
             .then(response => {
                 if (response === "Device saved successfully") {
-                    alert("Inventory Added!");
+                    this.loadInventory();
                 } else {
                     console.log(response);
                     this.setState({ submitted: true });
@@ -72,7 +72,6 @@ class InventoryPage extends Component {
             method: 'post',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token },
             body: JSON.stringify({
-                device_ID: newData.device_ID,
                 title: newData.title.trim(),
                 model: newData.model.trim(),
                 serial_number: newData.serial_number.trim(),
@@ -82,12 +81,12 @@ class InventoryPage extends Component {
         })
             .then(response => response.text())
             .then(response => {
-                if (response === "Device updated successfully") {
-                    alert("Inventory updated!");
-                } else {
+                if (response !== "Device updated successfully") {
                     console.log(response);
                     this.setState({ submitted: true });
                     alert("Error updating device");
+                } else {
+                    this.loadInventory();
                 }
             });
     }
@@ -102,7 +101,7 @@ class InventoryPage extends Component {
                 .then(response => response.text())
                 .then(response => {
                     if (response === "Device deleted successfully") {
-                        alert("Deleted item #" + newData.device_ID);
+                        this.loadInventory();
                     } else {
                         alert("Error deleting item");
                     }
