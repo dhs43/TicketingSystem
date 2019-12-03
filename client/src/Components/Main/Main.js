@@ -5,6 +5,7 @@ import TicketPage from "../TicketPage/TicketPage";
 import DataViz from "../DataViz/DataViz";
 import bellIcon from '../../res/notification.svg';
 import Activity from '../Activity/Activity';
+import ManageUsers from "../ManageUsers/ManageUsers";
 
 class Main extends Component {
     constructor(props) {
@@ -69,6 +70,10 @@ class Main extends Component {
         }));
     }
 
+    handleUsers(){
+
+    }
+
     handleLogout() {
         localStorage.removeItem('token');
         this.props.history.push('/');
@@ -117,6 +122,13 @@ class Main extends Component {
                     <div className="logout">
                         <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
                     </div>
+
+                    {/*//TODO: Admin Access Only*/}
+                    <div>
+                        <button className="manage_users" onClick={this.handleUsers}> Manage Users</button>
+                    </div>
+
+
                 </div>
                 <div className="outline">
                     <div className="screen">
