@@ -72,7 +72,7 @@ router.post('/new_device', (req, res, next) => {
 
 // Update existing device by ID
 router.post('/update_device/:device_id', (req, res, next) => {
-    var device_ID = req.params.device_id;
+    var device_ID = req.params.device_ID;
     var title = req.body.title;
     var serial_number = req.body.serial_number;
     var model = req.body.model;
@@ -101,7 +101,7 @@ router.post('/update_device/:device_id', (req, res, next) => {
 router.get('/delete/:device_id', (req, res, next) => {
     var device_ID = req.params.device_id;
 
-    var statement = "REMOVE FROM devices WHERE device_ID = \"" + device_ID + "\";";
+    var statement = "DELETE FROM devices WHERE device_ID = \"" + device_ID + "\";";
 
     getConnection(function (err, connection) {
         connection.query(statement, function (err, result) {
