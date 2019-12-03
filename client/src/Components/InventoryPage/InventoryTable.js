@@ -34,8 +34,7 @@ class InventoryTable extends React.Component {
           
           {         
               title: 'Serial Number', 
-              field: 'serial_number',
-              type: 'numeric'},
+              field: 'serial_number'},
           { 
               title: 'ID', 
               field: 'device_ID',
@@ -99,9 +98,27 @@ class InventoryTable extends React.Component {
               }),
         }}
           editable={{
-            onRowAdd: newData => this.props.submitInventoryHandler(newData),
-            onRowUpdate: newData => this.props.updateInventoryHandler(newData),
-            onRowDelete: newData => this.props.deleteInventoryHandler(newData),
+            onRowAdd: (newData) => 
+            new Promise(resolve => {
+              setTimeout(() => {
+                resolve();
+                this.props.submitInventoryHandler(newData);
+              }, 600);
+            }),
+            onRowUpdate: (newData) => 
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  this.props.updateInventoryHandler(newData);
+                }, 600);
+              }),
+            onRowDelete: (newData) => 
+            new Promise(resolve => {
+              setTimeout(() => {
+                resolve();
+                this.props.deleteInventoryHandler(newData);
+              }, 600);
+            }),
           }}
         />
         </MuiThemeProvider>
