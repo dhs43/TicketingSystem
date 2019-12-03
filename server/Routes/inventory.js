@@ -72,7 +72,7 @@ router.post('/new_device', (req, res, next) => {
 
 // Update existing device by ID
 router.post('/update_device/:device_id', (req, res, next) => {
-    var device_ID = req.params.device_ID;
+    var device_ID = req.params.device_id;
     var title = req.body.title;
     var serial_number = req.body.serial_number;
     var model = req.body.model;
