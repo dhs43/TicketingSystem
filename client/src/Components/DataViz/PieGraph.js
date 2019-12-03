@@ -55,7 +55,7 @@ class PieGraph extends Component{
                 <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
                 <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
                 <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor}
-                      fill="#333">{`Number of Tickets ${value}`}</text>
+                      fill="#333">{`Tickets ${value}`}</text>
                 <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
                     {`(Percentage ${(percent * 100).toFixed(0)}%)`}
                 </text>
@@ -97,19 +97,24 @@ class PieGraph extends Component{
     render(){
         const COLORS = ['#0088FE', '#FFBB28', '#00a884'];
         return(
-            <PieChart width={this.props.width/2} height={this.props.height/1.7}>
+            <PieChart width={this.props.width/2.3} height={this.props.height/1.7}>
                 <Pie
                     activeIndex={this.state.activeIndex}
                     activeShape={this.renderActiveShape}
                     data={this.getStatus(this.props.data)}
-                    innerRadius={100}
-                    outerRadius={120}
+                    innerRadius={95}
+                    outerRadius={110}
                     fill={"#8884d8"}
                     dataKey="value"
                     onMouseEnter={this.onPieEnter}
+                    key={"PieChartBaby"}
                 >
                     {
-                        this.props.data.map((entry, index) => <Cell  fill={COLORS[index % COLORS.length]}/>)
+                        this.props.data.map((entry, index) =>
+                            <Cell
+                                fill={COLORS[index % COLORS.length]}
+                                key={`pieSlice ${index}`}
+                            />)
                     }
                 </Pie>
             </PieChart>

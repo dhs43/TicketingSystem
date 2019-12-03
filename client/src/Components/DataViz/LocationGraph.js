@@ -3,12 +3,20 @@ import {
     BarChart, Bar, Label, CartesianGrid, XAxis, YAxis, Tooltip,
 } from 'recharts';
 
+class CustomizedAxisTick extends Component {
+    render() {
+        const {
+            x, y, payload,
+        } = this.props;
 
-// import {
-//     ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-//     Legend,
-// } from 'recharts';
-
+        return (
+            <g transform={`translate(${x},${y})`}>
+                <text fontSize={'0.9em'}
+                    x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+            </g>
+        );
+    }
+}
 
 class LocationGraph extends Component {
     constructor(props) {
@@ -17,12 +25,13 @@ class LocationGraph extends Component {
     }
 
     getLocation(tickets){
-        let data = [{location:"Canyon", value:0},
-            {location:"Hill", value:0},
+        let data = [
+            {location:"Canyon", value:0},
             {location:"Cypress", value:0},
             {location:"Creekview", value:0},
-            {location:"Campus Apartments", value:0},
-            {location:"College Creek", value:0},
+            {location:"Hill", value:0},
+            {location:"Apts", value:0},
+            {location:"C. Creek", value:0},
         ];
 
         tickets.forEach(d => {
@@ -58,12 +67,12 @@ class LocationGraph extends Component {
                 height={this.props.height/2}
                 data={this.getLocation(this.props.data)}
                 margin={{
-                    top: 5, right: 0, left: 20, bottom: 20,
+                    top: 0, right: 0, left: 20, bottom: 55,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="location" type="category">
-                    <Label value="Location" offset={0} position="bottom" />
+                <XAxis dataKey="location" type="category" tick={<CustomizedAxisTick />}>
+                    <Label value="Location" offset={35} position="bottom" />
                 </XAxis>
                 <YAxis>
                     <Label value="Num Tickets" position="left" angle={-90} />
@@ -74,15 +83,6 @@ class LocationGraph extends Component {
                      barSize={30}
                 />
             </BarChart>
-
-
-
-
-
-
-
-
-
 
         );
     }

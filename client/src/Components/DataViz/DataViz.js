@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import {FormControl, Select, MenuItem, InputLabel, FormHelperText} from '@material-ui/core';
+import {FormControl, Select, MenuItem, FormHelperText} from '@material-ui/core';
 import {Grid, Paper} from '@material-ui/core';
 
 import PieGraph from './PieGraph.js';
-import AreaGraph from "./AreaGraph.js";
+import TimeGraph from "./TimeGraph.js";
 import LocationGraph from "./LocationGraph";
 import SeverityGraph from "./SeverityGraph";
 
 import format from 'format-duration';
 
 import "./DataViz.css";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 
 class DataViz extends Component {
     constructor(props) {
@@ -20,6 +21,7 @@ class DataViz extends Component {
             relevant_tickets: [],
             total_time: "",
             relevant_time: "",
+            time_period: 7,
         }
         ;
 
@@ -54,8 +56,6 @@ class DataViz extends Component {
                 .then(data => {
                     this.setState({ allOfTheTickets: data.reverse() });
                     this.sortTickets(7);
-                    console.log(this.state.allOfTheTickets);
-                    console.log("TOTAL TIME " + this.calculateTime(this.state.allOfTheTickets));
                     this.setState({total_time: format(this.calculateTime(this.state.allOfTheTickets) * 1000)});
                 })
                 .catch(err => console.log(err))
@@ -67,17 +67,15 @@ class DataViz extends Component {
 
     sortTickets(period){ // period in days. Default week is 7
         let tickets = [];
-        if (period === 'all'){
-            tickets =  this.state.allOfTheTickets;
-        }else {
-            let today = new Date();
-            this.state.allOfTheTickets.forEach(d => {
-                let date = new Date(d.time_submitted * 1000);
-                if (today.getDate() - date.getDate() <= period) {
-                    tickets.push(d);
-                }
-            });
-        }
+
+        let today = new Date();
+        this.state.allOfTheTickets.forEach(d => {
+            let date = new Date(d.time_submitted * 1000);
+            if (today.getDate() - date.getDate() <= period) {
+                tickets.push(d);
+            }
+        });
+
         this.setState({
             relevant_tickets: tickets,
         });
@@ -96,7 +94,6 @@ class DataViz extends Component {
                }
             }
         );
-        console.log("Calculate TIme total: " + total);
         return total;
     }
 
@@ -104,19 +101,30 @@ class DataViz extends Component {
     render(){
         const handleChange  =() => event => {
             this.setState({
+                time_period: event.target.value,
                 relevant_tickets: this.sortTickets(event.target.value),
             });
         };
 
+        //styles
+        const theme = createMuiTheme({
+            palette: {
+                primary: { main: '#FFA500' }, // orange
+                secondary: { main: '#25551b' } // dark green
+            },
+        });
+
+
         return(
             <div>
-                    <h1> Ticket Data </h1>
+                <MuiThemeProvider theme={theme}>
+                    <h1 className={"dataTitle"}> Ticket Data </h1>
                     <FormControl className={"selectTimeframe"}>
                         <FormHelperText> Tickets from Time Period</FormHelperText>
                         <Select
                             name={"sort-data-select"}
                             onChange={handleChange()}
-                            defaultValue={7}
+                            defaultValue={this.state.time_period}
                             inputProps={{ 'aria-label': 'sort-data-select' }}
                         >
                             <MenuItem value={7} > Last Week </MenuItem>
@@ -124,26 +132,25 @@ class DataViz extends Component {
                             <MenuItem  value={90} > Last 90 Days </MenuItem>
                             <MenuItem value={180} > Last 180 Days </MenuItem>
                             <MenuItem value={365} > Last Year </MenuItem>
-                            <MenuItem value={'all'} > All Time </MenuItem>
                         </Select>
                     </FormControl>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        <Paper>
+                        <Paper className={"tooShort"}>
                             <h2 className={"dataHeader"}> Tickets Submitted </h2>
-                            <p className={"dataNumber"} style={{color: '#4caf50'}}> {this.state.allOfTheTickets.length}</p>
+                            <p className={"dataNumber"}> {this.state.allOfTheTickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
-                        <Paper>
+                        <Paper className={'tooShort'}>
                             <h2 className={"dataHeader"}> Tickets Submitted for Time Period</h2>
-                            <p className={"dataNumber"} style={{color: '#1b5e20'}}> {this.state.relevant_tickets.length}</p>
+                            <p className={"dataNumber"}> {this.state.relevant_tickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
                             <h2 className={"dataHeader"}> Time Spent Resolving Issues (DD:HH:MM:SS)</h2>
-                            <p className={"dataNumber"} style={{color: '#8bc34a'}}>
+                            <p className={"dataNumber"} >
                                 {this.state.total_time}
                             </p>
                         </Paper>
@@ -151,14 +158,14 @@ class DataViz extends Component {
                     <Grid item xs={3}>
                         <Paper>
                             <h2 className={"dataHeader"}> Time Spent Resolving Issues for Time Period (DD:HH:MM:SS)</h2>
-                            <p className={"dataNumber"} style={{color: '#cddc39'}}>
+                            <p className={"dataNumber"}>
                                 {this.state.relevant_time}
                             </p>
                         </Paper>
                     </Grid>
                     <Grid item xs={6}>
                         <Paper>
-                            <p className={"graphTitle"}> Current State of Tickets: Open, Closed, Waiting </p>
+                            <p className={"graphTitle"}> State of Tickets: Open, Closed, Waiting </p>
                             <PieGraph
                                 width={this.width}
                                 height={this.height}
@@ -188,15 +195,17 @@ class DataViz extends Component {
                     </Grid>
                     <Grid item xs={6}>
                         <Paper>
-                            <p className={"graphTitle"}> Tickets submitted </p>
-                            <AreaGraph
+                            <p className={"graphTitle"}> Tickets Submitted Over Time </p>
+                            <TimeGraph
                                 width={this.width}
                                 height={this.height}
                                 data={this.state.relevant_tickets}
+                                time_period={this.state.time_period}
                             />
                         </Paper>
                     </Grid>
                 </Grid>
+                </MuiThemeProvider>
             </div>
         );
     }

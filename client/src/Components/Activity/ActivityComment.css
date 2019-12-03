@@ -1,8 +1,9 @@
 .activity_background
 {
     position: relative;
-    padding: 10px;
+    padding: 7px;
     margin-right: 5px;
+    margin-top: 3px;
     background-color: white;
     border-radius: 5px;
 }
@@ -10,4 +11,12 @@
 .activity_comment
 {
     padding: 5px;
+    border: solid 1px #5C8021;
+    border-radius: 5px;
+}
+
+.ticket_activity_bold
+{
+    font-weight: 550;
+    padding-top: 3px;
 }
