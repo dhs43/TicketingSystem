@@ -448,7 +448,7 @@ class TicketPage extends Component {
                             filterHandler={this.filterHandler}
                             submitTicketHandler={this.submitTicketHandler}
                         />
-                    </Paper>
+                    </Paper> 
                     <div className="marginTop">
                         {this.state.theTicket === null ? null :
                             <div className="details">
