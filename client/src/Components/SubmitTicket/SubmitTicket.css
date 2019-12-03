@@ -57,3 +57,7 @@
     background-color: rgb(117, 164, 42);
     border-color: #5C8021;
 }
+
+#exitButton{
+    margin-left: 25em;
+}
