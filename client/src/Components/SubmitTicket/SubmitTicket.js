@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 // material ui-imports
 import TextField from "@material-ui/core/TextField";
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -33,6 +35,7 @@ class SubmitTicket extends Component {
         // taken from Login.js to handle user input and submission
         this.changeHandler = this.changeHandler.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
+        this.closeHandler = this.closeHandler.bind(this);
     }
 
     // handles user input
@@ -112,6 +115,9 @@ class SubmitTicket extends Component {
 
     }
 
+    closeHandler(){
+        this.props.history.push('/');
+    }
 
 
     render() {
@@ -122,6 +128,7 @@ class SubmitTicket extends Component {
                 secondary: { main: '#25551b' }, // This is just green.A700 as hex.
             },
         });
+
 
         return (
             <div>
@@ -140,6 +147,14 @@ class SubmitTicket extends Component {
                 </div>
                 <MuiThemeProvider theme={theme}>
                     <form className="submitTicket" onSubmit={e => this.submitHandler(e)}>
+                        <IconButton
+                            id={'exitButton'}
+                            aria-label="close"
+                            onClick={this.closeHandler}
+                            // edge={'end'}
+                        >
+                            <CloseIcon color="primary" fontSize="large" />
+                        </IconButton>
                         <h1 className="submitTicketHeader"> Submit Ticket </h1>
                         <TextField
                             required
@@ -210,7 +225,6 @@ class SubmitTicket extends Component {
                                 label="College Creek"
                                 value="college_creek" />
                         </RadioGroup>
-
                         <TextField
                             required
                             label="Ticket Subject"
@@ -256,7 +270,7 @@ class SubmitTicket extends Component {
                             variant="contained"
                             type="submit">
                             Submit Ticket
-                    </button>
+                        </button>
                     </form>
                 </MuiThemeProvider>
             </div>
