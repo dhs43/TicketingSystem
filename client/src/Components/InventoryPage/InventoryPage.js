@@ -16,7 +16,7 @@ class InventoryPage extends Component {
 
         this.loadInventory();
         this.submitInventoryHandler = this.submitInventoryHandler.bind(this);
-        this.deleteTicketHandler = this.deleteTicketHandler.bind(this);
+        this.deleteInventoryHandler = this.deleteInventoryHandler.bind(this);
     }
 
     //load inventory
@@ -68,7 +68,7 @@ class InventoryPage extends Component {
     }
 
     //delete inventory item
-    deleteTicketHandler() {
+    deleteInventoryHandler() {
         if (window.confirm("Are you sure you'd like to delete this ticket?")) {
             var this_ticket_id = this.state.theTicket.ticket_ID;
             fetch('/tickets/delete/' + this_ticket_id, {
@@ -97,6 +97,7 @@ class InventoryPage extends Component {
                         <InventoryTable
                             allOfTheInventory={this.state.allOfTheInventory}
                             submitInventoryHandler={this.submitInventoryHandler}
+                            deleteInventoryHandler={this.deleteInventoryHandler}
                         />
                     </Paper>
                 </div>
