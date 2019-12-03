@@ -187,7 +187,17 @@ router.get('/delete/:ticket_id', (req, res, next) => {
                         res.send(err);
                         return null;
                     } else {
-                        res.send("Ticket deleted successfully");
+                        var activityStatement = "DELETE FROM activity WHERE ticket_ID = \"" + ticket_ID + "\";";
+
+                        connection.query(activityStatement, function (err, result) {
+                            if (err) {
+                                console.log(err);
+                                res.send(err);
+                                return null;
+                            } else {
+                                res.send("Ticket deleted successfully");
+                            }
+                        });
                     }
                 });
             }

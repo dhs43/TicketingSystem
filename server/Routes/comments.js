@@ -60,35 +60,35 @@ router.post('/new/:ticket_id', (req, res, next) => {
                 res.send("Comment creation failed");
                 return null;
             } else {
-                email = result[0].customer_ID,
+                email = result[0].customer_ID;
 
-                    getConnection(function (err, commentConnection) {
-                        commentConnection.query(commentStatement, function (err, result) {
-                            if (err) {
-                                console.log(err);
-                                res.send("Comment creation failed");
-                                return null;
-                            } else if (internal === "false") {
+                getConnection(function (err, commentConnection) {
+                    commentConnection.query(commentStatement, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.send("Comment creation failed");
+                            return null;
+                        } else if (internal === false) {
 
-                                // Send an email to customer if not internal
-                                var mailOptions = {
-                                    from: 'hsuhelpdeskproject@gmail.com',
-                                    to: email,
-                                    subject: 'Re: ResNet - Ticket #' + ticket_ID,
-                                    text: text + "\n\nResNet Helpdesk - Ticket #" + ticket_ID
-                                };
+                            // Send an email to customer if not internal
+                            var mailOptions = {
+                                from: 'hsuhelpdeskproject@gmail.com',
+                                to: email,
+                                subject: 'Re: ResNet - Ticket #' + ticket_ID,
+                                text: text + "\n\nResNet Helpdesk - Ticket #" + ticket_ID
+                            };
 
-                                transporter.sendMail(mailOptions, function (err, info) {
-                                    if (err) {
-                                        console.log(err);
-                                    } else {
-                                        console.log("New technician comment email sent to customer");
-                                    }
-                                });
-                            }
-                        });
-                        commentConnection.release();
+                            transporter.sendMail(mailOptions, function (err, info) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log("New technician comment email sent to customer");
+                                }
+                            });
+                        }
                     });
+                    commentConnection.release();
+                });
                 res.send("Comment created successfully");
             }
         });
@@ -113,6 +113,26 @@ router.post('/edit/:comment_id', (req, res, next) => {
                 return null;
             } else {
                 res.send("Comment edited successfully");
+            }
+        });
+        connection.release();
+    });
+});
+
+// Get last commment from ticket
+router.get('/last_comment/:ticket_id', (req, res, next) => {
+    var ticket_ID = req.params.ticket_id;
+
+    var statement = "SELECT author_name, text FROM comments WHERE ticket_ID = \"" + ticket_ID + "\" ORDER BY comment_ID DESC LIMIT 0, 1;";
+
+    getConnection(function (err, connection) {
+        connection.query(statement, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.send("Could not fetch last comment from ticket " + ticket_ID);
+                return null;
+            } else {
+                res.send(result[0]);
             }
         });
         connection.release();

@@ -13,7 +13,8 @@ class Main extends Component {
         this.state = {
             screen: "Tickets",
             activity: "main_without_activity",
-            notificationIcon: "unselected"
+            notificationIcon: "unselected",
+            selectedTicket: null
         };
 
         // Redirect if not logged in
@@ -26,6 +27,8 @@ class Main extends Component {
         this.handleDataVClick = this.handleDataVClick.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.toggleActivity = this.toggleActivity.bind(this);
+        this.changeSelectedTicket = this.changeSelectedTicket.bind(this);
+        this.updateActivity = this.updateActivity.bind(this);
     }
 
     componentDidMount() {
@@ -86,6 +89,14 @@ class Main extends Component {
         }
     }
 
+    updateActivity() {
+        // TODO: Notify activity to update when marking a ticket as read
+    }
+
+    changeSelectedTicket(ticket_ID) {
+        this.setState({ selectedTicket: ticket_ID });
+    }
+
     render() {
         return (
             <div className="backdrop">
@@ -126,6 +137,8 @@ class Main extends Component {
                                 {(this.state.screen === "Tickets") ?
                                     <TicketPage
                                         history={this.props.history}
+                                        selectedTicket={this.state.selectedTicket}
+                                        updateActivity={this.updateActivity}
                                     /> : null}
 
                                 {(this.state.screen === "Inventory") ? 
@@ -135,7 +148,7 @@ class Main extends Component {
                                 {(this.state.screen === "DataV") ? <DataViz /> : null}
                             </div>
                             <div id="activityWindow" className={this.state.activity}>
-                                <Activity />
+                                <Activity changeSelectedTicket={this.changeSelectedTicket} />
                             </div>
                         </div>
                     </div>

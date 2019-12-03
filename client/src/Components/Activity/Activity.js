@@ -9,11 +9,10 @@ export function MarkAsRead(ticket_ID, technician_ID) {
     })
         .then(response => response.text())
         .then(response => {
-            if (response === "Sucessfully updated last_seen_comment_ID") {
-                console.log('Success');
+            if (response === "Update last_seen_comment_ID error") {
+                console.log("Error marking ticket as read: " + response);
             } else {
                 console.log(response);
-                console.log("Error marking ticket as read");
             }
         });
 }
@@ -22,6 +21,10 @@ export function MarkAsRead(ticket_ID, technician_ID) {
 class Activity extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            updatedTickets: [],
+            theTicket: null
+        }
 
         this.getActivity = this.getActivity.bind(this);
         this.getActivity();
@@ -32,22 +35,38 @@ class Activity extends Component {
             method: 'get',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
         })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(response => {
                 if (response === "Max comment error") {
                     console.log("Max comment error");
                 } else {
-                    console.log(response);
+                    console.log("Updated tickets: " + response);
+                    this.setState({ updatedTickets: response });
                 }
             });
     }
 
+
     render() {
         return (
-            <div className="activity_background">
-                <ActivityComment />
+            <div>
+                {
+                    this.state.updatedTickets.length > 0
+                        ?
+                        this.state.updatedTickets.map((value, index) => {
+                            return (
+                                <div className="activity_background" key={`key - ${index}`}>
+                                    <ActivityComment ticket_ID={value} changeSelectedTicket={this.props.changeSelectedTicket} />
+                                </div>
+                            )
+                        })
+                        :
+                        <div className="activity_background">
+                            No new activity! <span role="img" aria-label="party">🎉</span>
+                        </div>
+                }
             </div>
-        );
+        )
     }
 }
 

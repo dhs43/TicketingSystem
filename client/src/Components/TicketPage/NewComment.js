@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TextField from "@material-ui/core/TextField";
+import { MarkAsRead } from '../Activity/Activity';
 
 class NewComment extends Component {
     constructor(props) {
@@ -41,8 +42,11 @@ class NewComment extends Component {
                 if (response === "Comment created successfully") {
                     this.setState({ newComment: '', internal: 'false' }); // Clear textbox
                     this.props.loadAllComments(this.props.theTicket.ticket_ID);
+
+                    // Mark read so your own comments don't show in activity
+                    MarkAsRead(this.props.theTicket.ticket_ID, this.props.loggedinTech.technician_ID);
                 } else {
-                    alert("Error submitting ticket");
+                    alert("Error saving comment");
                 }
             });
     }

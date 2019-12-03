@@ -31,6 +31,7 @@ router.post('/', (req, res, next) => {
     var subject = req.body.subject;
     var description = req.body.description;
     var severity = req.body.severity;
+    var ticket_ID = null;
 
     date = new Date();
 
@@ -46,6 +47,8 @@ router.post('/', (req, res, next) => {
                 res.send("Ticket creation failed");
                 return null;
             } else {
+                ticket_ID = result.insertId;
+
                 // Email user confirmation
                 var emailStatement = "SELECT ticket_ID FROM ticket WHERE customer_ID = \"" + email + "\" ORDER BY time_submitted DESC;";
                 getConnection(function (err, emailConnection) {
@@ -59,7 +62,7 @@ router.post('/', (req, res, next) => {
                                 subject: 'ResNet - Ticket #' + result[0].ticket_ID,
                                 text: 'We have received your ticket and will respond ASAP! \n\nYour problem description:\n' + description + '\n\nReply to this email if you need to update your ticket.\nResNet Helpdesk - Ticket #' + result[0].ticket_ID
                             };
-    
+
                             transporter.sendMail(mailOptions, function (err, info) {
                                 if (err) {
                                     console.log(err);
@@ -71,30 +74,40 @@ router.post('/', (req, res, next) => {
                     });
                     emailConnection.release();
                 });
-                getConnection(function (err, activityConnection) {
-                    // Insert initial activity values for each technician
 
-                    var statement = "SELECT * FROM technicians;"
+                // Insert initial activity row of this ticket for each technician
+                // We initially input the technician_ID and ticket_ID with a 
+                // last_seen_comment_ID of NULL. Get_activity in activity.js checks
+                // if the last-read comment ID is older than the latest or NULL.
+                var statement = "SELECT * FROM technicians;"
 
-                    getConnection(function (err, ticketsConnection) {
-                        ticketsConnection.query(statement, function (err, result) {
-                            if (err) {
-                                console.log(err);
-                                res.send(err);
-                                return null;
-                            } else {
-                                
-                                var activityStatement = "INSERT into activity \
-                                                        (technician_ID, ticket_ID, last_seen_comment_ID) \
-                                                        VALUES ();";
+                getConnection(function (err, techniciansConnection) {
+                    techniciansConnection.query(statement, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res.send(err);
+                            return null;
+                        } else {
+                            getConnection(function (err, activityConnection) {
 
+                                result.map((value, index) => {
+                                    var activityStatement = "INSERT into activity \
+                                                             (technician_ID, ticket_ID) \
+                                                             VALUES (\"" + value.technician_ID + "\", " + ticket_ID + ");";
 
-
+                                    activityConnection.query(activityStatement, function (err, result) {
+                                        if (err) {
+                                            console.log(err);
+                                            res.send(err);
+                                            return null;
+                                        }
+                                    });
+                                });
                                 res.send("Ticket created successfully");
-                            }
-                        });
-                        ticketsConnection.release();
+                            });
+                        }
                     });
+                    techniciansConnection.release();
                 });
             }
         });
