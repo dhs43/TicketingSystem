@@ -16,10 +16,6 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Toolbar from '@material-ui/core/Toolbar';
 
 class InventoryTable extends React.Component {
     constructor(props) {
@@ -33,17 +29,19 @@ class InventoryTable extends React.Component {
                 title: 'Model', 
                 field: 'model' },
           { 
-                title: 'ID', 
-                field: 'device_ID',
-                type: 'numeric',
-                initialEditValue: 'initial edit value' },
+                title: 'Location', 
+                field: 'location'},
+          
           {         
               title: 'Serial Number', 
               field: 'serial_number',
               type: 'numeric'},
           { 
-              title: 'Location', 
-              field: 'location'},
+              title: 'ID', 
+              field: 'device_ID',
+              type: 'numeric',
+              initialEditValue: 'initial edit value' },
+
           {
             title: 'Status', 
             field: 'status',
@@ -74,7 +72,17 @@ class InventoryTable extends React.Component {
     }
   
     render() {
+
+        // Styles
+        const theme = createMuiTheme({
+        palette: {
+            primary: { main: '#FFA500' }, // orange
+            secondary: { main: '#25551b' } // dark green
+        },
+      });
+
       return (
+        <MuiThemeProvider theme={theme}>
         <MaterialTable
           hover
           title="Inventory"
@@ -87,37 +95,16 @@ class InventoryTable extends React.Component {
             pageSizeOptions: [], // [5, 15, 25, 50],
             sorting: true,
             rowStyle: rowData => ({
-                backgroundColor: (rowData.status === '2') ? 'red' : '#FFF'
+                backgroundColor: (rowData.status === '2') ? '#FFFF99' : '#FFF'
               }),
         }}
           editable={{
             onRowAdd: newData => this.props.submitInventoryHandler(newData),
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    const data = this.state.data;
-                    const index = data.indexOf(oldData);
-                    data[index] = newData;
-                    this.setState({ data }, () => resolve());
-                  }
-                  resolve()
-                }, 1000)
-              }),
-            onRowDelete: oldData =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  {
-                    let data = this.state.data;
-                    const index = data.indexOf(oldData);
-                    data.splice(index, 1);
-                    this.setState({ data }, () => resolve());
-                  }
-                  resolve()
-                }, 1000)
-              }),
+            onRowUpdate: newData => this.props.updateInventoryHandler(newData),
+            onRowDelete: newData => this.props.deleteInventoryHandler(newData),
           }}
         />
+        </MuiThemeProvider>
       )
     }
   }

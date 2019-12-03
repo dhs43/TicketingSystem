@@ -3,7 +3,6 @@ import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import InventoryTable from "./InventoryTable";
 import "./InventoryPage.css";
-import { MarkAsRead } from '../Activity/Activity';
 
 class InventoryPage extends Component {
     constructor(props) {
@@ -17,6 +16,8 @@ class InventoryPage extends Component {
         this.loadInventory();
         this.submitInventoryHandler = this.submitInventoryHandler.bind(this);
         this.deleteInventoryHandler = this.deleteInventoryHandler.bind(this);
+        this.updateInventoryHandler = this.updateInventoryHandler.bind(this);
+
     }
 
     //load inventory
@@ -63,28 +64,49 @@ class InventoryPage extends Component {
                     alert("Error adding inventory object");
                 }
             });
-            //this.props.history.push('/');
-
     }
 
-    //delete inventory item
-    deleteInventoryHandler() {
-        if (window.confirm("Are you sure you'd like to delete this ticket?")) {
-            var this_ticket_id = this.state.theTicket.ticket_ID;
-            fetch('/tickets/delete/' + this_ticket_id, {
+    //update inventory item
+    updateInventoryHandler(newData) {
+        fetch('/inventory/update_device/' + (newData.device_ID), {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token },
+            body: JSON.stringify({
+                device_ID: newData.device_ID,
+                title: newData.title.trim(),
+                model: newData.model.trim(),
+                serial_number: newData.serial_number.trim(),
+                location: newData.location.trim(),
+                status: newData.status.trim(),
+            })
+        })
+            .then(response => response.text())
+            .then(response => {
+                if (response === "Device updated successfully") {
+                    alert("Inventory updated!");
+                } else {
+                    console.log(response);
+                    this.setState({ submitted: true });
+                    alert("Error updating device");
+                }
+            });
+    }
+
+
+        //delete inventory item
+        deleteInventoryHandler(newData) {
+            fetch('/inventory/delete/' + (newData.device_ID), {
                 method: 'get',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.token }
             })
                 .then(response => response.text())
                 .then(response => {
-                    if (response === "Ticket deleted successfully") {
-                        this.setState({ theTicket: null });
-                        alert("Deleted ticket #" + this_ticket_id);
+                    if (response === "Device deleted successfully") {
+                        alert("Deleted item #" + newData.device_ID);
                     } else {
-                        alert("Error deleting ticket");
+                        alert("Error deleting item");
                     }
                 });
-        }
     }
 
     render() {
@@ -97,6 +119,7 @@ class InventoryPage extends Component {
                         <InventoryTable
                             allOfTheInventory={this.state.allOfTheInventory}
                             submitInventoryHandler={this.submitInventoryHandler}
+                            updateInventoryHandler={this.updateInventoryHandler}
                             deleteInventoryHandler={this.deleteInventoryHandler}
                         />
                     </Paper>
