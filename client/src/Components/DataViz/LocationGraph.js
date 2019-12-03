@@ -11,7 +11,8 @@ class CustomizedAxisTick extends Component {
 
         return (
             <g transform={`translate(${x},${y})`}>
-                <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
+                <text fontSize={'0.9em'}
+                    x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
             </g>
         );
     }
@@ -25,11 +26,12 @@ class LocationGraph extends Component {
 
     getLocation(tickets){
         let data = [
+            {location:"Canyon", value:0},
             {location:"Cypress", value:0},
             {location:"Creekview", value:0},
             {location:"Hill", value:0},
             {location:"Apts", value:0},
-            {location:"College Creek", value:0},
+            {location:"C. Creek", value:0},
         ];
 
         tickets.forEach(d => {
