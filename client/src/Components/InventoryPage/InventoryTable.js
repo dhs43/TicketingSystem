@@ -1,4 +1,4 @@
-import React, { Component, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import MaterialTable from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
@@ -18,70 +18,75 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 class InventoryTable extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        columns: [
-          { 
-                title: 'Title', 
-                field: 'title' },
-          { 
-                title: 'Model', 
-                field: 'model' },
-          { 
-                title: 'Location', 
-                field: 'location'},
-          
-          {         
-              title: 'Serial Number', 
-              field: 'serial_number'},
-          { 
-              title: 'ID', 
-              field: 'device_ID',
-              type: 'numeric',
-              initialEditValue: 'initial edit value' },
-
-          {
-            title: 'Status', 
-            field: 'status',
-            lookup: { 1: 'Stable', 2: 'Needs Attention' },
-          },
-        ],
-      }
-
-      this.tableIcons = {
-        Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-        Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-        Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-        Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-        DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-        Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-        Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-        Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-        FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-        LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-        NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-        PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-        ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-        Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-        SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
-        ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-        ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-    };
-    }
-  
-    render() {
-
-        // Styles
-        const theme = createMuiTheme({
-        palette: {
-            primary: { main: '#FFA500' }, // orange
-            secondary: { main: '#25551b' } // dark green
+  constructor(props) {
+    super(props);
+    this.state = {
+      columns: [
+        {
+          title: 'Title',
+          field: 'title'
         },
-      });
+        {
+          title: 'Model',
+          field: 'model'
+        },
+        {
+          title: 'Location',
+          field: 'location'
+        },
 
-      return (
-        <MuiThemeProvider theme={theme}>
+        {
+          title: 'Serial Number',
+          field: 'serial_number'
+        },
+        {
+          title: 'ID',
+          field: 'device_ID',
+          type: 'numeric',
+          initialEditValue: 'initial edit value'
+        },
+
+        {
+          title: 'Status',
+          field: 'status',
+          lookup: { 1: 'Stable', 2: 'Needs Attention' },
+        },
+      ],
+    }
+
+    this.tableIcons = {
+      Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
+      Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
+      Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+      Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+      DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+      Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+      Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
+      Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
+      FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
+      LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
+      NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+      PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
+      ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
+      Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
+      SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
+      ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
+      ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
+    };
+  }
+
+  render() {
+
+    // Styles
+    const theme = createMuiTheme({
+      palette: {
+        primary: { main: '#FFA500' }, // orange
+        secondary: { main: '#25551b' } // dark green
+      },
+    });
+
+    return (
+      <MuiThemeProvider theme={theme}>
         <MaterialTable
           hover
           title="Inventory"
@@ -94,36 +99,36 @@ class InventoryTable extends React.Component {
             pageSizeOptions: [], // [5, 15, 25, 50],
             sorting: true,
             rowStyle: rowData => ({
-                backgroundColor: (rowData.status === '2') ? '#FFFF99' : '#FFF'
-              }),
-        }}
-          editable={{
-            onRowAdd: (newData) => 
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                this.props.submitInventoryHandler(newData);
-              }, 600);
+              backgroundColor: (rowData.status === '2') ? '#FFFF99' : '#FFF'
             }),
-            onRowUpdate: (newData) => 
+          }}
+          editable={{
+            onRowAdd: (newData) =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  this.props.submitInventoryHandler(newData);
+                }, 600);
+              }),
+            onRowUpdate: (newData) =>
               new Promise(resolve => {
                 setTimeout(() => {
                   resolve();
                   this.props.updateInventoryHandler(newData);
                 }, 600);
               }),
-            onRowDelete: (newData) => 
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                this.props.deleteInventoryHandler(newData);
-              }, 600);
-            }),
+            onRowDelete: (newData) =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+                  this.props.deleteInventoryHandler(newData);
+                }, 600);
+              }),
           }}
         />
-        </MuiThemeProvider>
-      )
-    }
+      </MuiThemeProvider>
+    )
   }
+}
 
 export default InventoryTable;

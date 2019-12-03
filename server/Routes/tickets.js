@@ -168,28 +168,31 @@ router.get('/assign/:ticket_id/:technician_name', (req, res, next) => {
 router.get('/delete/:ticket_id', (req, res, next) => {
     var ticket_ID = req.params.ticket_id;
 
+    var deleteActivityStatement = "DELETE FROM activity \
+                                   WHERE ticket_ID = \"" + ticket_ID + "\";";
+
     var deleteCommentsStatement = "DELETE FROM comments \
                                    WHERE ticket_ID = \"" + ticket_ID + "\";";
 
     var deleteTicketStatement = "DELETE FROM ticket \
                                  WHERE ticket_ID = \"" + ticket_ID + "\";";
 
+
+
     getConnection(function (err, connection) {
-        connection.query(deleteCommentsStatement, function (err, result) {
+        connection.query(deleteActivityStatement, function (err, result) {
             if (err) {
                 console.log(err);
                 res.send(err);
                 return null;
             } else {
-                connection.query(deleteTicketStatement, function (err, result) {
+                connection.query(deleteCommentsStatement, function (err, result) {
                     if (err) {
                         console.log(err);
                         res.send(err);
                         return null;
                     } else {
-                        var activityStatement = "DELETE FROM activity WHERE ticket_ID = \"" + ticket_ID + "\";";
-
-                        connection.query(activityStatement, function (err, result) {
+                        connection.query(deleteTicketStatement, function (err, result) {
                             if (err) {
                                 console.log(err);
                                 res.send(err);
