@@ -101,7 +101,7 @@ router.post('/update_device/:device_id', (req, res, next) => {
 router.get('/delete/:device_id', (req, res, next) => {
     var device_ID = req.params.device_id;
 
-    var statement = "REMOVE FROM devices WHERE device_ID = \"" + device_ID + "\";";
+    var statement = "DELETE FROM devices WHERE device_ID = \"" + device_ID + "\";";
 
     getConnection(function (err, connection) {
         connection.query(statement, function (err, result) {

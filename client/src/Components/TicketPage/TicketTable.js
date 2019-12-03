@@ -126,7 +126,14 @@ class TicketTable extends Component {
     }
 
     UNSAFE_componentWillReceiveProps() {
-        this.setState({ selectedTicket: this.props.activitySelectedTicket });
+        // console.log("Current: " + this.state.selectedFromTable);
+        // if (this.selectedFromTable === true) {
+        //     return;
+        // }else{
+        //     //this.setState({selectedFromTable: false});
+        //     console.log("Updating from new props");
+            this.setState({ selectedTicket: this.props.activitySelectedTicket });
+        //}
     }
 
     render() {
