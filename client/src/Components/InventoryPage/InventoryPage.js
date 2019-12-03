@@ -3,6 +3,8 @@ import { Redirect } from 'react-router';
 import Paper from '@material-ui/core/Paper';
 import InventoryTable from "./InventoryTable";
 import "./InventoryPage.css";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 class InventoryPage extends Component {
     constructor(props) {
@@ -58,6 +60,7 @@ class InventoryPage extends Component {
             .then(response => {
                 if (response === "Device saved successfully") {
                     this.loadInventory();
+                    NotificationManager.success('Device Saved Successfully', '');
                 } else {
                     console.log(response);
                     this.setState({ submitted: true });
@@ -87,6 +90,7 @@ class InventoryPage extends Component {
                     alert("Error updating device");
                 } else {
                     this.loadInventory();
+                    NotificationManager.success('Device Updated Successfully', '');
                 }
             });
     }
@@ -102,6 +106,7 @@ class InventoryPage extends Component {
                 .then(response => {
                     if (response === "Device deleted successfully") {
                         this.loadInventory();
+                        NotificationManager.success('Device Deleted Successfully', '');
                     } else {
                         alert("Error deleting item");
                     }
@@ -114,6 +119,7 @@ class InventoryPage extends Component {
         } else {
             return (
                 <div className="ticketPage">
+                    <NotificationContainer/>
                     <Paper>
                         <InventoryTable
                             allOfTheInventory={this.state.allOfTheInventory}

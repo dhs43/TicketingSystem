@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TextField from "@material-ui/core/TextField";
 import { MarkAsRead } from '../Activity/Activity';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 class NewComment extends Component {
     constructor(props) {
@@ -46,7 +48,9 @@ class NewComment extends Component {
                     // Mark read so your own comments don't show in activity
                     MarkAsRead(this.props.theTicket.ticket_ID, this.props.loggedinTech.technician_ID);
                 } else {
-                    alert("Error saving comment");
+                    //alert("Error saving comment");
+                    NotificationManager.error('Error Saving Comment', '');
+
                 }
             });
     }
@@ -63,6 +67,7 @@ class NewComment extends Component {
         if (this.props.theTicket !== null && this.props.loggedinTech.technician_ID !== null) {
             return (
                 <div className="theBox">
+                    <NotificationContainer/>
                     <MuiThemeProvider theme={theme}>
                         <TextField
                             name="newComment"
