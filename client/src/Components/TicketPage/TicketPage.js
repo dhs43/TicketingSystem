@@ -6,6 +6,8 @@ import TicketTable from "./TicketTable";
 import "./TicketPage.css";
 import { MarkAsRead } from '../Activity/Activity';
 import NewComment from './NewComment';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 class TicketPage extends Component {
     constructor(props) {
@@ -244,9 +246,12 @@ class TicketPage extends Component {
                 .then(response => {
                     if (response === "Ticket deleted successfully") {
                         this.setState({ theTicket: null });
-                        alert("Deleted ticket #" + this_ticket_id);
+                        //alert("Deleted ticket #" + this_ticket_id);
+                        NotificationManager.success('Ticket Deleted Successfully', '');
                     } else {
-                        alert("Error deleting ticket");
+                        //alert("Error deleting ticket");
+                        NotificationManager.error('Error Deleting Ticket', '');
+
                     }
                 });
         }
@@ -265,8 +270,10 @@ class TicketPage extends Component {
             .then(response => {
                 if (response === "Ticket assigned successfully") {
                     this.loadTickets();
+                    NotificationManager.success('Ticket assigned successfully', '');
                 } else {
-                    alert("Error assigning ticket");
+                    //alert("Error assigning ticket");
+                    NotificationManager.error('Error Assigning Ticket', '');
                 }
             });
     }
@@ -280,8 +287,10 @@ class TicketPage extends Component {
             .then(response => {
                 if (response === "Ticket assigned successfully") {
                     this.loadTickets();
+                    
                 } else {
-                    alert("Error assigning ticket");
+                    //alert("Error assigning ticket");
+                    NotificationManager.error('Error Assigning Ticket', '');
                 }
             });
     }
@@ -341,7 +350,8 @@ class TicketPage extends Component {
                     this.setState({ theTicket: null });
                     this.loadTicket(ticket_ID);
                 } else {
-                    alert("Error updating ticket status");
+                    //alert("Error updating ticket status");
+                    NotificationManager.error('Error Updating Ticket Status', '');
                 }
             });
     }
@@ -349,6 +359,7 @@ class TicketPage extends Component {
     ticketManagement() {
         return (
             <div className="assignButtons">
+                <NotificationContainer/>
                 {this.state.loggedinTech.is_admin === 1 ? <button
                     className="deleteButton"
                     onClick={this.deleteTicketHandler}>
@@ -455,7 +466,7 @@ class TicketPage extends Component {
                             submitTicketHandler={this.submitTicketHandler}
                             activitySelectedTicket={this.props.selectedTicket}
                         />
-                    </Paper>
+                    </Paper> 
                     <div className="marginTop">
                         {this.state.theTicket === null ? null :
                             <div className="details">

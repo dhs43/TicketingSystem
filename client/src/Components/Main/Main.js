@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "./Main.css";
 import './MainActivity.css';
 import TicketPage from "../TicketPage/TicketPage";
+import InventoryPage from "../InventoryPage/InventoryPage";
 import DataViz from "../DataViz/DataViz";
 import bellIcon from '../../res/notification.svg';
 import Activity from '../Activity/Activity';
@@ -152,7 +153,10 @@ class Main extends Component {
                                         updateActivity={this.updateActivity}
                                     /> : null}
 
-                                {(this.state.screen === "Inventory") ? <p>Inventory</p> : null}
+                                {(this.state.screen === "Inventory") ? 
+                                    <InventoryPage
+                                        history={this.props.history}
+                                    /> : null}
                                 {(this.state.screen === "DataV") ? <DataViz /> : null}
                             </div>
                             <div id="activityWindow" className={this.state.activity}>

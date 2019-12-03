@@ -1,0 +1,205 @@
+.ticketPage
+{
+    width: 100%;
+}
+
+.theBox
+{
+    height: auto;
+    width: 100%;
+    padding: 0 auto 0 auto;
+    flex-direction: column;
+}
+
+.marginTop
+{
+    margin-top: 15px;
+}
+
+.toolbar
+{
+    display: flex;
+    width: 100%;
+}
+
+.createTicketButton
+{
+    margin-left: 10px;
+    margin-right: 0px;
+    color: white;
+    width: 100px;
+    height: 30px;
+    background-color: #5C8021;
+    border-radius: 5px;
+    border-color: #5C8021;
+}
+
+.createTicketButton:hover
+{
+    background-color: rgb(117, 164, 42);
+    border-radius: 5px;
+    border-color: #5C8021;
+}
+
+.details
+{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    border-radius: 5px;
+    border: 1px solid #5C8021;
+    font-size: 1.2em;
+    white-space: pre-line;
+    background-color: #FFFFFF;
+
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    grid-template-rows: auto;
+}
+
+.ticketSubject
+{
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 15px;
+
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+}
+
+.ticketDescription
+{
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+
+.ticketDetails
+{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    margin-right: 0;
+    margin-left: 10px;
+    margin-top: 0;
+    margin-bottom: auto;
+    padding: 10px;
+    border: solid #5C8021 1px;
+    box-shadow: 1px 2px 4px 1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    border-radius: 5px;
+    font-size: .85em;
+    line-height: 150%;
+}
+
+.commentUI
+{
+    padding: 10px;
+    flex-direction: column;
+    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    border-radius: 5px;
+    border-color: #5C8021;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 1.2em;
+    flex-direction: row;
+}
+
+
+.comment-area
+{
+    margin: 10px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+}
+
+.textarea
+{
+    height: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    outline: #000000;
+    resize: none;
+    overflow: auto;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.button
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    border-color: #5C8021;
+    color: white;
+    height: 40px;
+    background-color: #5C8021;
+}
+
+.button:hover
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+    background-color: rgb(117, 164, 42);
+    border-color: #5C8021;
+}
+
+.assignButtons
+{
+    grid-column-start: 2;
+    margin-left: auto;
+    margin-right: 5px;
+    margin-bottom: auto;
+    margin-top: 5px;
+    display: flex;
+}
+
+.selectStatus
+{
+
+    border: 1px solid #5C8021;
+    border-radius: 5px;
+    margin: 2px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.assignButtons button
+{
+    background-color: transparent;
+    border-color: transparent;
+    line-height: 1.75;
+    margin: 1px;
+    padding: 2px 5px 2px 5px;
+}
+
+.assignButtons button:hover
+{
+    cursor: pointer;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    transition: 250ms
+}
+
+.deleteButton:hover
+{
+    color: red;
+}
+
+.acceptButton:hover
+{
+    color: green;
+}
