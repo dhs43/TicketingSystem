@@ -19,7 +19,7 @@ class DataViz extends Component {
             allOfTheTickets: [],
             loggedin: true,
             relevant_tickets: [],
-            total_time: "",
+            avg_time: "",
             relevant_time: "",
             time_period: 7,
         }
@@ -56,7 +56,7 @@ class DataViz extends Component {
                 .then(data => {
                     this.setState({ allOfTheTickets: data.reverse() });
                     this.sortTickets(7);
-                    this.setState({total_time: format(this.calculateTime(this.state.allOfTheTickets) * 1000)});
+                    this.setState({avg_time: format(this.calculateTime(this.state.allOfTheTickets) * 1000)});
                 })
                 .catch(err => console.log(err))
         }else{
@@ -87,14 +87,16 @@ class DataViz extends Component {
 
     calculateTime(tickets){
         let total = 0;
+        let out_of = 0;
         tickets.forEach((d)=>{
                if (d.time_closed !== null ){
                    let time_spent = d.time_closed - d.time_submitted;
+                   out_of++;
                    total = total + time_spent;
                }
             }
         );
-        return total;
+        return total / out_of;
     }
 
 
@@ -149,17 +151,17 @@ class DataViz extends Component {
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
-                            <h2 className={"dataHeader"}> Time Spent Resolving Issues (DD:HH:MM:SS)</h2>
+                            <h2 className={"dataHeader"}> Avg Time Spent Resolving Ticket (DD:HH:MM:SS)</h2>
                             <p className={"dataNumber"} >
-                                {this.state.total_time}
+                                {this.state.avg_time}
                             </p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
-                            <h2 className={"dataHeader"}> Time Spent Resolving Issues for Time Period (DD:HH:MM:SS)</h2>
+                            <h2 className={"dataHeader"}>  Avg Time Spent Resolving Ticket for Time Period (DD:HH:MM:SS)</h2>
                             <p className={"dataNumber"}>
-                                {this.state.relevant_time}
+                                {this.state.avg_time}
                             </p>
                         </Paper>
                     </Grid>
