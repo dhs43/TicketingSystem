@@ -18,7 +18,39 @@ var transporter = nodemailer.createTransport({
     }
 });
 
+// // For when I mess up the activity table... smh
+// router.get('/make/:ticket', (req, res, next) => {
+//     var ticket_ID = req.params.ticket;
+//     var statement = "SELECT * FROM technicians;";
+//     getConnection(function (err, techniciansConnection) {
+//         techniciansConnection.query(statement, function (err, result) {
+//             if (err) {
+//                 console.log(err);
+//                 res.send(err);
+//                 return null;
+//             } else {
+//                 getConnection(function (err, activityConnection) {
 
+//                     result.map((value, index) => {
+//                         var activityStatement = "INSERT into activity \
+//                                                  (technician_ID, ticket_ID, last_seen_comment_ID) \
+//                                                  VALUES (\"" + value.technician_ID + "\", " + ticket_ID + ", 0);";
+
+//                         activityConnection.query(activityStatement, function (err, result) {
+//                             if (err) {
+//                                 console.log(err);
+//                                 res.send(err);
+//                                 return null;
+//                             }
+//                         });
+//                     });
+//                     res.send("Ticket created successfully");
+//                 });
+//             }
+//         });
+//         techniciansConnection.release();
+//     });
+// });
 
 // Submit ticket route
 router.post('/', (req, res, next) => {
