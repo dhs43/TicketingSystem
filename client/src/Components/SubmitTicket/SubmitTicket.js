@@ -111,7 +111,7 @@ class SubmitTicket extends Component {
             .then(response => {
                 if (response === "Ticket created successfully") {
                     //alert("Ticket Submitted!");
-                    NotificationManager.success('Ticket Submitted!', '');
+                    NotificationManager.success('Ticket Submitted!', '', 4000);
                 } else {
                     this.setState({ submitted: true });
                     //alert("Error submitting ticket")
@@ -121,7 +121,7 @@ class SubmitTicket extends Component {
 
             setTimeout(() => {
                 this.props.history.push('/');
-            }, 4000);        
+            }, 5000);        
 
     }
 
