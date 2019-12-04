@@ -165,6 +165,7 @@ class SubmitTicket extends Component {
                 <MuiThemeProvider theme={theme}>
                     <form className="submitTicket" onSubmit={e => this.submitHandler(e)}>
                         <IconButton
+                            className="exit_submit_ticket"
                             aria-label="close"
                             onClick={this.closeHandler}
                         >

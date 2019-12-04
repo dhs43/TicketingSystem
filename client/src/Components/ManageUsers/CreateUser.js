@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {NotificationManager} from "react-notifications";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import React, { Component } from "react";
+import { NotificationManager } from "react-notifications";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import TextField from "@material-ui/core/TextField";
@@ -76,9 +76,9 @@ class CreateUser extends Component {
             body: JSON.stringify({
                 first_name: this.state.first_name.trim(),
                 last_name: this.state.last_name.trim(),
-                is_admin: this.state.is_admin === 'true' ? 1:0,
+                is_admin: this.state.is_admin === 'true' ? 1 : 0,
                 password: this.state.password.trim(),
-                active_user:true,
+                active_user: true,
                 email: this.state.email.trim(),
 
             })
@@ -100,11 +100,11 @@ class CreateUser extends Component {
 
     }
 
-    closeHandler(){
+    closeHandler() {
         this.props.history.push('/');
     }
 
-    render(){
+    render() {
         // Styles Radio buttons
         const theme = createMuiTheme({
             palette: {
@@ -113,11 +113,12 @@ class CreateUser extends Component {
             },
         });
 
-        return(
+        return (
             <div>
                 <MuiThemeProvider theme={theme}>
                     <form className="createUser" onSubmit={e => this.submitHandler(e)}>
                         <IconButton
+                            className="exit_new_user"
                             aria-label="close"
                             onClick={this.closeHandler}
                         >
@@ -155,7 +156,7 @@ class CreateUser extends Component {
                             onChange={e => this.changeHandler(e)}
                         />
                         <FormControl component={'fieldset'}>
-                        <FormLabel component="legend"> Access </FormLabel>
+                            <FormLabel component="legend"> Access </FormLabel>
                             <RadioGroup
                                 aria-label="admin"
                                 name="is_admin"

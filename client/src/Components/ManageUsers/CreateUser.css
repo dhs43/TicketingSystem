@@ -57,3 +57,9 @@
     border-color: #5C8021;
 }
 
+.exit_new_user
+{
+    width: 60px;
+    height: 60px;
+    margin-left: auto !important;
+}
