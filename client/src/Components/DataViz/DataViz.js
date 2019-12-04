@@ -68,10 +68,13 @@ class DataViz extends Component {
     sortTickets(period){ // period in days. Default week is 7
         let tickets = [];
 
-        let today = new Date();
+        let today = new Date().getTime();
+
         this.state.allOfTheTickets.forEach(d => {
             let date = new Date(d.time_submitted * 1000);
-            if (today.getDate() - date.getDate() <= period) {
+            let ago = today - date;
+            let time_period = period * 86400000
+            if (ago <= time_period) {
                 tickets.push(d);
             }
         });
@@ -79,8 +82,13 @@ class DataViz extends Component {
         this.setState({
             relevant_tickets: tickets,
         });
+
         this.setState({
-            relevant_time: format(this.calculateTime(this.state.allOfTheTickets) * 1000)
+            relevant_time: format(this.calculateTime(tickets) * 1000)
+        });
+
+        this.setState({
+            time_period: period
         });
         return tickets;
     }
@@ -88,14 +96,32 @@ class DataViz extends Component {
     calculateTime(tickets){
         let total = 0;
         let out_of = 0;
-        tickets.forEach((d)=>{
-               if (d.time_closed !== null ){
-                   let time_spent = d.time_closed - d.time_submitted;
-                   out_of++;
-                   total = total + time_spent;
-               }
+
+        let count=0;
+        // tickets.forEach((d)=>{
+        //     count+=1;
+        //        if (d.time_closed !== null ){
+        //
+        //            out_of = out_of + 1;
+        //            let time_spent = d.time_closed - d.time_submitted;
+        //            total = total + time_spent;
+        //        }
+        //
+        //     }
+        // );
+
+        for (let i=0; i<tickets.length;i++){
+            count+=1;
+            if (tickets[i].time_closed !== null ) {
+                out_of = out_of + 1;
+                let time_spent = tickets[i].time_closed - tickets[i].time_submitted;
+                total = total + time_spent;
             }
-        );
+        }
+        console.log('---------');
+        console.log(total);
+        console.log(out_of);
+        console.log(count);
         return total / out_of;
     }
 
@@ -104,8 +130,10 @@ class DataViz extends Component {
         const handleChange  =() => event => {
             this.setState({
                 time_period: event.target.value,
-                relevant_tickets: this.sortTickets(event.target.value),
+                // relevant_time: format(this.calculateAvgTime(this.state.relevant_tickets) * 1000),
             });
+            this.sortTickets(event.target.value);
+
         };
 
         //styles
@@ -133,19 +161,19 @@ class DataViz extends Component {
                             <MenuItem value={30} > Last 30 Days</MenuItem>
                             <MenuItem  value={90} > Last 90 Days </MenuItem>
                             <MenuItem value={180} > Last 180 Days </MenuItem>
-                            <MenuItem value={365} > Last Year </MenuItem>
+                            <MenuItem value={365} > Last 365 Days </MenuItem>
                         </Select>
                     </FormControl>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
                         <Paper className={"tooShort"}>
-                            <h2 className={"dataHeader"}> Tickets Submitted </h2>
+                            <h2 className={"dataHeader"}> All Tickets Submitted </h2>
                             <p className={"dataNumber"}> {this.state.allOfTheTickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper className={'tooShort'}>
-                            <h2 className={"dataHeader"}> Tickets Submitted for Time Period</h2>
+                            <h2 className={"dataHeader"}> Tickets Submitted in last {this.state.time_period} days</h2>
                             <p className={"dataNumber"}> {this.state.relevant_tickets.length}</p>
                         </Paper>
                     </Grid>
@@ -159,9 +187,9 @@ class DataViz extends Component {
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
-                            <h2 className={"dataHeader"}>  Avg Time Spent Resolving Ticket for Time Period (DD:HH:MM:SS)</h2>
+                            <h2 className={"dataHeader"}>  Avg Time Spent Resolving Ticket in last {this.state.time_period} days (DD:HH:MM:SS)</h2>
                             <p className={"dataNumber"}>
-                                {this.state.avg_time}
+                                {this.state.relevant_time}
                             </p>
                         </Paper>
                     </Grid>

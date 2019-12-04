@@ -127,7 +127,7 @@ class SubmitTicket extends Component {
 
         setTimeout(() => {
             this.props.history.push('/');
-        }, 5000);
+        }, 2000);
 
     }
 

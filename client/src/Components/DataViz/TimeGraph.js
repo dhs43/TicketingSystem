@@ -45,7 +45,7 @@ class TimeGraph extends Component {
         let today = new Date().getTime() / 1000;
 
         let keys=[];
-        for (let i = 0; i < time_period; i++) {
+        for (let i = 0; i <= time_period; i++) {
             keys.push(
                 this.timeConverter(today - i * 86400)
             );
