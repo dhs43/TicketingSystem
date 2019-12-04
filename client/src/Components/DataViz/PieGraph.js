@@ -95,7 +95,7 @@ class PieGraph extends Component{
     }
 
     render(){
-        const COLORS = ['#0088FE', '#FFBB28', '#00a884'];
+        const COLORS = ['#0088FE', '#da8d2b', '#00a884'];
         return(
             <PieChart width={this.props.width/2.3} height={this.props.height/1.7}>
                 <Pie

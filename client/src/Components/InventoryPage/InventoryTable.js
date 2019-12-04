@@ -99,7 +99,7 @@ class InventoryTable extends React.Component {
             pageSizeOptions: [], // [5, 15, 25, 50],
             sorting: true,
             rowStyle: rowData => ({
-              backgroundColor: (rowData.status === '2') ? '#FFFF99' : '#FFF'
+              backgroundColor: (rowData.status === '2') ? 'rgb(255, 235, 206)' : '#FFF'
             }),
           }}
           editable={{
