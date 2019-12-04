@@ -6,6 +6,9 @@ import InventoryPage from "../InventoryPage/InventoryPage";
 import DataViz from "../DataViz/DataViz";
 import bellIcon from '../../res/notification.svg';
 import Activity from '../Activity/Activity';
+
+import Modal from "@material-ui/core/Modal";
+
 import ManageUsers from "../ManageUsers/ManageUsers";
 
 class Main extends Component {
@@ -15,7 +18,16 @@ class Main extends Component {
             screen: "Tickets",
             activity: "main_without_activity",
             notificationIcon: "unselected",
-            selectedTicket: null
+            loggedinTech: {
+                "technician_ID": '',
+                "firstname": '',
+                "lastname": '',
+                "active_user": 0,
+                "is_admin": 0
+            },
+            selectedTicket: null,
+            open: false,
+
         };
 
         // Redirect if not logged in
@@ -23,13 +35,16 @@ class Main extends Component {
             this.props.history.push('/');
         }
 
+        this.loadTechnician();
+        this.handleOpen = this.handleOpen.bind(this);
+        this.handleClose = this. handleClose.bind(this);
+        this.loadTechnician = this.loadTechnician.bind(this);
         this.handleTicketClick = this.handleTicketClick.bind(this);
         this.handleInventoryClick = this.handleInventoryClick.bind(this);
         this.handleDataVClick = this.handleDataVClick.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.toggleActivity = this.toggleActivity.bind(this);
         this.changeSelectedTicket = this.changeSelectedTicket.bind(this);
-        this.updateActivity = this.updateActivity.bind(this);
     }
 
     componentDidMount() {
@@ -53,6 +68,34 @@ class Main extends Component {
             .catch(err => console.log(err))
     }
 
+    loadTechnician() {
+        if (localStorage.user !== undefined) {
+            fetch('/users/getUser/' + localStorage.user, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.token
+                }
+            })
+                .then(function (response) {
+                    if (response.status === 403) {
+                        localStorage.removeItem('token');
+                        this.setState({ loggedin: false });
+                    } else {
+                        return response.json();
+                    }
+                }.bind(this))
+                .then(data => this.setState({
+                    loggedinTech: {
+                        technician_ID: data.technician_ID,
+                        firstname: data.first_name,
+                        lastname: data.last_name,
+                        active_user: data.active_user,
+                        is_admin: data.is_admin
+                    }
+                }))
+                .catch(err => console.log(err))
+        }
+    }
+
     handleTicketClick() {
         this.setState(state => ({
             screen: "Tickets"
@@ -71,9 +114,6 @@ class Main extends Component {
         }));
     }
 
-    handleUsers(){
-
-    }
 
     handleLogout() {
         localStorage.removeItem('token');
@@ -94,8 +134,12 @@ class Main extends Component {
         }
     }
 
-    updateActivity() {
-        // TODO: Notify activity to update when marking a ticket as read
+   handleOpen(){
+        this.setState({open:true});
+   }
+
+    handleClose(){
+        this.setState({open:false});
     }
 
     changeSelectedTicket(ticket_ID) {
@@ -117,16 +161,31 @@ class Main extends Component {
                     <h1 className="title">
                         ResNet Helpdesk
                     </h1>
+
+                    {this.state.loggedinTech.is_admin ?
+                        <div className="users_div">
+                            <button className="users_button" onClick={this.handleOpen}>
+                                MANAGE USERS
+                            </button>
+                            <Modal
+                                className={"manageUsersModal"}
+                                aria-labelledby="manage-user-modal"
+                                aria-describedby="manage-user-modal"
+                                open={this.state.open}
+                                onClose={this.handleClose}
+                            >
+                                <ManageUsers
+                                    history={this.props.history}
+                                />
+                            </Modal>
+                        </div>
+                        : null}
+
                     <div id="notificationsButton" className={this.state.notificationIcon}>
                         <img src={bellIcon} className="bellIcon" onClick={this.toggleActivity} alt="bell icon" />
                     </div>
                     <div className="logout">
                         <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
-                    </div>
-
-                    {/*//TODO: Admin Access Only*/}
-                    <div>
-                        <button className="manage_users" onClick={this.handleUsers}> Manage Users</button>
                     </div>
 
 

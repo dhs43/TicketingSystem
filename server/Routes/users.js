@@ -12,11 +12,11 @@ router.use(bodyParser.json());
 // AUTHENTICATION FUNCTIONS
 generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(saltRounds));
-}
+};
 
 validatePassword = function (password) {
     return bcrypt.compareSync(password, this.local.password);
-}
+};
 
 
 // ROUTES
@@ -101,7 +101,7 @@ router.post('/newUser', (req, res, next) => {
     var is_admin = req.body.is_admin;
     var password = generateHash(req.body.password);
 
-    var statement = "INSERT INTO technicians (technician_ID, first_name, last_name, is_admin, password) VALUES ('" + email + "', '" + first_name + "', '" + last_name + "', " + is_admin + ", '" + password + "');";
+    var statement = "INSERT INTO technicians (technician_ID, first_name, last_name, is_admin, password, active_user) VALUES ('" + email + "', '" + first_name + "', '" + last_name + "', " + is_admin + ", '" + password + "', 1);";
 
     getConnection(function (err, connection) {
         connection.query(statement, function (err, result, fields) {
@@ -114,6 +114,27 @@ router.post('/newUser', (req, res, next) => {
     });
     console.log("New user created");
     res.send("New user created");
+});
+
+//update technicians
+router.post('/updateUser', (req, res, next) => {
+
+    var active_user = req.body.active_user;
+    var technician_ID = req.body.technician_ID;
+
+    var statement = "UPDATE technicians SET active_user=\"" + active_user + "\" WHERE technician_ID = \"" + technician_ID + "\";";
+
+    getConnection(function (err, connection) {
+        connection.query(statement, function (err, result, fields) {
+            if (err) {
+                console.log(err);
+                return null;
+            }
+        });
+        connection.release();
+    });
+    console.log("User updated");
+    res.send("User updated");
 });
 
 
@@ -144,7 +165,7 @@ router.get('/getUser/:user_id', (req, res, next) => {
 });
 
 router.get('/all_technicians', (req, res, next) => {
-    var statement = "SELECT * FROM technicians;"
+    var statement = "SELECT * FROM technicians;";
 
     getConnection(function (err, connection) {
         connection.query(statement, function (err, result) {

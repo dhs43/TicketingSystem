@@ -159,10 +159,8 @@ class SubmitTicket extends Component {
                 <MuiThemeProvider theme={theme}>
                     <form className="submitTicket" onSubmit={e => this.submitHandler(e)}>
                         <IconButton
-                            id={'exitButton'}
                             aria-label="close"
                             onClick={this.closeHandler}
-                            // edge={'end'}
                         >
                             <CloseIcon color="primary" fontSize="large" />
                         </IconButton>
@@ -278,7 +276,6 @@ class SubmitTicket extends Component {
                         <button
                             className="submitTicketButton"
                             color="primary"
-                            variant="contained"
                             type="submit">
                             Submit Ticket
                         </button>
