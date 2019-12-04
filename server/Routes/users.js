@@ -37,7 +37,7 @@ router.post('/loginUser', (req, res, next) => {
 
     getConnection(function (err, activeUserConnection) {
         activeUserConnection.query(activeUserStatement, function (err, result, fields) {
-            if (result === undefined) {
+            if (result[0] === undefined) {
                 // Check if account exists
                 console.log("Email not found in DB");
                 res.send(AUTH_FAILURE);
