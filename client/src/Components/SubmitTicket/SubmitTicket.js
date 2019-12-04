@@ -172,6 +172,7 @@ class SubmitTicket extends Component {
                             <CloseIcon color="primary" fontSize="large" />
                         </IconButton>
                         <h1 className="submitTicketHeader"> Submit Ticket </h1>
+                        <div className={"centerPlease"} >
                         <TextField
                             required
                             className="medium"
@@ -210,8 +211,9 @@ class SubmitTicket extends Component {
                             value={this.state.phone}
                             onChange={e => this.phoneChangeHandler(e)}
                         />
-                        <FormLabel component="legend"> Location </FormLabel>
+                        <FormLabel component="legend" style={{paddingTop:'1em'}}> Location </FormLabel>
                         <RadioGroup
+                            style={{paddingLeft:'1em'}}
                             aria-label="location"
                             name="location"
                             value={this.state.location}
@@ -241,7 +243,9 @@ class SubmitTicket extends Component {
                                 label="College Creek"
                                 value="college_creek" />
                         </RadioGroup>
+
                         <TextField
+                            className="medium"
                             required
                             label="Ticket Subject"
                             name="subject"
@@ -252,17 +256,19 @@ class SubmitTicket extends Component {
                         />
                         <TextField
                             required
+                            className="medium"
                             label="Description of Issue"
                             name="description"
                             multiline
                             margin="normal"
                             variant="outlined"
-                            rows="3"
+                            rows="5"
                             value={this.state.description}
                             onChange={e => this.changeHandler(e)}
                         />
-                        <FormLabel componet="legend" > Urgency </FormLabel>
+                        <FormLabel componet="legend" style={{paddingTop:'1em'}}> Urgency </FormLabel>
                         <RadioGroup
+                            style={{paddingLeft:'1em'}}
                             aria-label="severity"
                             name="severity"
                             value={this.state.severity}
@@ -280,6 +286,7 @@ class SubmitTicket extends Component {
                                 label="Low"
                                 value="low" />
                         </RadioGroup>
+                        </div>
                         <button
                             className="submitTicketButton"
                             color="primary"
