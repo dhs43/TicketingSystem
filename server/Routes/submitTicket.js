@@ -82,29 +82,20 @@ router.post('/', (req, res, next) => {
                 ticket_ID = result.insertId;
 
                 // Email user confirmation
-                var emailStatement = "SELECT ticket_ID FROM ticket WHERE customer_ID = \"" + email + "\" ORDER BY time_submitted DESC;";
-                getConnection(function (err, emailConnection) {
-                    emailConnection.query(emailStatement, function (err, result) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var mailOptions = {
-                                from: 'hsuhelpdeskproject@gmail.com',
-                                to: email,
-                                subject: 'ResNet - Ticket #' + result[0].ticket_ID,
-                                text: 'We have received your ticket and will respond ASAP! \n\nYour problem description:\n' + description + '\n\nReply to this email if you need to update your ticket.\nResNet Helpdesk - Ticket #' + result[0].ticket_ID
-                            };
 
-                            transporter.sendMail(mailOptions, function (err, info) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    console.log("Confirmation email sent");
-                                }
-                            });
-                        }
-                    });
-                    emailConnection.release();
+                var mailOptions = {
+                    from: 'hsuhelpdeskproject@gmail.com',
+                    to: email,
+                    subject: 'ResNet - Ticket #' + ticket_ID,
+                    text: 'We have received your ticket and will respond ASAP! \n\nYour problem description:\n' + description + '\n\nReply to this email if you need to update your ticket.\nResNet Helpdesk - Ticket #' + ticket_ID
+                };
+
+                transporter.sendMail(mailOptions, function (err, info) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("Confirmation email sent");
+                    }
                 });
 
                 // Insert initial activity row of this ticket for each technician
