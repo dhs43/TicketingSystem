@@ -164,6 +164,14 @@ class Main extends Component {
                         ResNet Helpdesk
                     </h1>
 
+                    {this.state.screen === "Tickets" ?
+                        <div id="notificationsButton" className={this.state.notificationIcon}>
+                            <img src={bellIcon} className="bellIcon" onClick={this.toggleActivity} alt="bell icon" />
+                        </div>
+                        :
+                        <div id="notificationsButtonOff">
+                        </div>}
+
                     {this.state.loggedinTech.is_admin ?
                         <div className="users_div">
                             <button className="users_button" onClick={this.handleOpen}>
@@ -182,14 +190,6 @@ class Main extends Component {
                             </Modal>
                         </div>
                         : null}
-
-                    {this.state.screen === "Tickets" ?
-                        <div id="notificationsButton" className={this.state.notificationIcon}>
-                            <img src={bellIcon} className="bellIcon" onClick={this.toggleActivity} alt="bell icon" />
-                        </div>
-                        :
-                        <div id="notificationsButtonOff">
-                        </div>}
 
                     <div className="logout">
                         <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
