@@ -127,7 +127,6 @@ class ManageUsers extends Component {
             <MuiThemeProvider theme={theme}>
                 <NotificationContainer />
                 <Paper>
-
                     <List dense={'dense'}>
                         <ListItem> <h3> Manage Users </h3></ListItem>
                         <ListItem>

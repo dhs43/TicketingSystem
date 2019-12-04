@@ -11,7 +11,6 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import "./CreateUser.css";
 import 'react-notifications/lib/notifications.css';
-import Paper from "@material-ui/core/Paper";
 
 class CreateUser extends Component {
     constructor(props) {
@@ -87,9 +86,11 @@ class CreateUser extends Component {
             .then(response => response.text())
             .then(response => {
                 if (response === "New user created") {
+                    alert("New user created");
                     NotificationManager.success('New User Created!', '',3000);
                 } else {
                     this.setState({ submitted: true });
+                    alert("Error Creating User");
                     NotificationManager.error('Error Creating User', '',3000);
                 }
             });
@@ -116,8 +117,8 @@ class CreateUser extends Component {
 
         return (
             <div>
-                <NotificationContainer />
                 <MuiThemeProvider theme={theme}>
+                   < NotificationContainer />
                     <form className="createUser" onSubmit={e => this.submitHandler(e)}>
                         <IconButton
                             className="exit_new_user"
@@ -192,10 +193,11 @@ class CreateUser extends Component {
                             className="createUserButton"
                             color="primary"
                             type="submit">
-                            Submit Ticket
+                            Create User
                         </button>
                     </form>
                 </MuiThemeProvider>
+                <NotificationContainer/>
             </div>
         );
     }
