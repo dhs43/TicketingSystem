@@ -127,9 +127,10 @@ class CreateUser extends Component {
                             <CloseIcon color="primary" fontSize="large" />
                         </IconButton>
                         <h1 className="createUserHeader"> Create User </h1>
+                        <div className={"centerPlease"} >
                         <TextField
                             required
-                            className="medium"
+                            className="createUserText"
                             label="First Name"
                             name="first_name"
                             margin="normal"
@@ -139,7 +140,7 @@ class CreateUser extends Component {
                         />
                         <TextField
                             required
-                            className="medium"
+                            className="createUserText"
                             label="Last Name"
                             name="last_name"
                             margin="normal"
@@ -149,7 +150,7 @@ class CreateUser extends Component {
                         />
                         <TextField
                             required
-                            className="medium"
+                            className="createUserText"
                             label="Technician Email Address"
                             name="email"
                             margin="normal"
@@ -157,9 +158,22 @@ class CreateUser extends Component {
                             value={this.state.email}
                             onChange={e => this.changeHandler(e)}
                         />
+                            <TextField
+                                required
+                                className="createUserText"
+                                type={'password'}
+                                label="Technician Password"
+                                name="password"
+                                margin="normal"
+                                variant="filled"
+                                value={this.state.password}
+                                onChange={e => this.changeHandler(e)}
+                            />
+
                         <FormControl component={'fieldset'}>
-                            <FormLabel component="legend"> Access </FormLabel>
+                            <FormLabel component="legend" style={{paddingTop:'1em'}}> Access </FormLabel>
                             <RadioGroup
+                                style={{paddingLeft:'1em'}}
                                 aria-label="admin"
                                 name="is_admin"
                                 value={this.state.is_admin}
@@ -174,16 +188,7 @@ class CreateUser extends Component {
                                     value='false' />
                             </RadioGroup>
                         </FormControl>
-                        <TextField
-                            required
-                            className="medium"
-                            label="Technician Password"
-                            name="password"
-                            margin="normal"
-                            variant="filled"
-                            value={this.state.password}
-                            onChange={e => this.changeHandler(e)}
-                        />
+                        </div>
                         <button
                             className="createUserButton"
                             color="primary"
