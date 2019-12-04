@@ -24,8 +24,8 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.medium{
-    width: 70%;
+.createUserText{
+    width:90%;
 }
 
 .createUserButton
@@ -62,4 +62,10 @@
     width: 60px;
     height: 60px;
     margin-left: auto !important;
+}
+
+.centerPlease{
+    width: 70%;
+    margin-right: auto;
+    margin-left:auto;
 }
