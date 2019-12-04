@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TextField from "@material-ui/core/TextField";
 import { MarkAsRead } from '../Activity/Activity';
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
 class NewComment extends Component {
@@ -67,7 +67,7 @@ class NewComment extends Component {
         if (this.props.theTicket !== null && this.props.loggedinTech.technician_ID !== null) {
             return (
                 <div className="theBox">
-                    <NotificationContainer/>
+                    <NotificationContainer />
                     <MuiThemeProvider theme={theme}>
                         <TextField
                             name="newComment"

@@ -127,33 +127,36 @@ class TicketTable extends Component {
     }
 
     UNSAFE_componentWillReceiveProps() {
-        // For some reason props are received twice after clicking a row
-        // so we set clickedRow to 0 when we click the row.
-        // If we haven't clicked a row, clickedRow should always be at 2
-        // which allows us to set selectedTicket to the received prop.
+        console.log('curreent state: ' + this.state.selectedTicket);
 
-        if (this.state.clickedRow === 0) {
-            this.setState({ clickedRow: 1 });
-        } else if (this.state.clickedRow === 1) {
-            this.setState({ clickedRow: 2 });
-        } else if (this.state.clickedRow === 2) {
-            this.setState({ selectedTicket: this.props.activitySelectedTicket });
+        if (this.props.activitySelectedTicket === this.state.selectedTicket) {
+            return;
         }
+        this.setState({ selectedTicket: this.props.activitySelectedTicket });
     }
 
     render() {
         // Styles
         const theme = createMuiTheme({
+            overrides: {
+                MuiTableSortLabel: {
+                    root: {
+                        '&:hover': {
+                            color: '#bbdefb',
+                        },
+                    },
+                },
+            },
             palette: {
                 primary: { main: '#FFA500' }, // orange
                 secondary: { main: '#25551b' } // dark green
             },
+
         });
 
         return (
             <MuiThemeProvider theme={theme}>
                 <MaterialTable
-                    hover
                     columns={this.headCells}
                     title={
                         <Toolbar>
@@ -177,6 +180,7 @@ class TicketTable extends Component {
                     data={this.props.allOfTheTickets}
                     onRowClick={(event, rowData) => {
                         this.setState({ clickedRow: 0, selectedTicket: rowData.ticket_ID });
+                        this.props.changeSelectedTicket(rowData.ticket_ID);
                         this.props.loadTicket(rowData.ticket_ID);
                     }}
                     options={{

@@ -60,13 +60,15 @@ class Main extends Component {
 
     handleInventoryClick() {
         this.setState(state => ({
-            screen: "Inventory"
+            screen: "Inventory",
+            activity: "main_without_activity"
         }));
     }
 
     handleDataVClick() {
         this.setState(state => ({
-            screen: "DataV"
+            screen: "DataV",
+            activity: "main_without_activity"
         }));
     }
 
@@ -112,9 +114,14 @@ class Main extends Component {
                     <h1 className="title">
                         ResNet Helpdesk
                     </h1>
-                    <div id="notificationsButton" className={this.state.notificationIcon}>
-                        <img src={bellIcon} className="bellIcon" onClick={this.toggleActivity} alt="bell icon" />
-                    </div>
+                    {this.state.screen === "Tickets" ?
+                        <div id="notificationsButton" className={this.state.notificationIcon}>
+                            <img src={bellIcon} className="bellIcon" onClick={this.toggleActivity} alt="bell icon" />
+                        </div>
+                        :
+                        <div id="notificationsButtonOff">
+                        </div>}
+
                     <div className="logout">
                         <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
                     </div>
@@ -137,11 +144,12 @@ class Main extends Component {
                                 {(this.state.screen === "Tickets") ?
                                     <TicketPage
                                         history={this.props.history}
+                                        changeSelectedTicket={this.changeSelectedTicket}
                                         selectedTicket={this.state.selectedTicket}
                                         updateActivity={this.updateActivity}
                                     /> : null}
 
-                                {(this.state.screen === "Inventory") ? 
+                                {(this.state.screen === "Inventory") ?
                                     <InventoryPage
                                         history={this.props.history}
                                     /> : null}

@@ -48,6 +48,7 @@
 
 .logout
 {
+  float: right;
   margin-right: 100px;
   margin-left: 15px;
   margin-top: auto;

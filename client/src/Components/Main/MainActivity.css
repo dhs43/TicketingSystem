@@ -61,6 +61,19 @@ html
     border: solid 1px transparent;
 }
 
+#notificationsButtonOff
+{
+    width: 28px;
+    height: 28px;
+    margin-right: 0px;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    border-radius: 5px;
+    transition: all .3s;
+    border: solid 1px transparent;
+}
+
 #notificationsButton.selected
 {
     width: 28px;
