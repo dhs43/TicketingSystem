@@ -147,13 +147,13 @@ class DataViz extends Component {
                     </FormControl>
                 <Grid container spacing={2}>
                     <Grid item xs={3}>
-                        <Paper className={"tooShort"}>
+                        <Paper>
                             <h2 className={"dataHeader"}> All Tickets Submitted </h2>
                             <p className={"inLastNumber"}> {this.state.allOfTheTickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
-                        <Paper className={'tooShort'}>
+                        <Paper >
                             <h2 className={"dataHeader"}> Tickets Submitted in last {this.state.time_period} days</h2>
                             <p className={"inLastNumber"}> {this.state.relevant_tickets.length}</p>
                         </Paper>
