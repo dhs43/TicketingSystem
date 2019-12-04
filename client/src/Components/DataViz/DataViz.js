@@ -97,31 +97,13 @@ class DataViz extends Component {
         let total = 0;
         let out_of = 0;
 
-        let count=0;
-        // tickets.forEach((d)=>{
-        //     count+=1;
-        //        if (d.time_closed !== null ){
-        //
-        //            out_of = out_of + 1;
-        //            let time_spent = d.time_closed - d.time_submitted;
-        //            total = total + time_spent;
-        //        }
-        //
-        //     }
-        // );
-
         for (let i=0; i<tickets.length;i++){
-            count+=1;
             if (tickets[i].time_closed !== null ) {
                 out_of = out_of + 1;
                 let time_spent = tickets[i].time_closed - tickets[i].time_submitted;
                 total = total + time_spent;
             }
         }
-        console.log('---------');
-        console.log(total);
-        console.log(out_of);
-        console.log(count);
         return total / out_of;
     }
 
@@ -130,7 +112,6 @@ class DataViz extends Component {
         const handleChange  =() => event => {
             this.setState({
                 time_period: event.target.value,
-                // relevant_time: format(this.calculateAvgTime(this.state.relevant_tickets) * 1000),
             });
             this.sortTickets(event.target.value);
 
@@ -168,18 +149,18 @@ class DataViz extends Component {
                     <Grid item xs={3}>
                         <Paper className={"tooShort"}>
                             <h2 className={"dataHeader"}> All Tickets Submitted </h2>
-                            <p className={"dataNumber"}> {this.state.allOfTheTickets.length}</p>
+                            <p className={"inLastNumber"}> {this.state.allOfTheTickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper className={'tooShort'}>
                             <h2 className={"dataHeader"}> Tickets Submitted in last {this.state.time_period} days</h2>
-                            <p className={"dataNumber"}> {this.state.relevant_tickets.length}</p>
+                            <p className={"inLastNumber"}> {this.state.relevant_tickets.length}</p>
                         </Paper>
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
-                            <h2 className={"dataHeader"}> Avg Time Spent Resolving Ticket (DD:HH:MM:SS)</h2>
+                            <h2 className={"dataHeader"}> Avg Time Spent Closing Tickets (DD:HH:MM:SS)</h2>
                             <p className={"dataNumber"} >
                                 {this.state.avg_time}
                             </p>
@@ -187,7 +168,7 @@ class DataViz extends Component {
                     </Grid>
                     <Grid item xs={3}>
                         <Paper>
-                            <h2 className={"dataHeader"}>  Avg Time Spent Resolving Ticket in last {this.state.time_period} days (DD:HH:MM:SS)</h2>
+                            <h2 className={"dataHeader"}>  Avg Time Spent Closing Tickets in last {this.state.time_period} days (DD:HH:MM:SS)</h2>
                             <p className={"dataNumber"}>
                                 {this.state.relevant_time}
                             </p>
