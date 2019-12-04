@@ -41,6 +41,11 @@
     border-color: #5C8021;
 }
 
+/* Table row */
+.MuiTableRow-hover:hover {
+    background-color: rgb(255, 237, 211) !important;
+}
+
 .details
 {
     padding-left: 20px;

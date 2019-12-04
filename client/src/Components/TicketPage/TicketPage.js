@@ -215,6 +215,7 @@ class TicketPage extends Component {
     }
 
     loadAllComments(num) {
+        this.setState({ activitySelectedTicket: num });
         fetch('/comments/' + num, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.token
@@ -227,7 +228,9 @@ class TicketPage extends Component {
                     return response.json();
                 }
             }.bind(this))
-            .then(data => this.setState({ allOfTheComments: data }))
+            .then(data => {
+                this.setState({ allOfTheComments: data });
+            })
             .catch(err => console.log(err))
     }
 
@@ -462,6 +465,7 @@ class TicketPage extends Component {
                             filterHandler={this.filterHandler}
                             submitTicketHandler={this.submitTicketHandler}
                             activitySelectedTicket={this.props.selectedTicket}
+                            changeSelectedTicket={this.props.changeSelectedTicket}
                         />
                     </Paper>
                     <div className="marginTop">
@@ -477,7 +481,10 @@ class TicketPage extends Component {
                     <div className="comment-area">
                         {this.state.theTicket === null ? null :
                             <div className="commentUI">
-                                <NewComment theTicket={this.state.theTicket} loggedinTech={this.state.loggedinTech} loadAllComments={this.loadAllComments} />
+                                <NewComment
+                                    theTicket={this.state.theTicket}
+                                    loggedinTech={this.state.loggedinTech}
+                                    loadAllComments={this.loadAllComments} />
                             </div>
                         }
                         {this.state.theTicket === null ? null :
