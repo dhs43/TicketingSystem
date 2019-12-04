@@ -1,4 +1,4 @@
-.submitTicket{
+.createUser{
     width: 55vw;
     padding: 20px;
     margin: 100px auto 0 auto;
@@ -14,22 +14,21 @@
     flex-direction: column;
 }
 
-.submitTicketHeader
+.createUserHeader
 {
     text-align: center;
     font-size: 40px;
     color: #5C8021;
     margin: 12px;
-    font-family:  Lato;
     font-weight: 400;
-    -webkit-font-smoothing: antialiased;  
+    -webkit-font-smoothing: antialiased;
 }
 
 .medium{
     width: 70%;
 }
 
-.submitTicketButton
+.createUserButton
 {
     display: block;
     margin-left: auto;
@@ -44,7 +43,7 @@
     font-size: large;
 }
 
-.submitTicketButton:hover
+.createUserButton:hover
 {
     display: block;
     margin-left: auto;
@@ -57,3 +56,4 @@
     background-color: rgb(117, 164, 42);
     border-color: #5C8021;
 }
+
