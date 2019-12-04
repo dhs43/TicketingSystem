@@ -103,13 +103,13 @@ class SubmitTicket extends Component {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                firstname: this.state.firstname.trim(),
-                lastname: this.state.lastname.trim(),
-                email: this.state.email.trim(),
+                firstname: this.state.firstname.trim().replace(/"/g, '\''),
+                lastname: this.state.lastname.trim().replace(/"/g, '\''),
+                email: this.state.email.trim().replace(/"/g, '\''),
                 phone: this.state.phone.trim(),
                 location: this.state.location.trim(),
-                subject: this.state.subject.trim(),
-                description: this.state.description.trim(),
+                subject: this.state.subject.trim().replace(/"/g, '\''),
+                description: this.state.description.trim().replace(/"/g, '\''),
                 severity: this.state.severity
             })
         })

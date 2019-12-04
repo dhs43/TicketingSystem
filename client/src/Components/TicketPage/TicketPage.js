@@ -248,9 +248,8 @@ class TicketPage extends Component {
                 .then(response => response.text())
                 .then(response => {
                     if (response === "Ticket deleted successfully") {
+                        alert("Ticket " + this_ticket_id + " deleted sucessfully");
                         this.setState({ theTicket: null });
-                        NotificationManager.success('Ticket' + this_ticket_id + 'Deleted Successfully', '');
-                        NotificationManager.error('Error Submitting Ticket', '');
                         this.loadTickets();
                     } else {
                         NotificationManager.error('Error Deleting Ticket', '');
