@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NotificationManager } from "react-notifications";
+import {NotificationContainer, NotificationManager} from "react-notifications";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -11,6 +11,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import "./CreateUser.css";
 import 'react-notifications/lib/notifications.css';
+import Paper from "@material-ui/core/Paper";
 
 class CreateUser extends Component {
     constructor(props) {
@@ -86,10 +87,10 @@ class CreateUser extends Component {
             .then(response => response.text())
             .then(response => {
                 if (response === "New user created") {
-                    NotificationManager.success('New User Created!', '');
+                    NotificationManager.success('New User Created!', '',3000);
                 } else {
                     this.setState({ submitted: true });
-                    NotificationManager.error('Error Creating User', '');
+                    NotificationManager.error('Error Creating User', '',3000);
                 }
             });
 
@@ -115,6 +116,7 @@ class CreateUser extends Component {
 
         return (
             <div>
+                <NotificationContainer />
                 <MuiThemeProvider theme={theme}>
                     <form className="createUser" onSubmit={e => this.submitHandler(e)}>
                         <IconButton

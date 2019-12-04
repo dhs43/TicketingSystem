@@ -14,7 +14,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PersonIcon from '@material-ui/icons/Person';
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import {NotificationManager} from "react-notifications";
+import {NotificationManager, NotificationContainer} from "react-notifications";
 
 
 class ManageUsers extends Component {
@@ -96,16 +96,18 @@ class ManageUsers extends Component {
             .then(response => response.text())
             .then(response => {
                 if (response === "User updated") {
-                    NotificationManager.success('User Updated!', '');
+                    // alert("User Updated");
+                    NotificationManager.success('User Updated!', '', 2000);
                 } else {
+                    alert("Error updating user");
                     this.setState({ submitted: true });
-                    NotificationManager.error('Error Updating User', '');
+                    NotificationManager.error('Error Updating User', '', 2000);
                 }
             });
 
         setTimeout(() => {
             this.props.history.push('/');
-        }, 4000);
+        }, 2000);
 
     }
 
@@ -123,7 +125,9 @@ class ManageUsers extends Component {
         });
         return (
             <MuiThemeProvider theme={theme}>
+                <NotificationContainer />
                 <Paper>
+
                     <List dense={'dense'}>
                         <ListItem> <h3> Manage Users </h3></ListItem>
                         <ListItem>
