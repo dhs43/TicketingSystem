@@ -169,7 +169,6 @@ class CreateUser extends Component {
                                 value={this.state.password}
                                 onChange={e => this.changeHandler(e)}
                             />
-
                         <FormControl component={'fieldset'}>
                             <FormLabel component="legend" style={{paddingTop:'1em'}}> Access </FormLabel>
                             <RadioGroup
