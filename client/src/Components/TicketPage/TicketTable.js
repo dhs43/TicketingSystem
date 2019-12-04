@@ -54,7 +54,7 @@ class TicketTable extends Component {
                 id: 'customer_name',
                 field: 'customer_name',
                 title: 'Author',
-                cellStyle: { minWidth: 60, width: '15%' },
+                cellStyle: { minWidth: 60, width: '18%' },
                 customSort: (a, b) => {
                     if (a.customer_name.toLowerCase() > b.customer_name.toLowerCase()) {
                         return 1;
