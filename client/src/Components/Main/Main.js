@@ -193,6 +193,7 @@ class Main extends Component {
 
                     <div className="logout">
                         <button className="logout_button" onClick={this.handleLogout}>LOG OUT</button>
+                        <span className="logged_in_tech">{this.state.loggedinTech.firstname + " " + this.state.loggedinTech.lastname}</span>
                     </div>
 
 

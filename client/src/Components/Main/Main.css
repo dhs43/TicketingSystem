@@ -77,6 +77,31 @@
   color: white;
 }
 
+.logout .logged_in_tech
+{
+  visibility: hidden;
+  width: 100px;
+  background-color: #5C8021;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  font-size: .9em;
+  border: solid 1px #25551b;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 90px;
+  right: 99px;
+}
+
+.logout:hover .logged_in_tech
+{
+  visibility: visible;
+}
+
+
 .screen
 {
     display: flex;

@@ -138,15 +138,6 @@ class TicketTable extends Component {
     render() {
         // Styles
         const theme = createMuiTheme({
-            overrides: {
-                MuiTableSortLabel: {
-                    root: {
-                        '&:hover': {
-                            color: '#bbdefb',
-                        },
-                    },
-                },
-            },
             palette: {
                 primary: { main: '#FFA500' }, // orange
                 secondary: { main: '#25551b' } // dark green

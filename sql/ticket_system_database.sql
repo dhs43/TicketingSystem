@@ -136,6 +136,5 @@ CREATE TABLE activity
     ticket_ID int NOT NULL,
     last_seen_comment_ID int,
     FOREIGN KEY(technician_ID) REFERENCES technicians(technician_ID),
-    FOREIGN KEY(last_seen_comment_ID) REFERENCES comments(comment_ID),
     PRIMARY KEY(technician_ID, ticket_ID)
 );
