@@ -270,7 +270,6 @@ class TicketPage extends Component {
                     this.loadTickets();
                     NotificationManager.success('Ticket assigned successfully', '');
                 } else {
-                    //alert("Error assigning ticket");
                     NotificationManager.error('Error Assigning Ticket', '');
                 }
             });
