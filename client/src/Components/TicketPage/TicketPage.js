@@ -247,6 +247,7 @@ class TicketPage extends Component {
                     if (response === "Ticket deleted successfully") {
                         this.setState({ theTicket: null });
                         NotificationManager.success('Ticket' + this_ticket_id + 'Deleted Successfully', '');
+                        NotificationManager.error('Error Submitting Ticket', '');
                         this.loadTickets();
                     } else {
                         NotificationManager.error('Error Deleting Ticket', '');
@@ -482,7 +483,7 @@ class TicketPage extends Component {
                         }
                         {this.state.theTicket === null ? null :
                             this.state.allOfTheComments.slice().reverse().map((value, index) => {
-                                return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} creation_date={new Date(value.creation_date * 1000)} />
+                                return <Comment key={value.comment_ID} author_ID={value.author_name} text={value.text} creation_date={new Date(value.creation_date * 1000)} internal={value.internal}/>
                             })
                         }
                     </div>

@@ -4,6 +4,8 @@ import TextField from "@material-ui/core/TextField";
 import { MarkAsRead } from '../Activity/Activity';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 class NewComment extends Component {
     constructor(props) {
@@ -15,12 +17,22 @@ class NewComment extends Component {
 
         this.handleSaveComment = this.handleSaveComment.bind(this);
         this.changeHandler = this.changeHandler.bind(this);
+        this.changeSwitchHandler = this.changeSwitchHandler.bind(this);
     }
 
     changeHandler(e) {
         this.setState({
             [e.target.name]: e.target.value
         });
+    }
+
+    changeSwitchHandler = name => event => {
+        // this.setState({ internal: true });
+        // console.log(this.state.internal);
+        // setTimeout(() => {
+            console.log(event.target.checked);
+            this.setState({ [name]: event.target.checked });
+        // }, 3000)  
     }
 
     handleSaveComment() {
@@ -42,7 +54,7 @@ class NewComment extends Component {
             .then(response => response.text())
             .then(response => {
                 if (response === "Comment created successfully") {
-                    this.setState({ newComment: '', internal: 'false' }); // Clear textbox
+                    this.setState({ newComment: '', internal: false }); // Clear textbox
                     this.props.loadAllComments(this.props.theTicket.ticket_ID);
 
                     // Mark read so your own comments don't show in activity
@@ -81,11 +93,21 @@ class NewComment extends Component {
                             }}
                             variant="outlined"
                         />
-                        <button
-                            className="button"
-                            onClick={this.handleSaveComment}>
-                            Add Comment
-                        </button>
+                        <div className="flexbutton">
+                            <button
+                                className="button"
+                                onClick={this.handleSaveComment}>
+                                Add Comment
+                            </button>
+                            <div className="switch">
+                            <FormControlLabel
+                                control={
+                                <Switch checked={this.state.internal} onClick={this.changeSwitchHandler('internal')}/>
+                                }
+                                label="Internal"
+                            />
+                            </div>
+                        </div>
                     </MuiThemeProvider>
                 </div>
             );
