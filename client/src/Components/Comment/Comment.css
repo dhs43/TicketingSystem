@@ -5,6 +5,15 @@
     white-space: pre-line;
 }
 
+#internal.MuiPaper-root
+{
+    background-color: rgb(255, 235, 206);
+}
+
+#external.MuiPaper-root
+{
+}
+
 .time-ago
 {
     float: right;

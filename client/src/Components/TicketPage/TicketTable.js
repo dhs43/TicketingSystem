@@ -26,6 +26,7 @@ class TicketTable extends Component {
         super(props);
 
         this.state = {
+            clickedRow: 0,
             selectedTicket: this.props.activitySelectedTicket
         }
 
@@ -126,14 +127,18 @@ class TicketTable extends Component {
     }
 
     UNSAFE_componentWillReceiveProps() {
-        // console.log("Current: " + this.state.selectedFromTable);
-        // if (this.selectedFromTable === true) {
-        //     return;
-        // }else{
-        //     //this.setState({selectedFromTable: false});
-        //     console.log("Updating from new props");
+        // For some reason props are received twice after clicking a row
+        // so we set clickedRow to 0 when we click the row.
+        // If we haven't clicked a row, clickedRow should always be at 2
+        // which allows us to set selectedTicket to the received prop.
+
+        if (this.state.clickedRow === 0) {
+            this.setState({ clickedRow: 1 });
+        } else if (this.state.clickedRow === 1) {
+            this.setState({ clickedRow: 2 });
+        } else if (this.state.clickedRow === 2) {
             this.setState({ selectedTicket: this.props.activitySelectedTicket });
-        //}
+        }
     }
 
     render() {
@@ -171,7 +176,7 @@ class TicketTable extends Component {
                     icons={this.tableIcons}
                     data={this.props.allOfTheTickets}
                     onRowClick={(event, rowData) => {
-                        this.setState({ selectedTicket: rowData.ticket_ID });
+                        this.setState({ clickedRow: 0, selectedTicket: rowData.ticket_ID });
                         this.props.loadTicket(rowData.ticket_ID);
                     }}
                     options={{
