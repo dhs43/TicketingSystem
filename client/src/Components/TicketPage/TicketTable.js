@@ -177,7 +177,7 @@ class TicketTable extends Component {
                     options={{
                         padding: 'dense',
                         pageSize: 10,
-                        //pageSizeOptions: [5, 15, 25, 50],
+                        pageSizeOptions: [],
                         sorting: true,
                         rowStyle: rowData => ({
                             overflowY: 'scroll',
