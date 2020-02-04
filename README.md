@@ -8,3 +8,5 @@ Users will be able to submit help tickets and technicians will be able to keep t
 React, NodeJS, Express, MySQL
 
 Express serves the webapp from an AWS EC2 instance and data is stored on an AWS MySQL database.
+
+![alt demo](/demo.gif)
